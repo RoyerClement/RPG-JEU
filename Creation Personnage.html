@@ -105,8 +105,8 @@
         }
 
         const equipement = {
-            LeftHand : arme.mainGauche,
-            RightHand : arme.mainDroite,
+            LeftHand: arme.mainGauche,
+            RightHand: arme.mainDroite,
             Chest : null,
             Head : null,
             Ring : null,
@@ -162,39 +162,24 @@
 
         function takeWeapon (weapon) {
             const element = document.getElementById(weapon)
-            if(equipement.forEach(arme) !== weapon) {
-                inventaire.arme = equipement.LeftHand
-                const newLH = equipement.LeftHand.pop()
-                equipement.LeftHand = [weapon]
-                transf_mainGauche.appendChild(elements[weapon])
-                console.log("Main gauche " + equipement.LeftHand)
-            }
-            else if (equipement.LeftHand === weapon) {
-                equipement.LeftHand.pop()
-                equipement.RightHand = [weapon]
-                transf_mainDroite.appendChild(elements[weapon])
-                console.log("Main Droite " + equipement.RightHand)
-            }
-            else if(equipement.LeftHand === weapon || equipement.RightHand === weapon) {
-                
-            }
-            else if(weapon === inventaire.arme[weapon]) {
-                const index = inventaire.findIndex(arme => arme === 'epeeDepart')
-                if(index !== -1) {
-                    inventaire.splice(index , 1);
-                    inventaire.push(equipement.LeftHand)
-                    equipement.LeftHand.splice(0, 1)
-                    equipement.LeftHand = [weapon]
-                    console.log('inventaire : ' + inventaire , "main gauche : " + equipement.LeftHand)
+            if (inventaire.arme !== arme[weapon]) {
+            // Si l'arme n'est pas dans l'inventaire
+            inventaire.arme.push(arme[weapon]); 
+            transf_inventaire.appendChild(elements[weapon]);
+            console.log("inventaire : " + inventaire.arme);
+        }
+            else if (inventaire === arme[weapon]) {
+            // Si l'arme est dans linventaire
+                const index = inventaire.findIndex(arme => arme === weapon);
+                if (index !== -1) {
+                    inventaire.splice(index, 1);
                 }
-            }
-            else if(equipement.LeftHand !== null && equipement.RightHand !== null) {
-                inventaire.arme.push(weapon)
-                transf_inventaire.appendChild(elements[weapon])
-                console.log("inventaire " + inventaire.arme)
+                equipement.LeftHand = arme[weapon]
+                transf_mainGauche.appendChild(elements[weapon])
+                console.log("Main droite " + equipement.RightHand())
             }
             else {
-                console.log("aucun de ces cas")
+                console.log("inventaire : " + inventaire + "inventaire2 : " + inventaire.arme)
             }
             
             
