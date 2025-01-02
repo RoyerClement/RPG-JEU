@@ -70,7 +70,10 @@
     </div>
     <div id="info">
         <span id="hp">Points de vie : 50/50</span><br>
-        <span id="mp">Points de mana : 30/30</span>
+        <span id="mp">Points de mana : 30/30</span><br> <br>
+        <p>Dégats</p>
+        <span id="degatsArmeG">Arme gauche : 1 </span><br>
+        <span id="degatsArmeD">Arme droite : 1</span>
     </div>
     <div id="equipement">
         <span>Equipement</span>
@@ -110,14 +113,14 @@
     }
 
     const arme = {
-        mainGauche: 1 + (1 * statPerso.Dexterite),
-        mainDroite: 1 + (1 * statPerso.Force),
-        epeeDepart: 4 + ((3 * statPerso.Force) + (2 * statPerso.Dexterite)),
-        hacheDepart: 5 + (4 * statPerso.Force),
-        arcDepart: 4 + (1 * statPerso.Force) + (3 * statPerso.Dexterite),
-        batonDepart: 3 + (1 * statPerso.Force) + (2 * statPerso.Intelligence)
-    }
-
+        mainGauche: () => 1 + (1 * statPerso.Dexterite),
+        mainDroite: () => 1 + (1 * statPerso.Force),
+        epeeDepart: () => 4 + ((3 * statPerso.Force) + (2 * statPerso.Dexterite)),
+        hacheDepart: () => 5 + (4 * statPerso.Force),
+        arcDepart: () => 4 + (1 * statPerso.Force) + (3 * statPerso.Dexterite),
+        batonDepart: () => 3 + (1 * statPerso.Force) + (2 * statPerso.Intelligence)
+    };
+    
     const equipement = {
         LeftHand: "mainGauche",
         RightHand: "mainDroite",
@@ -126,11 +129,23 @@
         Ring: null,
         Neck: null
     }
+
+    const degats = {
+        get LeftHand() {
+            return arme[equipement.LeftHand](); // Appelle la fonction de calcul dynamique
+        },
+        get RightHand() {
+            return arme[equipement.RightHand](); // Appelle la fonction de calcul dynamique
+        }
+    };
+
     const inventaire = {
         arme: []
     }
 
     function update() {
+        document.getElementById('degatsArmeG').textContent = `Arme gauche : ${degats.LeftHand}`
+        document.getElementById('degatsArmeD').textContent = `Arme droite : ${degats.RightHand}`
         document.getElementById('statFor').textContent = `Force : ${statPerso.Force}`
         document.getElementById('statDex').textContent = `Dextérité : ${statPerso.Dexterite}`
         document.getElementById('statVit').textContent = `Vitalité : ${statPerso.Vitalite}`
@@ -141,7 +156,16 @@
         document.getElementById('hp').textContent = `Points de vie : ${statPerso.HP}/${statPerso.HP}`
         statPerso.MP = 30 + (30 * statPerso.Volonte) + (10 * statPerso.Intelligence)
         document.getElementById('mp').textContent = `Points de vie : ${statPerso.MP}/${statPerso.MP}`
-        console.log(arme.epeeDepart())
+        console.log(equipement)
+        const arme = {
+        mainGauche: 1 + (1 * statPerso.Dexterite),
+        mainDroite: 1 + (1 * statPerso.Force),
+        epeeDepart: 4 + ((3 * statPerso.Force) + (2 * statPerso.Dexterite)),
+        hacheDepart: 5 + (4 * statPerso.Force),
+        arcDepart: 4 + (1 * statPerso.Force) + (3 * statPerso.Dexterite),
+        batonDepart: 3 + (1 * statPerso.Force) + (2 * statPerso.Intelligence)
+    }
+        
     }
 
     function addStat(stat) {
@@ -174,55 +198,61 @@
     const transf_mainDroite = document.getElementById('mainDroite')
     const transf_inventaire = document.getElementById('inventaire')
 
-    function takeWeapon(weapon) {
-        const element = document.getElementById(weapon)
-        // si l'arme n'est pas dans l'inventaire & est dans main gauche ou main droite 
-        console.log(!inventaire.arme.includes(weapon), equipement.LeftHand === weapon , equipement.RightHand === weapon)
-        if (!inventaire.arme.includes(weapon) && (equipement.LeftHand === weapon || equipement.RightHand === weapon)) {
-            inventaire.arme.push(weapon);
-            transf_inventaire.appendChild(elements[weapon]);
-            if (equipement.LeftHand === weapon) {
+    function takeObject(name , type) {
+        console.log("main gauche : " , degats.LeftHand , "main droite : ", degats.RightHand)
+        const element = document.getElementById(name)
+        // En premier c'est pour retirer une arme des mains.
+        // si l'arme n'est pas dans l'inventaire & est dans main gauche ou main droite
+        if (!inventaire[type].includes(name) && (equipement.LeftHand === name || equipement.RightHand === name)) {
+            //je la met dans l'inventaire
+            inventaire[type].push(name);
+            transf_inventaire.appendChild(elements[name]);
+            console.log("main gauche : " , degats.LeftHand , "main droite : ", degats.RightHand)
+            //Si c'est la main gauche je la retire de la main gauche
+            if (equipement.LeftHand === name) {
                 equipement.LeftHand = 'mainGauche'
                 console.log("si pas dans inventaire mais main gauche ou droite ", equipement)
+                console.log("main gauche : " , degats.LeftHand , "main droite : ", degats.RightHand)
             }
+            //Si c'est la main droite je la retire de la main droite
             else {
                 equipement.RightHand = "mainDroite"
                 console.log(equipement)
+                console.log("main gauche : " , degats.LeftHand , "main droite : ", degats.RightHand)
             }
-        } else if (!inventaire.arme.includes(weapon)) {
-            // Si l'arme n'est pas dans l'inventaire
-            inventaire.arme.push(weapon);
-            transf_inventaire.appendChild(elements[weapon]);
+            //En deuxieme c'est pour mettre dans l'inventaire
+            // Si l'objet n'est pas dans l'inventaire, je la met dans l'inventaire
+        } else if (!inventaire[type].includes(name)) {
+            inventaire[type].push(name);
+            transf_inventaire.appendChild(elements[name]);
             console.log("inventaire full : ", inventaire);
-            console.log(arme)
+            console.log("main gauche : " , degats.LeftHand , "main droite : ", degats.RightHand)
         }
-        else if (inventaire.arme.includes(weapon)) {
-            // Si l'arme est dans linventaire
-            const index = inventaire.arme.findIndex(arme => arme === weapon);
+        // En Troisieme c'est pour equiper une arme de l'inventaire dans mon equipement
+        // Si l'arme est dans linventaire je l'equipe 
+        else if (inventaire[type].includes(name)) {
+            const index = inventaire[type].findIndex(type => type === name);
             if (index !== -1) {
-                inventaire.arme.splice(index, 1);
+                inventaire[type].splice(index, 1);
             }
-            if (true) {
                 if(equipement.LeftHand !== "mainGauche") {
-                    equipement.RightHand = weapon
-                    transf_mainDroite.appendChild(elements[weapon])
+                    equipement.RightHand = name
+                    transf_mainDroite.appendChild(elements[name])
+                    console.log("main gauche : " , degats.LeftHand , "main droite : ", degats.RightHand)
                 } else {
-                equipement.LeftHand = weapon
-                transf_mainGauche.appendChild(elements[weapon])
+                equipement.LeftHand = name
+                transf_mainGauche.appendChild(elements[name])
                 console.log("equipement ", equipement) 
+                console.log("main gauche : " , degats.LeftHand , "main droite : ", degats.RightHand)
                 }
-            }
-            else {
-
-                console.log('lol')
-            }
         }
+        update()
     }
 
-    elements.epeeDepart.addEventListener("click", () => takeWeapon("epeeDepart"))
-    elements.hacheDepart.addEventListener("click", () => takeWeapon('hacheDepart'))
-    elements.arcDepart.addEventListener("click", () => takeWeapon('arcDepart'))
-    elements.batonDepart.addEventListener("click", () => takeWeapon('batonDepart'))
+    elements.epeeDepart.addEventListener("click", () => takeObject("epeeDepart" , "arme"))
+    elements.hacheDepart.addEventListener("click", () => takeObject('hacheDepart', "arme"))
+    elements.arcDepart.addEventListener("click", () => takeObject('arcDepart', "arme"))
+    elements.batonDepart.addEventListener("click", () => takeObject('batonDepart', "arme"))
 </script>
 
 </html>
