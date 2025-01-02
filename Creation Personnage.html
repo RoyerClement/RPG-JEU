@@ -1,68 +1,72 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <style>
-            #stat {
-                font-size: 24px;
-                border: 1px solid #ccc;
-                padding: 10px;
-                margin: 10px;
-                width: 200px;
-            }
-            #info {
-                font-size: 24px;
-                border: 1px solid #ccc;
-                padding: 10px;
-                margin: 10px;
-                position: absolute;
-                left : 350px;
-                top : 100px;
-            }
-            #inventaire {
-                font-size: 24px;
-                border: 1px solid #ccc;
-                padding: 10px;
-                margin: 10px;
-                height: 500px;
-                width: 500px;
-            }
-            #equipement {
-                font-size: 24px;
-                border: 1px solid #ccc;
-                padding: 10px;
-                margin: 10px;
-                height: 500px;
-                width: 500px;
-                position:fixed;
-                right: 1000px;
-            }
-            #armeDepart {
-                font-size: 24px;
-                border: 1px solid #ccc;
-                padding: 10px;
-                margin: 10px;
-                height: 500px;
-                width: 500px;
-                position: absolute;
-                right : 50px;
-                top : 100px;
-            }
-   
 
-        </style>
-    </head>
-    <body>
-        <h1>Creation Personnage</h1>
-        <div id="stat">
-            <div id caract>
-                <span id="statFor">Force : 0         </span><button id="btnFor+">+</button><br> <br>
-                <span id="statDex">Dextérité : 0     </span><button id="btnDex+">+</button><br> <br>
-                <span id="statVit">Vitalité : 0      </span> <button id="btnVit+">+</button><br><br>
-                <span id="statVol">Volonté : 0      </span> <button id="btnVol+">+</button><br><br>
-                <span id="statInt">Intelligence : 0  </span><button id="btnInt+">+</button><br><br>
-                <span id="point">Point(s) disponible(s) : 10</span>
-            </div>
+<head>
+    <meta charset="utf-8">
+    <style>
+        #stat {
+            font-size: 24px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin: 10px;
+            width: 200px;
+        }
+
+        #info {
+            font-size: 24px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin: 10px;
+            position: absolute;
+            left: 350px;
+            top: 100px;
+        }
+
+        #inventaire {
+            font-size: 24px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin: 10px;
+            height: 500px;
+            width: 500px;
+        }
+
+        #equipement {
+            font-size: 24px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin: 10px;
+            height: 500px;
+            width: 500px;
+            position: fixed;
+            right: 1000px;
+        }
+
+        #armeDepart {
+            font-size: 24px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin: 10px;
+            height: 500px;
+            width: 500px;
+            position: absolute;
+            right: 50px;
+            top: 100px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Creation Personnage</h1>
+    <div id="stat">
+        <div id caract>
+            <span id="statFor">Force : 0 </span><button id="btnFor+">+</button><br> <br>
+            <span id="statDex">Dextérité : 0 </span><button id="btnDex+">+</button><br> <br>
+            <span id="statVit">Vitalité : 0 </span> <button id="btnVit+">+</button><br><br>
+            <span id="statVol">Volonté : 0 </span> <button id="btnVol+">+</button><br><br>
+            <span id="statInt">Intelligence : 0 </span><button id="btnInt+">+</button><br><br>
+            <span id="point">Point(s) disponible(s) : 10</span>
+        </div>
     </div>
     <div id="info">
         <span id="hp">Points de vie : 50/50</span><br>
@@ -70,124 +74,155 @@
     </div>
     <div id="equipement">
         <span>Equipement</span>
-        <div id="mainGauche"></div><div id="mainDroite"></div>
+        <div id="mainGauche"></div>
+        <div id="mainDroite"></div>
     </div>
     <div id="inventaire">
         <span>Inventaire</span>
     </div>
     <div id="armeDepart">
         <p>Choisissez votre arme</p>
-        <span><div id="epeeDepart"><img src="image/epee.png" title="Epee simple || Inflige plus de dégats avec votre force et dexterité" width="100" height="108"></div>
-        <div id="hacheDepart"><img src="image/hache.jpg" title="Hache simple || Inflige plus de dégats avec votre force" width="100" height="108"></div>
-        <div id="arcDepart"><img src="image/arc.png" title="Arc simple || Inflige plus de dégats avec votre force et dexterité" width="100" height="108"></div>
-        <div id="batonDepart"><img src="image/baton.avif" title="Baton simple || Inflige plus de dégats avec votre force et intelligence" width="100" height="108"></div></span>
+        <span>
+            <div id="epeeDepart"><img src="image/epee.png"
+                    title="Epee simple || Inflige plus de dégats avec votre force et dexterité" width="100"
+                    height="108"></div>
+            <div id="hacheDepart"><img src="image/hache.jpg"
+                    title="Hache simple || Inflige plus de dégats avec votre force" width="100" height="108"></div>
+            <div id="arcDepart"><img src="image/arc.png"
+                    title="Arc simple || Inflige plus de dégats avec votre force et dexterité" width="100" height="108">
+            </div>
+            <div id="batonDepart"><img src="image/baton.avif"
+                    title="Baton simple || Inflige plus de dégats avec votre force et intelligence" width="100"
+                    height="108"></div>
+        </span>
     </div>
-    </body>
-    <script>
-        const statPerso = {
-            Force : 0,
-            Dexterite : 0,
-            Vitalite : 0,
-            Volonte : 0,
-            Intelligence : 0,
-            Point : 10,
-            HP : 50,
-            MP : 30
-        }
+</body>
+<script>
+    const statPerso = {
+        Force: 0,
+        Dexterite: 0,
+        Vitalite: 0,
+        Volonte: 0,
+        Intelligence: 0,
+        Point: 10,
+        HP: 50,
+        MP: 30
+    }
 
-        const arme = {
-                mainGauche : () => 1 + (1 * statPerso.Dexterite),
-                mainDroite : () => 1 + (1 * statPerso.Force),
-                epeeDepart : () => 4 + ((3 * statPerso.Force) + (2 * statPerso.Dexterite)),
-                hacheDepart : () => 5 + (4 * statPerso.Force),
-                arcDepart : () => 4 + (1 * statPerso.Force) + (3 * statPerso.Dexterite),
-                batonDepart : () => 3 + (1 * statPerso.Force) + (2 * statPerso.Intelligence) 
-        }
+    const arme = {
+        mainGauche: 1 + (1 * statPerso.Dexterite),
+        mainDroite: 1 + (1 * statPerso.Force),
+        epeeDepart: 4 + ((3 * statPerso.Force) + (2 * statPerso.Dexterite)),
+        hacheDepart: 5 + (4 * statPerso.Force),
+        arcDepart: 4 + (1 * statPerso.Force) + (3 * statPerso.Dexterite),
+        batonDepart: 3 + (1 * statPerso.Force) + (2 * statPerso.Intelligence)
+    }
 
-        const equipement = {
-            LeftHand: arme.mainGauche,
-            RightHand: arme.mainDroite,
-            Chest : null,
-            Head : null,
-            Ring : null,
-            Neck : null
-        }
-        const inventaire = {
-            arme : []
-        }
+    const equipement = {
+        LeftHand: "mainGauche",
+        RightHand: "mainDroite",
+        Chest: null,
+        Head: null,
+        Ring: null,
+        Neck: null
+    }
+    const inventaire = {
+        arme: []
+    }
 
-        function update() {
-            document.getElementById('statFor').textContent = `Force : ${statPerso.Force}`
-            document.getElementById('statDex').textContent = `Dextérité : ${statPerso.Dexterite}`
-            document.getElementById('statVit').textContent = `Vitalité : ${statPerso.Vitalite}`
-            document.getElementById('statVol').textContent = `Volonté : ${statPerso.Volonte}`
-            document.getElementById('statInt').textContent = `Intelligence : ${statPerso.Intelligence}`
-            document.getElementById('point').textContent = `Point(s) disponible(s) : ${statPerso.Point}`
-            statPerso.HP = 50 + (25 * statPerso.Vitalite) + (10 * statPerso.Force)
-            document.getElementById('hp').textContent = `Points de vie : ${statPerso.HP}/${statPerso.HP}`
-            statPerso.MP = 30 + (30 * statPerso.Volonte) + (10 * statPerso.Intelligence)
-            document.getElementById('mp').textContent = `Points de vie : ${statPerso.MP}/${statPerso.MP}`
-            console.log(arme.epeeDepart())
-        }
+    function update() {
+        document.getElementById('statFor').textContent = `Force : ${statPerso.Force}`
+        document.getElementById('statDex').textContent = `Dextérité : ${statPerso.Dexterite}`
+        document.getElementById('statVit').textContent = `Vitalité : ${statPerso.Vitalite}`
+        document.getElementById('statVol').textContent = `Volonté : ${statPerso.Volonte}`
+        document.getElementById('statInt').textContent = `Intelligence : ${statPerso.Intelligence}`
+        document.getElementById('point').textContent = `Point(s) disponible(s) : ${statPerso.Point}`
+        statPerso.HP = 50 + (25 * statPerso.Vitalite) + (10 * statPerso.Force)
+        document.getElementById('hp').textContent = `Points de vie : ${statPerso.HP}/${statPerso.HP}`
+        statPerso.MP = 30 + (30 * statPerso.Volonte) + (10 * statPerso.Intelligence)
+        document.getElementById('mp').textContent = `Points de vie : ${statPerso.MP}/${statPerso.MP}`
+        console.log(arme.epeeDepart())
+    }
 
-        function addStat (stat) {
-            if(statPerso.Point > 0) {
-                statPerso.Point--;
-                statPerso[stat]++;
-                update();
-                console.log(statPerso.HP);
-            }
-            else {
-                console.log('pas de point')
-            }
+    function addStat(stat) {
+        if (statPerso.Point > 0) {
+            statPerso.Point--;
+            statPerso[stat]++;
+            update();
+            console.log(statPerso.HP);
         }
-
-        document.getElementById('btnFor+').addEventListener('click', () => addStat("Force"));
-        document.getElementById('btnDex+').addEventListener('click', () => addStat('Dexterite'));
-        document.getElementById('btnVit+').addEventListener('click', () => addStat('Vitalite'));
-        document.getElementById('btnVol+').addEventListener('click', () => addStat('Volonte'));
-        document.getElementById('btnInt+').addEventListener('click', () => addStat('Intelligence'));
-        
-        const elements = {
-            mainGauche : document.getElementById('mainGauche'),
-            mainDroite : document.getElementById('mainDroite'),
-            epeeDepart : document.getElementById('epeeDepart'),
-            hacheDepart : document.getElementById('hacheDepart'),
-            arcDepart : document.getElementById('arcDepart'),
-            batonDepart : document.getElementById('batonDepart'),
+        else {
+            console.log('pas de point')
         }
-        const transf_mainGauche = document.getElementById('mainGauche')
-        const transf_mainDroite = document.getElementById('mainDroite')
-        const transf_inventaire = document.getElementById('inventaire')
+    }
 
-        function takeWeapon (weapon) {
-            const element = document.getElementById(weapon)
-            if (inventaire.arme !== arme[weapon]) {
-            // Si l'arme n'est pas dans l'inventaire
-            inventaire.arme.push(arme[weapon]); 
+    document.getElementById('btnFor+').addEventListener('click', () => addStat("Force"));
+    document.getElementById('btnDex+').addEventListener('click', () => addStat('Dexterite'));
+    document.getElementById('btnVit+').addEventListener('click', () => addStat('Vitalite'));
+    document.getElementById('btnVol+').addEventListener('click', () => addStat('Volonte'));
+    document.getElementById('btnInt+').addEventListener('click', () => addStat('Intelligence'));
+
+    const elements = {
+        mainGauche: document.getElementById('mainGauche'),
+        mainDroite: document.getElementById('mainDroite'),
+        epeeDepart: document.getElementById('epeeDepart'),
+        hacheDepart: document.getElementById('hacheDepart'),
+        arcDepart: document.getElementById('arcDepart'),
+        batonDepart: document.getElementById('batonDepart'),
+    }
+    const transf_mainGauche = document.getElementById('mainGauche')
+    const transf_mainDroite = document.getElementById('mainDroite')
+    const transf_inventaire = document.getElementById('inventaire')
+
+    function takeWeapon(weapon) {
+        const element = document.getElementById(weapon)
+        // si l'arme n'est pas dans l'inventaire & est dans main gauche ou main droite 
+        console.log(!inventaire.arme.includes(weapon), equipement.LeftHand === weapon , equipement.RightHand === weapon)
+        if (!inventaire.arme.includes(weapon) && (equipement.LeftHand === weapon || equipement.RightHand === weapon)) {
+            inventaire.arme.push(weapon);
             transf_inventaire.appendChild(elements[weapon]);
-            console.log("inventaire : " + inventaire.arme);
-        }
-            else if (inventaire === arme[weapon]) {
-            // Si l'arme est dans linventaire
-                const index = inventaire.findIndex(arme => arme === weapon);
-                if (index !== -1) {
-                    inventaire.splice(index, 1);
-                }
-                equipement.LeftHand = arme[weapon]
-                transf_mainGauche.appendChild(elements[weapon])
-                console.log("Main droite " + equipement.RightHand())
+            if (equipement.LeftHand === weapon) {
+                equipement.LeftHand = 'mainGauche'
+                console.log("si pas dans inventaire mais main gauche ou droite ", equipement)
             }
             else {
-                console.log("inventaire : " + inventaire + "inventaire2 : " + inventaire.arme)
+                equipement.RightHand = "mainDroite"
+                console.log(equipement)
             }
-            
-            
+        } else if (!inventaire.arme.includes(weapon)) {
+            // Si l'arme n'est pas dans l'inventaire
+            inventaire.arme.push(weapon);
+            transf_inventaire.appendChild(elements[weapon]);
+            console.log("inventaire full : ", inventaire);
+            console.log(arme)
         }
-        
-        elements.epeeDepart.addEventListener("click", () => takeWeapon("epeeDepart"))
-        elements.hacheDepart.addEventListener("click", () => takeWeapon('hacheDepart'))
-        elements.arcDepart.addEventListener("click", () => takeWeapon('arcDepart'))
-        elements.batonDepart.addEventListener("click", () => takeWeapon('batonDepart'))
-    </script>
+        else if (inventaire.arme.includes(weapon)) {
+            // Si l'arme est dans linventaire
+            const index = inventaire.arme.findIndex(arme => arme === weapon);
+            if (index !== -1) {
+                inventaire.arme.splice(index, 1);
+            }
+            if (true) {
+                if(equipement.LeftHand !== "mainGauche") {
+                    equipement.RightHand = weapon
+                    transf_mainDroite.appendChild(elements[weapon])
+                } else {
+                equipement.LeftHand = weapon
+                transf_mainGauche.appendChild(elements[weapon])
+                console.log("equipement ", equipement) 
+                }
+            }
+            else {
+
+                console.log('lol')
+            }
+        }
+    }
+
+    elements.epeeDepart.addEventListener("click", () => takeWeapon("epeeDepart"))
+    elements.hacheDepart.addEventListener("click", () => takeWeapon('hacheDepart'))
+    elements.arcDepart.addEventListener("click", () => takeWeapon('arcDepart'))
+    elements.batonDepart.addEventListener("click", () => takeWeapon('batonDepart'))
+</script>
+
 </html>
