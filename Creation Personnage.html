@@ -53,6 +53,36 @@
             right: 50px;
             top: 100px;
         }
+        #Head {
+            position: absolute;
+            top: 10px;
+            right: 200px;
+        }
+        #Chest {
+            position: absolute;
+            top: 200px;
+            right: 200px;
+        }
+        #mainDroite {
+            position: absolute;
+            top: 200px;
+            right: 10px;
+        }
+        #mainGauche {
+            position: absolute;
+            top: 200px;
+            left: 10px;
+        }
+        #Neck {
+            position: absolute;
+            top: 50px;
+            left: 50px;
+        }
+        #Ring {
+            position: absolute;
+            bottom: 50px;
+            right: 50px;
+        }
     </style>
 </head>
 
@@ -77,8 +107,12 @@
     </div>
     <div id="equipement">
         <span>Equipement</span>
-        <div id="mainGauche"></div>
-        <div id="mainDroite"></div>
+        <div id="mainGauche"><img src="image/mainGauche.jpg" title="Arme de base"width="100" height="108"></div>
+        <div id="mainDroite"><img src="image/mainDroite.jpg" title="Arme de base"width="100" height="108"></div>
+        <div id="Chest"><img src="image/Torse.jpg" title="Equipez vous d'armure pour subir moins de dégats"width="100" height="108"></div>
+        <div id="Head"><img src="image/Tete.jpg" title="Equipez vous d'armure pour subir moins de dégats"width="100" height="108"></div>
+        <div id="Ring"><img src="image/EmplacementAnneau.jpg" title="Ici pour vous équipez de bijou"width="100" height="108"></div>
+        <div id="Neck"><img src="image/EmplacementAmulette.png" title="Ici pour vous équipez de bijou"width="100" height="108"></div>
     </div>
     <div id="inventaire">
         <span>Inventaire</span>
@@ -86,17 +120,12 @@
     <div id="armeDepart">
         <p>Choisissez votre arme</p>
         <span>
-            <div id="epeeDepart"><img src="image/epee.png"
-                    title="Epee simple || Inflige plus de dégats avec votre force et dexterité" width="100"
-                    height="108"></div>
-            <div id="hacheDepart"><img src="image/hache.jpg"
-                    title="Hache simple || Inflige plus de dégats avec votre force" width="100" height="108"></div>
-            <div id="arcDepart"><img src="image/arc.png"
-                    title="Arc simple || Inflige plus de dégats avec votre force et dexterité" width="100" height="108">
+            <div id="epeeDepart"><img src="image/epee.png" title="Epee simple || Inflige plus de dégats avec votre force et dexterité" width="100" height="108"></div>
+            <div id="hacheDepart"><img src="image/hache.jpg" title="Hache simple || Inflige plus de dégats avec votre force" width="100" height="108"></div>
+            <div id="arcDepart"><img src="image/arc.png" title="Arc simple || Inflige plus de dégats avec votre force et dexterité" width="100" height="108">
             </div>
-            <div id="batonDepart"><img src="image/baton.avif"
-                    title="Baton simple || Inflige plus de dégats avec votre force et intelligence" width="100"
-                    height="108"></div>
+            <div id="batonDepart"><img src="image/baton.avif" title="Baton simple || Inflige plus de dégats avec votre force et intelligence" width="100" height="108"></div>
+            <div id="armureEnCuir"><img src='image/armureEnCuir.jpg' title="Armure simple en cuir, protège relativement" width="100" height="108"></div>
         </span>
     </div>
 </body>
@@ -117,9 +146,17 @@
         mainDroite: () => 1 + (1 * statPerso.Force),
         epeeDepart: () => 4 + ((3 * statPerso.Force) + (2 * statPerso.Dexterite)),
         hacheDepart: () => 5 + (4 * statPerso.Force),
-        arcDepart: () => 4 + (1 * statPerso.Force) + (3 * statPerso.Dexterite),
-        batonDepart: () => 3 + (1 * statPerso.Force) + (2 * statPerso.Intelligence)
+        arcDepart: () => 7 + (1 * statPerso.Force) + (3 * statPerso.Dexterite),
+        batonDepart: () => 7 + (1 * statPerso.Force) + (2 * statPerso.Intelligence)
     };
+    const Chest = {
+        Chest: 0,
+        armureEnCuir: 10,
+        armureEnFer: 20,
+        armureEnCuivre: 15,
+        armureEnPeau: 5,
+        armureEnTissu: 7,
+    }
     
     const equipement = {
         LeftHand: "mainGauche",
@@ -140,7 +177,12 @@
     };
 
     const inventaire = {
-        arme: []
+        arme: [],
+        Chest: [],
+        Head: [],
+        Ring: [],
+        Neck: [],
+        Object: []
     }
 
     function update() {
@@ -156,15 +198,6 @@
         document.getElementById('hp').textContent = `Points de vie : ${statPerso.HP}/${statPerso.HP}`
         statPerso.MP = 30 + (30 * statPerso.Volonte) + (10 * statPerso.Intelligence)
         document.getElementById('mp').textContent = `Points de vie : ${statPerso.MP}/${statPerso.MP}`
-        console.log(equipement)
-        const arme = {
-        mainGauche: 1 + (1 * statPerso.Dexterite),
-        mainDroite: 1 + (1 * statPerso.Force),
-        epeeDepart: 4 + ((3 * statPerso.Force) + (2 * statPerso.Dexterite)),
-        hacheDepart: 5 + (4 * statPerso.Force),
-        arcDepart: 4 + (1 * statPerso.Force) + (3 * statPerso.Dexterite),
-        batonDepart: 3 + (1 * statPerso.Force) + (2 * statPerso.Intelligence)
-    }
         
     }
 
@@ -173,7 +206,6 @@
             statPerso.Point--;
             statPerso[stat]++;
             update();
-            console.log(statPerso.HP);
         }
         else {
             console.log('pas de point')
@@ -193,13 +225,19 @@
         hacheDepart: document.getElementById('hacheDepart'),
         arcDepart: document.getElementById('arcDepart'),
         batonDepart: document.getElementById('batonDepart'),
+        armureEnCuir: document.getElementById('armureEnCuir')
     }
     const transf_mainGauche = document.getElementById('mainGauche')
     const transf_mainDroite = document.getElementById('mainDroite')
+    const transf_Object = {
+        Chest: document.getElementById('Chest'),
+        Head: document.getElementById('Head'),
+        Ring: document.getElementById('Ring'),
+        Neck: document.getElementById('Neck')
+    }
     const transf_inventaire = document.getElementById('inventaire')
 
-    function takeObject(name , type) {
-        console.log("main gauche : " , degats.LeftHand , "main droite : ", degats.RightHand)
+    function takeWeapon (name , type) {
         const element = document.getElementById(name)
         // En premier c'est pour retirer une arme des mains.
         // si l'arme n'est pas dans l'inventaire & est dans main gauche ou main droite
@@ -249,10 +287,42 @@
         update()
     }
 
-    elements.epeeDepart.addEventListener("click", () => takeObject("epeeDepart" , "arme"))
-    elements.hacheDepart.addEventListener("click", () => takeObject('hacheDepart', "arme"))
-    elements.arcDepart.addEventListener("click", () => takeObject('arcDepart', "arme"))
-    elements.batonDepart.addEventListener("click", () => takeObject('batonDepart', "arme"))
+    function takeObject (name , type) {
+        const element = document.getElementById(name)
+        // En premier c'est pour retirer un objet de l'equipement.
+        // si l'objet n'est pas dans l'inventaire & est dans l'equipement
+        if (!inventaire[type].includes(name) && (equipement[type] === name)) {
+            //je la met dans l'inventaire
+            inventaire[type].push(name);
+            transf_inventaire.appendChild(elements[name]);
+            //et je la retire de l'equipement
+            equipement[type] = type
+            //En deuxieme c'est pour mettre dans l'inventaire
+            // Si l'objet n'est pas dans l'inventaire, je la met dans l'inventaire
+        } else if (!inventaire[type].includes(name)) {
+            inventaire[type].push(name);
+            transf_inventaire.appendChild(elements[name]);
+        }
+        // En Troisieme c'est pour equiper un objet de l'inventaire dans mon equipement
+        // Si l'objet est dans linventaire je l'equipe 
+        else if (inventaire[type].includes(name)) {
+            const index = inventaire[type].findIndex(type => type === name);
+            if (index !== -1) {
+                inventaire[type].splice(index, 1);
+            }
+            equipement[type] = name
+            transf_Object[type].appendChild(elements[name])
+        }
+        update()
+    }
+
+    elements.epeeDepart.addEventListener("click", () => takeWeapon("epeeDepart" , "arme"))
+    elements.hacheDepart.addEventListener("click", () => takeWeapon('hacheDepart', "arme"))
+    elements.arcDepart.addEventListener("click", () => takeWeapon('arcDepart', "arme"))
+    elements.batonDepart.addEventListener("click", () => takeWeapon('batonDepart', "arme"))
+    elements.armureEnCuir.addEventListener('click', () => takeObject('armureEnCuir', "Chest"))
+
+
 </script>
 
 </html>
