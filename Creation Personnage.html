@@ -107,8 +107,8 @@
     </div>
     <div id="equipement">
         <span>Equipement</span>
-        <div id="mainGauche"><img src="image/mainGauche.jpg" title="Arme de base"width="100" height="108"></div>
-        <div id="mainDroite"><img src="image/mainDroite.jpg" title="Arme de base"width="100" height="108"></div>
+        <div id="mainGauche"><img src="image/mainGauche.jpg" id="mainGaucheBase" title="Arme de base"width="100" height="108"></div>
+        <div id="mainDroite"><img src="image/mainDroite.jpg" id="mainDroiteBase" title="Arme de base"width="100" height="108"></div>
         <div id="Chest"><img src="image/Torse.jpg" id="baseChest" title="Equipez vous d'armure pour subir moins de dégats"width="100" height="108"></div>
         <div id="Head"><img src="image/Tete.jpg" title="Equipez vous d'armure pour subir moins de dégats"width="100" height="108"></div>
         <div id="Ring"><img src="image/EmplacementAnneau.jpg" title="Ici pour vous équipez de bijou"width="100" height="108"></div>
@@ -236,7 +236,7 @@
     }
     const transf_inventaire = document.getElementById('inventaire')
 
-    function takeWeapon (name , type) {
+    function takeWeapon (name , type) {    
         const element = document.getElementById(name)
         // En premier c'est pour retirer une arme des mains.
         // si l'arme n'est pas dans l'inventaire & est dans main gauche ou main droite
@@ -284,6 +284,7 @@
                 }
         }
         update()
+        checkArmePicture()
     }
 
     function takeObject (name , type, baseType) {
@@ -315,16 +316,30 @@
         update()
         checkEquipementPicture(type, baseType)
     }
-
+    function checkArmePicture() {
+        const imageMainG = document.getElementById("mainGaucheBase")
+        const imageMainD = document.getElementById("mainDroiteBase")
+        if (equipement.LeftHand === "mainGauche") {
+            imageMainG.style.display = "block"
+        }
+        if (equipement.RightHand === "mainDroite") {
+            imageMainD.style.display = "block"
+        }
+        if (equipement.LeftHand !== "mainGauche") {
+        imageMainG.style.display = "none"
+        }
+        if (equipement.RightHand !== "mainDroite") {
+        imageMainD.style.display = "none"
+        }
+    }
     function checkEquipementPicture(type, baseType) {
         const element = document.getElementById(baseType)
         if (equipement[type] === type){
             element.style.display = "block"
-            console.log("condition reussi")
         }
         else {
-            console.log('condition rate')
             element.style.display = "none"
+            console.log('condition rate')
         }
     }
 
