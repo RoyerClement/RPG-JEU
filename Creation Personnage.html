@@ -80,7 +80,7 @@
         }
         #Ring {
             position: absolute;
-            bottom: 50px;
+            top: 50px;
             right: 50px;
         }
     </style>
@@ -109,7 +109,7 @@
         <span>Equipement</span>
         <div id="mainGauche"><img src="image/mainGauche.jpg" title="Arme de base"width="100" height="108"></div>
         <div id="mainDroite"><img src="image/mainDroite.jpg" title="Arme de base"width="100" height="108"></div>
-        <div id="Chest"><img src="image/Torse.jpg" title="Equipez vous d'armure pour subir moins de dégats"width="100" height="108"></div>
+        <div id="Chest"><img src="image/Torse.jpg" id="baseChest" title="Equipez vous d'armure pour subir moins de dégats"width="100" height="108"></div>
         <div id="Head"><img src="image/Tete.jpg" title="Equipez vous d'armure pour subir moins de dégats"width="100" height="108"></div>
         <div id="Ring"><img src="image/EmplacementAnneau.jpg" title="Ici pour vous équipez de bijou"width="100" height="108"></div>
         <div id="Neck"><img src="image/EmplacementAmulette.png" title="Ici pour vous équipez de bijou"width="100" height="108"></div>
@@ -161,10 +161,10 @@
     const equipement = {
         LeftHand: "mainGauche",
         RightHand: "mainDroite",
-        Chest: null,
-        Head: null,
-        Ring: null,
-        Neck: null
+        Chest: "Chest",
+        Head: "Head",
+        Ring: "Ring",
+        Neck: "Neck"
     }
 
     const degats = {
@@ -198,7 +198,6 @@
         document.getElementById('hp').textContent = `Points de vie : ${statPerso.HP}/${statPerso.HP}`
         statPerso.MP = 30 + (30 * statPerso.Volonte) + (10 * statPerso.Intelligence)
         document.getElementById('mp').textContent = `Points de vie : ${statPerso.MP}/${statPerso.MP}`
-        
     }
 
     function addStat(stat) {
@@ -287,7 +286,7 @@
         update()
     }
 
-    function takeObject (name , type) {
+    function takeObject (name , type, baseType) {
         const element = document.getElementById(name)
         // En premier c'est pour retirer un objet de l'equipement.
         // si l'objet n'est pas dans l'inventaire & est dans l'equipement
@@ -314,13 +313,26 @@
             transf_Object[type].appendChild(elements[name])
         }
         update()
+        checkEquipementPicture(type, baseType)
+    }
+
+    function checkEquipementPicture(type, baseType) {
+        const element = document.getElementById(baseType)
+        if (equipement[type] === type){
+            element.style.display = "block"
+            console.log("condition reussi")
+        }
+        else {
+            console.log('condition rate')
+            element.style.display = "none"
+        }
     }
 
     elements.epeeDepart.addEventListener("click", () => takeWeapon("epeeDepart" , "arme"))
     elements.hacheDepart.addEventListener("click", () => takeWeapon('hacheDepart', "arme"))
     elements.arcDepart.addEventListener("click", () => takeWeapon('arcDepart', "arme"))
     elements.batonDepart.addEventListener("click", () => takeWeapon('batonDepart', "arme"))
-    elements.armureEnCuir.addEventListener('click', () => takeObject('armureEnCuir', "Chest"))
+    elements.armureEnCuir.addEventListener('click', () => takeObject('armureEnCuir', "Chest", "baseChest"))
 
 
 </script>
