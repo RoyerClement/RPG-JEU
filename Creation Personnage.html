@@ -90,11 +90,11 @@
     <h1>Creation Personnage</h1>
     <div id="stat">
         <div id caract>
-            <span id="statFor">Force : 0 </span><button id="btnFor+">+</button><br> <br>
-            <span id="statDex">Dextérité : 0 </span><button id="btnDex+">+</button><br> <br>
-            <span id="statVit">Vitalité : 0 </span> <button id="btnVit+">+</button><br><br>
-            <span id="statVol">Volonté : 0 </span> <button id="btnVol+">+</button><br><br>
-            <span id="statInt">Intelligence : 0 </span><button id="btnInt+">+</button><br><br>
+            <span id="statFor">Force : 0</span><button id="btnFor+" class="btnStat">+</button><br> <br>
+            <span id="statDex">Dextérité : 0</span><button id="btnDex+" class="btnStat">+</button><br> <br>
+            <span id="statVit">Vitalité : 0</span> <button id="btnVit+" class="btnStat">+</button><br><br>
+            <span id="statVol">Volonté : 0</span> <button id="btnVol+" class="btnStat">+</button><br><br>
+            <span id="statInt">Intelligence : 0</span><button id="btnInt+" class="btnStat">+</button><br><br>
             <span id="point">Point(s) disponible(s) : 10</span>
         </div>
     </div>
@@ -111,9 +111,9 @@
         <div id="mainGauche"><img src="image/mainGauche.jpg" id="mainGaucheBase" title="Arme de base"width="100" height="108"></div>
         <div id="mainDroite"><img src="image/mainDroite.jpg" id="mainDroiteBase" title="Arme de base"width="100" height="108"></div>
         <div id="Chest"><img src="image/Torse.jpg" id="baseChest" title="Equipez vous d'armure pour subir moins de dégats"width="100" height="108"></div>
-        <div id="Head"><img src="image/Tete.jpg" title="Equipez vous d'armure pour subir moins de dégats"width="100" height="108"></div>
-        <div id="Ring"><img src="image/EmplacementAnneau.jpg" title="Ici pour vous équipez de bijou"width="100" height="108"></div>
-        <div id="Neck"><img src="image/EmplacementAmulette.png" title="Ici pour vous équipez de bijou"width="100" height="108"></div>
+        <div id="Head"><img src="image/Tete.jpg" id="baseHead" title="Equipez vous d'armure pour subir moins de dégats"width="100" height="108"></div>
+        <div id="Ring"><img src="image/EmplacementAmulette.png" id="baseRing" title="Ici pour vous équipez de bijou"width="100" height="108"></div>
+        <div id="Neck"><img src="image/EmplacementAmulette.png" id="baseNeck" title="Ici pour vous équipez de bijou"width="100" height="108"></div>
     </div>
     <div id="inventaire">
         <span>Inventaire</span>
@@ -127,6 +127,8 @@
             <div id="batonDepart"><img src="image/baton.avif" title="Baton simple || Inflige plus de dégats avec votre force et intelligence" width="100" height="108"></div>
             <div id="armureEnCuir"><img src='image/armureEnCuir.jpg' title="Armure simple en cuir, protège relativement" width="100" height="108"></div>
             <div id="armureEnFer"><img src='image/armureEnFer.jpg' title="Armure en fer, protège bien" width="100" height="108"></div>
+            <div id="casqueEnCuir"><img src='image/casqueEnCuir.webp' title="casque en cuir, protège relativement" width="100" height="108"></div>
+            <div id="anneauForce"><img src="image/anneauForce.jpg" title="Anneau qui vous rend plus fort"width="100" height="108"></div>
         </span>
     </div>
 </body>
@@ -158,6 +160,19 @@
         armureEnPeau: 5,
         armureEnTissu: 7,
     }
+    const Head = {
+        Head: 0,
+        casqueEnCuir : 10,
+        casqueEnFer: 20,
+        casqueEnCuivre: 15,
+        casqueEnPeau: 5,
+        casqueEnTissu: 7,
+    }
+
+    const Ring = {
+        Ring: null,
+        anneauForce: () => statPerso.Force += 5,
+    }
     
     const equipement = {
         LeftHand: "mainGauche",
@@ -168,15 +183,17 @@
         Neck: "Neck"
     }
 
-    const degats = {
+    const stats = {
         get LeftHand() {
             return arme[equipement.LeftHand](); // Appelle la fonction de calcul dynamique
         },
         get RightHand() {
             return arme[equipement.RightHand](); // Appelle la fonction de calcul dynamique
-        }
+        },
+        get Def() {
+            return Chest[equipement.Chest] + Head[equipement.Head]
+        },
     };
-
     const inventaire = {
         arme: [],
         Chest: [],
@@ -187,8 +204,9 @@
     }
 
     function update() {
-        document.getElementById('degatsArmeG').textContent = `Arme gauche : ${degats.LeftHand}`
-        document.getElementById('degatsArmeD').textContent = `Arme droite : ${degats.RightHand}`
+        document.getElementById('defense').textContent = `Défense : ${stats.Def}`
+        document.getElementById('degatsArmeG').textContent = `Arme gauche : ${stats.LeftHand}`
+        document.getElementById('degatsArmeD').textContent = `Arme droite : ${stats.RightHand}`
         document.getElementById('statFor').textContent = `Force : ${statPerso.Force}`
         document.getElementById('statDex').textContent = `Dextérité : ${statPerso.Dexterite}`
         document.getElementById('statVit').textContent = `Vitalité : ${statPerso.Vitalite}`
@@ -198,17 +216,21 @@
         statPerso.HP = 50 + (25 * statPerso.Vitalite) + (10 * statPerso.Force)
         document.getElementById('hp').textContent = `Points de vie : ${statPerso.HP}/${statPerso.HP}`
         statPerso.MP = 30 + (30 * statPerso.Volonte) + (10 * statPerso.Intelligence)
-        document.getElementById('mp').textContent = `Points de vie : ${statPerso.MP}/${statPerso.MP}`
+        document.getElementById('mp').textContent = `Points de mana : ${statPerso.MP}/${statPerso.MP}`
     }
 
     function addStat(stat) {
-        if (statPerso.Point > 0) {
+        if (statPerso.Point > 1) {
             statPerso.Point--;
             statPerso[stat]++;
             update();
         }
         else {
-            console.log('pas de point')
+            const btn = document.querySelectorAll(".btnStat")
+            btn.forEach(element => { element.style.display = "none" })
+            statPerso.Point--;
+            statPerso[stat]++;
+            update();
         }
     }
 
@@ -226,7 +248,9 @@
         arcDepart: document.getElementById('arcDepart'),
         batonDepart: document.getElementById('batonDepart'),
         armureEnCuir: document.getElementById('armureEnCuir'),
-        armureEnFer: document.getElementById('armureEnFer')
+        armureEnFer: document.getElementById('armureEnFer'),
+        casqueEnCuir: document.getElementById('casqueEnCuir'),
+        anneauForce: document.getElementById('anneauForce'),
     }
     const transf_mainGauche = document.getElementById('mainGauche')
     const transf_mainDroite = document.getElementById('mainDroite')
@@ -315,7 +339,7 @@
             if (index !== -1) {
                 inventaire[type].splice(index, 1);
             
-                if(equipement[type] !== "Chest") {
+                if(equipement[type] !== type) {
                     inventaire[type].push(equipement[type])
                     transf_inventaire.appendChild(elements[equipement[type]])
                     equipement[type] = name
@@ -330,6 +354,7 @@
         update()
         checkEquipementPicture(type, baseType)
     }
+
     function checkArmePicture() {
         const imageMainG = document.getElementById("mainGaucheBase")
         const imageMainD = document.getElementById("mainDroiteBase")
@@ -362,6 +387,8 @@
     elements.batonDepart.addEventListener("click", () => takeWeapon('batonDepart', "arme"))
     elements.armureEnCuir.addEventListener('click', () => takeObject('armureEnCuir', "Chest", "baseChest"))
     elements.armureEnFer.addEventListener('click', () => takeObject('armureEnFer', "Chest", "baseChest"))  
+    elements.casqueEnCuir.addEventListener('click', () => takeObject('casqueEnCuir', "Head", "baseHead"))
+    elements.anneauForce.addEventListener('click', () => takeObject('anneauForce', "Ring", "baseRing"))
 
 
 </script>
