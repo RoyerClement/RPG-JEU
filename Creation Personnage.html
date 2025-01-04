@@ -103,7 +103,8 @@
         <span id="mp">Points de mana : 30/30</span><br> <br>
         <p>Dégats</p>
         <span id="degatsArmeG">Arme gauche : 1 </span><br>
-        <span id="degatsArmeD">Arme droite : 1</span>
+        <span id="degatsArmeD">Arme droite : 1</span><br><br>
+        <span id="defense">Défense : 0</span>
     </div>
     <div id="equipement">
         <span>Equipement</span>
@@ -122,10 +123,10 @@
         <span>
             <div id="epeeDepart"><img src="image/epee.png" title="Epee simple || Inflige plus de dégats avec votre force et dexterité" width="100" height="108"></div>
             <div id="hacheDepart"><img src="image/hache.jpg" title="Hache simple || Inflige plus de dégats avec votre force" width="100" height="108"></div>
-            <div id="arcDepart"><img src="image/arc.png" title="Arc simple || Inflige plus de dégats avec votre force et dexterité" width="100" height="108">
-            </div>
+            <div id="arcDepart"><img src="image/arc.png" title="Arc simple || Inflige plus de dégats avec votre force et dexterité" width="100" height="108"></div>
             <div id="batonDepart"><img src="image/baton.avif" title="Baton simple || Inflige plus de dégats avec votre force et intelligence" width="100" height="108"></div>
             <div id="armureEnCuir"><img src='image/armureEnCuir.jpg' title="Armure simple en cuir, protège relativement" width="100" height="108"></div>
+            <div id="armureEnFer"><img src='image/armureEnFer.jpg' title="Armure en fer, protège bien" width="100" height="108"></div>
         </span>
     </div>
 </body>
@@ -224,7 +225,8 @@
         hacheDepart: document.getElementById('hacheDepart'),
         arcDepart: document.getElementById('arcDepart'),
         batonDepart: document.getElementById('batonDepart'),
-        armureEnCuir: document.getElementById('armureEnCuir')
+        armureEnCuir: document.getElementById('armureEnCuir'),
+        armureEnFer: document.getElementById('armureEnFer')
     }
     const transf_mainGauche = document.getElementById('mainGauche')
     const transf_mainDroite = document.getElementById('mainDroite')
@@ -244,26 +246,19 @@
             //je la met dans l'inventaire
             inventaire[type].push(name);
             transf_inventaire.appendChild(elements[name]);
-            console.log("main gauche : " , degats.LeftHand , "main droite : ", degats.RightHand)
             //Si c'est la main gauche je la retire de la main gauche
             if (equipement.LeftHand === name) {
                 equipement.LeftHand = 'mainGauche'
-                console.log("si pas dans inventaire mais main gauche ou droite ", equipement)
-                console.log("main gauche : " , degats.LeftHand , "main droite : ", degats.RightHand)
             }
             //Si c'est la main droite je la retire de la main droite
             else {
                 equipement.RightHand = "mainDroite"
-                console.log(equipement)
-                console.log("main gauche : " , degats.LeftHand , "main droite : ", degats.RightHand)
             }
             //En deuxieme c'est pour mettre dans l'inventaire
             // Si l'objet n'est pas dans l'inventaire, je la met dans l'inventaire
         } else if (!inventaire[type].includes(name)) {
             inventaire[type].push(name);
             transf_inventaire.appendChild(elements[name]);
-            console.log("inventaire full : ", inventaire);
-            console.log("main gauche : " , degats.LeftHand , "main droite : ", degats.RightHand)
         }
         // En Troisieme c'est pour equiper une arme de l'inventaire dans mon equipement
         // Si l'arme est dans linventaire je l'equipe 
@@ -272,15 +267,25 @@
             if (index !== -1) {
                 inventaire[type].splice(index, 1);
             }
+        //[SI il y a une arme en main gauche : oui => 
+        // je regarde [SI il y a une arme en main droite, oui =>
+        // je retire l'arme main gauche et la remet dans l'inventaire et j'equipe l'arme selectionné si non =>
+        // j'equipe l'arme dans main droite vide]
+        //Si non j'equipe l'arme en main gauche]
                 if(equipement.LeftHand !== "mainGauche") {
+                    if(equipement.RightHand !== "mainDroite") {
+                        inventaire[type].push(equipement.LeftHand)
+                        transf_inventaire.appendChild(elements[equipement.LeftHand])
+                        equipement.LeftHand = name
+                        transf_mainGauche.appendChild(elements[name])
+                    }
+                    else {
                     equipement.RightHand = name
                     transf_mainDroite.appendChild(elements[name])
-                    console.log("main gauche : " , degats.LeftHand , "main droite : ", degats.RightHand)
+                    }
                 } else {
                 equipement.LeftHand = name
                 transf_mainGauche.appendChild(elements[name])
-                console.log("equipement ", equipement) 
-                console.log("main gauche : " , degats.LeftHand , "main droite : ", degats.RightHand)
                 }
         }
         update()
@@ -309,9 +314,18 @@
             const index = inventaire[type].findIndex(type => type === name);
             if (index !== -1) {
                 inventaire[type].splice(index, 1);
+            
+                if(equipement[type] !== "Chest") {
+                    inventaire[type].push(equipement[type])
+                    transf_inventaire.appendChild(elements[equipement[type]])
+                    equipement[type] = name
+                    transf_Object[type].appendChild(elements[name])
+                }   
+                else {
+                equipement[type] = name
+                transf_Object[type].appendChild(elements[name])
+                }
             }
-            equipement[type] = name
-            transf_Object[type].appendChild(elements[name])
         }
         update()
         checkEquipementPicture(type, baseType)
@@ -339,7 +353,6 @@
         }
         else {
             element.style.display = "none"
-            console.log('condition rate')
         }
     }
 
@@ -348,6 +361,7 @@
     elements.arcDepart.addEventListener("click", () => takeWeapon('arcDepart', "arme"))
     elements.batonDepart.addEventListener("click", () => takeWeapon('batonDepart', "arme"))
     elements.armureEnCuir.addEventListener('click', () => takeObject('armureEnCuir', "Chest", "baseChest"))
+    elements.armureEnFer.addEventListener('click', () => takeObject('armureEnFer', "Chest", "baseChest"))  
 
 
 </script>
