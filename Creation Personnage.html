@@ -19,7 +19,7 @@
             margin: 10px;
             position: absolute;
             left: 350px;
-            top: 100px;
+            top: 70px;
         }
 
         #inventaire {
@@ -103,8 +103,9 @@
         <span id="mp">Points de mana : 30/30</span><br> <br>
         <p>Dégats</p>
         <span id="degatsArmeG">Arme gauche : 1 </span><br>
-        <span id="degatsArmeD">Arme droite : 1</span><br><br>
-        <span id="defense">Défense : 0</span>
+        <span id="degatsArmeD">Arme droite : 1</span><br>
+        <span id="defense">Défense : 0</span><br><br>
+        <span id="experience">Expérience : 0/10</span>
     </div>
     <div id="equipement">
         <span>Equipement</span>
@@ -121,14 +122,15 @@
     <div id="armeDepart">
         <p>Choisissez votre arme</p>
         <span>
-            <div id="epeeDepart"><img src="image/epee.png" title="Epee simple || Inflige plus de dégats avec votre force et dexterité" width="100" height="108"></div>
-            <div id="hacheDepart"><img src="image/hache.jpg" title="Hache simple || Inflige plus de dégats avec votre force" width="100" height="108"></div>
-            <div id="arcDepart"><img src="image/arc.png" title="Arc simple || Inflige plus de dégats avec votre force et dexterité" width="100" height="108"></div>
-            <div id="batonDepart"><img src="image/baton.avif" title="Baton simple || Inflige plus de dégats avec votre force et intelligence" width="100" height="108"></div>
-            <div id="armureEnCuir"><img src='image/armureEnCuir.jpg' title="Armure simple en cuir, protège relativement" width="100" height="108"></div>
-            <div id="armureEnFer"><img src='image/armureEnFer.jpg' title="Armure en fer, protège bien" width="100" height="108"></div>
-            <div id="casqueEnCuir"><img src='image/casqueEnCuir.webp' title="casque en cuir, protège relativement" width="100" height="108"></div>
-            <div id="anneauForce"><img src="image/anneauForce.jpg" title="Anneau qui vous rend plus fort"width="100" height="108"></div>
+            <div id="epeeDepart" class="arme"><img src="image/epee.png" title="Epee simple || Inflige plus de dégats avec votre force et dexterité" width="100" height="108"></div>
+            <div id="hacheDepart" class="arme"><img src="image/hache.jpg" title="Hache simple || Inflige plus de dégats avec votre force" width="100" height="108"></div>
+            <div id="arcDepart" class="arme"><img src="image/arc.png" title="Arc simple || Inflige plus de dégats avec votre force et dexterité" width="100" height="108"></div>
+            <div id="batonDepart" class="arme"><img src="image/baton.avif" title="Baton simple || Inflige plus de dégats avec votre force et intelligence" width="100" height="108"></div>
+            <div id="armureEnCuir" class="armure"><img src='image/armureEnCuir.jpg' title="Armure simple en cuir, protège relativement" width="100" height="108"></div>
+            <div id="armureEnFer" class="armure"><img src='image/armureEnFer.jpg' title="Armure en fer, protège bien" width="100" height="108"></div>
+            <div id="casqueEnCuir" class="armure"><img src='image/casqueEnCuir.webp' title="casque en cuir, protège relativement" width="100" height="108"></div>
+            <div id="anneauForce" class="bijoux"><img src="image/anneauForce.jpg" title="Anneau qui vous rend plus fort"width="100" height="108"></div>
+            <div id="anneauDexterite" class="bijoux"><img src="image/anneauForce.jpg" title="Anneau qui vous rend plus agile"width="100" height="108"></div>
         </span>
     </div>
 </body>
@@ -141,7 +143,9 @@
         Intelligence: 0,
         Point: 10,
         HP: 50,
-        MP: 30
+        MP: 30,
+        XP: 0,
+        LVL: 0
     }
 
     const arme = {
@@ -171,9 +175,20 @@
 
     const Ring = {
         Ring: null,
-        anneauForce: () => statPerso.Force += 5,
+        anneauForce: false,
+        anneauDexterite: false,
     }
-    
+    const Neck = {
+        Neck: null,
+    }
+    const Buff = {
+        anneauForce: () => statPerso.Force += 5,
+        anneauDexterite: () => statPerso.Dexterite += 5
+    }
+    const Debuff = {
+        anneauForce: () => statPerso.Force -= 5,
+        anneauDexterite: () => statPerso.Dexterite -= 5
+    }
     const equipement = {
         LeftHand: "mainGauche",
         RightHand: "mainDroite",
@@ -251,6 +266,7 @@
         armureEnFer: document.getElementById('armureEnFer'),
         casqueEnCuir: document.getElementById('casqueEnCuir'),
         anneauForce: document.getElementById('anneauForce'),
+        anneauDexterite: document.getElementById('anneauDexterite'),
     }
     const transf_mainGauche = document.getElementById('mainGauche')
     const transf_mainDroite = document.getElementById('mainDroite')
@@ -326,6 +342,10 @@
             transf_inventaire.appendChild(elements[name]);
             //et je la retire de l'equipement
             equipement[type] = type
+            //Si l'equipement est un bijou alors j'enleve le buff de ce bijou
+            if(type === "Ring" || type === "Neck") {
+                Debuff[name]()
+            }
             //En deuxieme c'est pour mettre dans l'inventaire
             // Si l'objet n'est pas dans l'inventaire, je la met dans l'inventaire
         } else if (!inventaire[type].includes(name)) {
@@ -338,15 +358,24 @@
             const index = inventaire[type].findIndex(type => type === name);
             if (index !== -1) {
                 inventaire[type].splice(index, 1);
-            
+            //S'il y a déjà un objet dans le slot, je le mets dans l'inventaire et j'equipe l'objet.
                 if(equipement[type] !== type) {
+                        if(type === "Ring" || type === "Neck") {
+                        Debuff[equipement[type]]()
+                        }
                     inventaire[type].push(equipement[type])
                     transf_inventaire.appendChild(elements[equipement[type]])
                     equipement[type] = name
                     transf_Object[type].appendChild(elements[name])
+                        if(type === "Ring" || type === "Neck") {
+                        Buff[name]()
+                        }
                 }   
                 else {
                 equipement[type] = name
+                    if(type === "Ring" || type === "Neck") {
+                    Buff[name]()
+                    }
                 transf_Object[type].appendChild(elements[name])
                 }
             }
@@ -354,7 +383,8 @@
         update()
         checkEquipementPicture(type, baseType)
     }
-
+        
+    
     function checkArmePicture() {
         const imageMainG = document.getElementById("mainGaucheBase")
         const imageMainD = document.getElementById("mainDroiteBase")
@@ -389,6 +419,7 @@
     elements.armureEnFer.addEventListener('click', () => takeObject('armureEnFer', "Chest", "baseChest"))  
     elements.casqueEnCuir.addEventListener('click', () => takeObject('casqueEnCuir', "Head", "baseHead"))
     elements.anneauForce.addEventListener('click', () => takeObject('anneauForce', "Ring", "baseRing"))
+    elements.anneauDexterite.addEventListener('click', () => takeObject('anneauDexterite', "Ring", "baseRing"))
 
 
 </script>
