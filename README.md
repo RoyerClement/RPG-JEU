@@ -1,0 +1,8 @@
+- [express getting started](https://expressjs.com/en/starter/installing.html)
+- [serve static files](https://expressjs.com/en/starter/static-files.html)
+- `npm install` pour installer les dependences avant tout
+- `npm run start:server` pour run le server
+- `npm run start:client` pour run le client
+- `npm run test` pour lancer les test pour client et serveur
+- `npm run format` avant de commit tu peux faire les deux derniers
+- `npm run lint`
