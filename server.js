@@ -5,7 +5,12 @@ import bodyParser from "body-parser";
 const app = express();
 
 app.use(cors());
-app.use(bodyParser());
+app.use(
+    bodyParser.urlencoded({
+        extended: true,
+    }),
+);
+app.use(bodyParser.json());
 
 const data = { stats: 0 };
 
@@ -13,7 +18,7 @@ app.get("/healthcheck", function (req, res) {
     res.send("ok");
 });
 
-app.post("/all-data", function (req, res) {
+app.put("/all-data", function (req, res) {
     data.stats = req.body.stats;
     res.send(data);
 });
