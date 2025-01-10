@@ -32,6 +32,7 @@ describe("client", () => {
         );
     });
 
+    // FIXME: euh ca a pas l'air de marcher ca
     it("peut utiliser uniqument 10 points", async () => {
         expect(document.querySelector("#point").textContent).toEqual(
             "Point(s) disponible(s) : 10",

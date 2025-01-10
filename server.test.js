@@ -18,9 +18,9 @@ describe("server", () => {
         expect(response.body.stats).toEqual(0);
     });
 
-    it("POST /all-data", async () => {
+    it("PUT /all-data", async () => {
         const response = await request(app)
-            .post("/all-data")
+            .put("/all-data")
             .send({ stats: 1234 })
             .set("Content-Type", "application/json");
 
