@@ -12,14 +12,15 @@ app.use(
 );
 app.use(bodyParser.json());
 
-const data = { stats: 0 };
+const data = {  };
 
 app.get("/healthcheck", function (req, res) {
     res.send("ok");
 });
 
 app.put("/all-data", function (req, res) {
-    data.stats = req.body.stats;
+    console.log(req.body)
+    data.DonneeStatPerso = req.body.DonneeStatPerso;
     res.send(data);
 });
 

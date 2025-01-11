@@ -1,77 +1,90 @@
-let roomIAm = "A0"
+let roomIAm = "A"
 let roomBefore = ''
 const fightBeforeBoss = 10;
-const allRoom = [1,2,3,4,]
 const buttonDoorDiv = {
-    A1: document.getElementById("A1"),
-    A2: document.getElementById("2A"),
-    A3: document.getElementById("3A"),
-    A4: document.getElementById("4A"),
-    B1: document.getElementById("B1"),
-    B2: document.getElementById("2B"),
-    B3: document.getElementById("3B"),
-    B4: document.getElementById("4B"),
-    C1: document.getElementById("C1"),
-    C2: document.getElementById("2C"),
-    C3: document.getElementById("3C"),
-    C4: document.getElementById("4C"),
-    porteBoss: document.getElementById("porteBoss")
+    D1: document.getElementById("UN"),
+    D2: document.getElementById("DEUX"),
+    D3: document.getElementById("TROIS"),
 }
 
 const imDoor = { 
-    ImA1: document.getElementById("ImA1") 
+    ImA1: document.getElementById("ImA1"),
+    ImA2: document.getElementById("ImA2"),
+    ImA3: document.getElementById("ImA3"),
+    ImOpenA1: document.getElementById("ImOpenA1"),
+    ImOpenA2: document.getElementById("ImOpenA2"),
+    ImOpenA3: document.getElementById("ImOpenA3"),
 }
-const nombreDePorte = {
-    A0: 3,
-    A1: 0,
-    A2: 0,
-    A3: 0,
-    A4: 0,
-    B1: 0,
-    B2: 0,
-    B3: 0,
-    B4: 0,
-    C1: 0,
-    C2: 0,
-    C3: 0,
-    C4: 0
-}
-const nombreDePorteOuverte = {
-    A0: 0,
-    A1: 0,
-    A2: 0,
-    A3: 0,
-    A4: 0,
-    B1: 0,
-    B2: 0,
-    B3: 0,
-    B4: 0,
-    C1: 0,
-    C2: 0,
-    C3: 0,
-    C4: 0
-}
-const imDoorOpen= document.createElement("img")
-        imDoorOpen.src= 'image/porteOuverte.jpg'
-        imDoorOpen.width= "300"
-        imDoorOpen.height= "408"
-        imDoorOpen.alt='porte ouverte'
+
+const numberDoor = {
+        A: 3,
+        B: 0,
+        C: 0,
+        D: 0,
+        E: 0,
+        F : 0, 
+        G : 0,
+        H :0,
+        I :0,
+        J:0,
+        K :0,
+        L:0
+    }
+const doorState = {
+        A1: false,
+            AA1: false,
+                AAA1: false,
+                AAB1: false,
+                AAC1: false,
+            AB1: false,
+                ABA1: false,
+                ABB1: false,
+                ABC1: false,
+            AC1: false,
+                ACA1: false,
+                ACB1: false,
+                ACC1: false,
+        
+        
+        
+        A2: false,
+            AA2: false,
+            AB2: false,
+            AC2: false,
+        
+        A3: false,
+            AA3: false,
+            AB3: false,
+            AC3: false,
+       
+
+    }
+
 
 const randomNumber = () =>
     Math.floor(Math.random() * 3) + 1
 
-//Ouverture de la porte, Ajoute une porte ouverte en plus. (mais peut être ça pue un peu car on peut pas savoir quel porte a été ouverte.) check si combat ou non selon une variable random
-function openDoor (door, image) {
-    nombreDePorteOuverte[door]++
+//Ouverture de la porte, check si combat ou non selon une variable random
+function openDoor (door, image, idOpenDoor, imDiv) {
+    debugger
     image.remove();
-    door.appendChild(imDoorOpen)
+    doorState[door] = true;
+    const imDoorOpen= document.createElement("img")
+        imDoorOpen.src= 'image/porteOuverte.jpg'
+        imDoorOpen.width= "400"
+        imDoorOpen.height= "408"
+        imDoorOpen.alt='porte ouverte'
+        imDoorOpen.id= idOpenDoor
+        console.log(imDoorOpen)
+    buttonDoorDiv[imDiv].appendChild(imDoorOpen)
 }
 //Si on reclique sur la porte ouverte, on entre dans une autre salle.
-function enterDoor (roomNum, door) {
+function enterDoor (roomLetter, door) {
+    debugger
 //Noter pour aller dans une salle précédente. Peut être trouver un autre systeme pour revenir de plusieurs salles d'affilé. Mais t'facon c'est une autre fonction pour revenir en arriere mais quand mm faudra y reflechir. 
     roomBefore = roomIAm;
-    roomIAm = roomNum ;
-    nombreDePorte[door] = randomNumber();
+    roomIAm = roomLetter ;
+    numberDoor[door] = randomNumber();
     updateRender();
 }
 function updateRender() {
@@ -82,9 +95,11 @@ function updateRender() {
 }
 
 //Ouvrir porte 
-imDoor.ImA1.addEventListener('click', () => openDoor(A1, ImA1))
+imDoor.ImA1.addEventListener('click', () => openDoor("A1", ImA1, "ImOpenA1", "D1"))
+imDoor.ImA2.addEventListener('click', () => openDoor("A2", ImA2, "ImOpenA2", "D2"))
+imDoor.ImA3.addEventListener('click', () => openDoor("A3", ImA3, "ImOpenA3", "D3"))
 //Entrez porte 
-imDoor.ImA1.addEventListener('click', () => openDoor("A1", A1, ImA1))
+imDoor.ImOpenA1.addEventListener('click', () => enterDoor("A1", ))
 
 
 let dataStat = {}
@@ -93,8 +108,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     async function getData() {
         const res = await fetch("http://localhost:8000/all-data", {
             method: "GET",
-        });
-        debugger    
+        });    
         const json = await res.json();
         dataStat = json
         return dataStat; 
