@@ -71,6 +71,7 @@ const stats = {
         return Chest[equipement.Chest] + Head[equipement.Head];
     },
 };
+
 const inventaire = {
     arme: [],
     Chest: [],
@@ -79,10 +80,7 @@ const inventaire = {
     Neck: [],
     Object: [],
 };
-const allData = {
-    statPerso: statPerso,
-    stats: stats,
-};
+
 
 function update() {
     document.getElementById("defense").textContent = `Défense : ${stats.Def}`;
@@ -324,14 +322,37 @@ elements.anneauDexterite.addEventListener("click", () =>
 );
 elements.FermerInv.addEventListener("click", () => FermerInv());
 
-const button = document.createElement("button");
-const text = "read stats ";
-button.textContent = text;
-button.addEventListener("click", async function () {
-    const res = await fetch("http://localhost:8000/all-data", {
-        method: "GET",
-    });
-    const json = await res.json();
-    button.textContent = text + json.stats;
-});
-document.body.appendChild(button);
+// const button = document.createElement("button");
+// const text = "read stats ";
+// button.textContent = text;
+// button.addEventListener("click", async function () {
+//     const res = await fetch("http://localhost:8000/all-data", {
+//         method: "GET",
+//     });
+//     const json = await res.json();
+//     button.textContent = text + json.stats;
+// });
+// document.body.appendChild(button);
+
+async function FermerInv () {
+    console.log("hello")
+    const DonneeStatPerso = {
+
+        mainGauche: stats.LeftHand,
+        mainDroite: stats.RightHand,
+        def : stats.Def,
+        equipement,
+        inventaire,
+        statPerso
+    }
+    const res = await fetch('http://localhost:8000/all-data', {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ DonneeStatPerso }),
+    })
+    const json = await res.json()
+    window.location.href = 'Donjon.html';
+}
+
