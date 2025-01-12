@@ -1,4 +1,4 @@
-let roomIAm = "A"
+let roomIAm = "start"
 let roomBefore = ''
 const fightBeforeBoss = 10;
 const buttonDoorDiv = {
@@ -8,98 +8,164 @@ const buttonDoorDiv = {
 }
 
 const imDoor = { 
-    ImA1: document.getElementById("ImA1"),
-    ImA2: document.getElementById("ImA2"),
-    ImA3: document.getElementById("ImA3"),
-    ImOpenA1: document.getElementById("ImOpenA1"),
-    ImOpenA2: document.getElementById("ImOpenA2"),
-    ImOpenA3: document.getElementById("ImOpenA3"),
+    ImA: document.getElementById("ImA"),
+    ImB: document.getElementById("ImB"),
+    ImC: document.getElementById("ImC"),
 }
 
-const numberDoor = {
-        A: 3,
+const room = {
+    numberDoor: {
+        start: 3,
+        A: 0,
         B: 0,
         C: 0,
-        D: 0,
-        E: 0,
-        F : 0, 
-        G : 0,
-        H :0,
-        I :0,
-        J:0,
-        K :0,
-        L:0
+    },
+    doorState : {
+        start : {
+        A: false,
+        B: false,
+        C: false,
+        }
     }
-const doorState = {
-        A1: false,
-            AA1: false,
-                AAA1: false,
-                AAB1: false,
-                AAC1: false,
-            AB1: false,
-                ABA1: false,
-                ABB1: false,
-                ABC1: false,
-            AC1: false,
-                ACA1: false,
-                ACB1: false,
-                ACC1: false,
-        
-        
-        
-        A2: false,
-            AA2: false,
-            AB2: false,
-            AC2: false,
-        
-        A3: false,
-            AA3: false,
-            AB3: false,
-            AC3: false,
-       
-
-    }
+}
 
 
 const randomNumber = () =>
     Math.floor(Math.random() * 3) + 1
 
 //Ouverture de la porte, check si combat ou non selon une variable random
-function openDoor (door, image, idOpenDoor, imDiv) {
+function openDoor (door, image, idOpenDoor, imDiv, myRoom) {
     debugger
     image.remove();
-    doorState[door] = true;
+    if (roomIAm === "start") {
+        room.doorState.start[door] = true
+    }
+    else {
+        room.doorState[myRoom][door] = true;
+    }
     const imDoorOpen= document.createElement("img")
         imDoorOpen.src= 'image/porteOuverte.jpg'
         imDoorOpen.width= "400"
         imDoorOpen.height= "408"
         imDoorOpen.alt='porte ouverte'
         imDoorOpen.id= idOpenDoor
-        console.log(imDoorOpen)
     buttonDoorDiv[imDiv].appendChild(imDoorOpen)
+    imDoor[idOpenDoor] = document.getElementById(idOpenDoor)
+    imDoor[idOpenDoor].addEventListener('click', () => enterDoor(door, myRoom))
 }
 //Si on reclique sur la porte ouverte, on entre dans une autre salle.
-function enterDoor (roomLetter, door) {
+function enterDoor (door, myRoom) {
     debugger
 //Noter pour aller dans une salle précédente. Peut être trouver un autre systeme pour revenir de plusieurs salles d'affilé. Mais t'facon c'est une autre fonction pour revenir en arriere mais quand mm faudra y reflechir. 
     roomBefore = roomIAm;
-    roomIAm = roomLetter ;
-    numberDoor[door] = randomNumber();
-    updateRender();
-}
-function updateRender() {
-    if(nombreDePorte.roomIAm ) {
-
+    if (roomIAm === "start") {
+        roomIAm = door ;
+        room.doorState[door] = {A: false, B: false, C: false}
+        room.numberDoor[door] = randomNumber();
+        updateRender(myRoom)
+    }
+    else {
+        roomIAm = roomIAm + door ;
+        room.doorState[[myRoom]+[door]] = {A: false, B: false, C: false}
+        room.numberDoor[[myRoom]+[door]] = randomNumber();
+        updateRender([myRoom]+[door]);
     }
     
+    
+}
+function delDoor() {
+    try { imDoor.ImA.remove() }
+            catch { console.log("pas de porte A fermé")}
+        try { imDoor.ImB.remove() }
+            catch { console.log("pas de porte B fermé")}
+        try { imDoor.ImC.remove() }
+            catch { console.log("pas de porte C fermé")}
+        try { imDoor.ImOpenA.remove(); }
+            catch { console.log("pas de porte A ouverte")}
+        try { imDoor.ImOpenB.remove() }
+            catch { console.log("pas de porte B ouverte")}
+        try { imDoor.ImOpenC.remove() }
+            catch { console.log("pas de porte C ouverte")}
+}
+function updateRender(myRoom) {
+    debugger
+    if(room.numberDoor[myRoom] === 1) {
+        delDoor()
+        const imNewDoorA= document.createElement("img")
+        imNewDoorA.src= 'image/porteFerme.jpg'
+        imNewDoorA.width= "300"
+        imNewDoorA.height= "408"
+        imNewDoorA.alt='porte ouverte'
+        imNewDoorA.id="ImA"
+        buttonDoorDiv.D1.appendChild(imNewDoorA)
+        imDoor.ImA = document.getElementById("ImA")
+        imDoor.ImA.addEventListener('click', () => openDoor("A", ImA, "ImOpenA", "D1", roomIAm))
+    }
+    else if (room.numberDoor[myRoom] === 2) {
+        delDoor()
+
+        const imNewDoorA= document.createElement("img")
+        imNewDoorA.src= 'image/porteFerme.jpg'
+        imNewDoorA.width= "300"
+        imNewDoorA.height= "408"
+        imNewDoorA.alt='porte ouverte'
+        imNewDoorA.id="ImA"
+        buttonDoorDiv.D1.appendChild(imNewDoorA)
+        imDoor.ImA = document.getElementById("ImA")
+        imDoor.ImA.addEventListener('click', () => openDoor("A", ImA, "ImOpenA", "D1", roomIAm))
+
+        const imNewDoorB= document.createElement("img")
+        imNewDoorB.src= 'image/porteFerme.jpg'
+        imNewDoorB.width= "300"
+        imNewDoorB.height= "408"
+        imNewDoorB.alt='porte ouverte'
+        imNewDoorB.id="ImB"
+        buttonDoorDiv.D3.appendChild(imNewDoorB)
+        imDoor.ImB = document.getElementById("ImB")
+        imDoor.ImB.addEventListener('click', () => openDoor("B", ImB, "ImOpenB", "D2", roomIAm))
+    }
+    
+    else {
+        delDoor()
+
+        const imNewDoorA= document.createElement("img")
+        imNewDoorA.src= 'image/porteFerme.jpg'
+        imNewDoorA.width= "300"
+        imNewDoorA.height= "408"
+        imNewDoorA.alt='porte ouverte'
+        imNewDoorA.id="ImA"
+        buttonDoorDiv.D1.appendChild(imNewDoorA)
+        imDoor.ImA = document.getElementById("ImA")
+        imDoor.ImA.addEventListener('click', () => openDoor("A", ImA, "ImOpenA", "D1", roomIAm))
+
+        const imNewDoorB= document.createElement("img")
+        imNewDoorB.src= 'image/porteFerme.jpg'
+        imNewDoorB.width= "300"
+        imNewDoorB.height= "408"
+        imNewDoorB.alt='porte ouverte'
+        imNewDoorB.id="ImB"
+        buttonDoorDiv.D2.appendChild(imNewDoorB)
+        imDoor.ImB = document.getElementById("ImB")
+        imDoor.ImB.addEventListener('click', () => openDoor("B", ImB, "ImOpenB", "D2", roomIAm))
+
+        const imNewDoorC= document.createElement("img")
+        imNewDoorC.src= 'image/porteFerme.jpg'
+        imNewDoorC.width= "300"
+        imNewDoorC.height= "408"
+        imNewDoorC.alt='porte ouverte'
+        imNewDoorC.id="ImC"
+        buttonDoorDiv.D3.appendChild(imNewDoorC)
+        imDoor.ImC = document.getElementById("ImC")
+        imDoor.ImC.addEventListener('click', () => openDoor("C", ImC, "ImOpenC", "D3", roomIAm))
+    }
 }
 
 //Ouvrir porte 
-imDoor.ImA1.addEventListener('click', () => openDoor("A1", ImA1, "ImOpenA1", "D1"))
-imDoor.ImA2.addEventListener('click', () => openDoor("A2", ImA2, "ImOpenA2", "D2"))
-imDoor.ImA3.addEventListener('click', () => openDoor("A3", ImA3, "ImOpenA3", "D3"))
+imDoor.ImA.addEventListener('click', () => openDoor("A", ImA, "ImOpenA", "D1", roomIAm))
+imDoor.ImB.addEventListener('click', () => openDoor("B", ImB, "ImOpenB", "D2", roomIAm))
+imDoor.ImC.addEventListener('click', () => openDoor("C", ImC, "ImOpenC", "D3", roomIAm))
 //Entrez porte 
-imDoor.ImOpenA1.addEventListener('click', () => enterDoor("A1", ))
+
 
 
 let dataStat = {}
