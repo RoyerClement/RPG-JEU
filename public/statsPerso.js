@@ -335,7 +335,6 @@ elements.FermerInv.addEventListener("click", () => FermerInv());
 // document.body.appendChild(button);
 
 async function FermerInv () {
-    console.log("hello")
     const DonneeStatPerso = {
 
         mainGauche: stats.LeftHand,
@@ -356,3 +355,13 @@ async function FermerInv () {
     window.location.href = 'Donjon.html';
 }
 
+document.addEventListener('DOMContentLoaded', async function () {
+    async function getData() {
+        const res = await fetch("http://localhost:8000/all-data", {
+            method: "GET",
+        });    
+        const json = await res.json();
+    }
+    const recData = await getData()
+    inventaire = recData.donjonpath.inventaire
+});

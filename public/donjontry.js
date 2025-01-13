@@ -16,12 +16,15 @@ const imDoor = {
 const room = {
     numberDoor: {
         start: 3,
+        A: 0,
+        B: 0,
+        C: 0,
     },
     doorState : {
         start : {
-        A: "ferme",
-        B: "ferme",
-        C: "ferme",
+        A: false,
+        B: false,
+        C: false,
         }
     }
 }
@@ -30,19 +33,13 @@ const opInventaire = document.getElementById("Inventaire")
 const randomNumber = () =>
     Math.floor(Math.random() * 3) + 1
 
-function back(myOldRoom) {
+function back() {
     roomIAm = roomIAm.slice(0, -1);
-    if(!roomIAm) {
-        roomIAm = "start";
-        imDoor.btnBack.style.display="none";
-    }
-    console.log('entrez depuis ', myOldRoom , "jarrive dans la salle ", roomIAm)
     updateRenderBack(roomIAm);
 }
 function updateRenderBack(myRoom) {
     delDoor()
-    debugger
-    if (room.doorState[myRoom].A === "ouvert") {
+    if (room.doorState[myRoom].A) {
         const imNewDoorA= document.createElement("img")
             imNewDoorA.src= 'image/porteOuverte.jpg'
             imNewDoorA.width= "400"
@@ -50,10 +47,10 @@ function updateRenderBack(myRoom) {
             imNewDoorA.alt='porte ouverte'
             imNewDoorA.id="ImOpenA"
             buttonDoorDiv.D1.appendChild(imNewDoorA)
-            imDoor.ImOpenA = document.getElementById("ImOpenA")
-            imDoor.ImOpenA.addEventListener('click', () => enterDoor("A", roomIAm))
+            imDoor.ImImOpenA = document.getElementById("ImOpenA")
+            imDoor.ImImOpenA.addEventListener('click', () => enterDoor("A", roomIAm))
     }
-    else if (room.doorState[myRoom].A === "ferme") {
+    else if (!room.doorState[myRoom].A) {
         const imNewDoorA= document.createElement("img")
             imNewDoorA.src= 'image/porteFerme.jpg'
             imNewDoorA.width= "300"
@@ -61,14 +58,14 @@ function updateRenderBack(myRoom) {
             imNewDoorA.alt='porte ferme'
             imNewDoorA.id="ImA"
             buttonDoorDiv.D1.appendChild(imNewDoorA)
-            imDoor.ImA = document.getElementById("ImA")
+            imDoor.ImImOpenA = document.getElementById("ImA")
             imDoor.ImA.addEventListener('click', () => openDoor("A", ImA, "ImOpenA", "D1", roomIAm))
     }
     else {
         console.log("bizarre")
     }
 
-    if (room.doorState[myRoom].B === "ouvert") {
+    if (room.doorState[myRoom].B) {
         const imNewDoorB= document.createElement("img")
             imNewDoorB.src= 'image/porteOuverte.jpg'
             imNewDoorB.width= "400"
@@ -76,10 +73,10 @@ function updateRenderBack(myRoom) {
             imNewDoorB.alt='porte ouverte'
             imNewDoorB.id="ImOpenB"
             buttonDoorDiv.D2.appendChild(imNewDoorB)
-            imDoor.ImOpenB = document.getElementById("ImOpenB")
-            imDoor.ImOpenB.addEventListener('click', () => enterDoor("B", roomIAm))
+            imDoor.ImImOpenB = document.getElementById("ImOpenB")
+            imDoor.ImImOpenB.addEventListener('click', () => enterDoor("B", roomIAm))
     }
-    else if (room.doorState[myRoom].B === "ferme") {
+    else if (!room.doorState[myRoom].B) {
         const imNewDoorB= document.createElement("img")
             imNewDoorB.src= 'image/porteFerme.jpg'
             imNewDoorB.width= "300"
@@ -91,10 +88,10 @@ function updateRenderBack(myRoom) {
             imDoor.ImB.addEventListener('click', () => openDoor("B", ImB, "ImOpenB", "D2", roomIAm))
     }
     else {
-        
+        console.log("bizarre")
     }
 
-    if (room.doorState[myRoom].C === "ouvert") {
+    if (room.doorState[myRoom].C) {
         const imNewDoorC= document.createElement("img")
             imNewDoorC.src= 'image/porteOuverte.jpg'
             imNewDoorC.width= "400"
@@ -102,10 +99,10 @@ function updateRenderBack(myRoom) {
             imNewDoorC.alt='porte ouverte'
             imNewDoorC.id="ImOpenC"
             buttonDoorDiv.D3.appendChild(imNewDoorC)
-            imDoor.ImOpenC = document.getElementById("ImOpenC")
-            imDoor.ImOpenC.addEventListener('click', () => enterDoor("C", roomIAm))
+            imDoor.ImImOpenC = document.getElementById("ImOpenC")
+            imDoor.ImImOpenC.addEventListener('click', () => enterDoor("C", roomIAm))
     }
-    else if (room.doorState[myRoom].C === "ferme") {
+    else if (!room.doorState[myRoom].C) {
         const imNewDoorC= document.createElement("img")
             imNewDoorC.src= 'image/porteFerme.jpg'
             imNewDoorC.width= "300"
@@ -113,11 +110,11 @@ function updateRenderBack(myRoom) {
             imNewDoorC.alt='porte ferme'
             imNewDoorC.id="ImC"
             buttonDoorDiv.D3.appendChild(imNewDoorC)
-            imDoor.ImC = document.getElementById("ImC")
+            imDoor.ImC = document.getElementById("ImB")
             imDoor.ImC.addEventListener('click', () => openDoor("C", ImC, "ImOpenC", "D3", roomIAm))
     }
     else {
-        
+        console.log("bizarre")
     } 
 
 }
@@ -126,10 +123,10 @@ function updateRenderBack(myRoom) {
 function openDoor (door, image, idOpenDoor, imDiv, myRoom) {
     image.remove();
     if (roomIAm === "start") {
-        room.doorState.start[door] = "ouvert"
+        room.doorState.start[door] = true
     }
     else {
-        room.doorState[myRoom][door] = "ouvert";
+        room.doorState[myRoom][door] = true;
     }
     const imDoorOpen= document.createElement("img")
         imDoorOpen.src= 'image/porteOuverte.jpg'
@@ -141,64 +138,42 @@ function openDoor (door, image, idOpenDoor, imDiv, myRoom) {
     imDoor[idOpenDoor] = document.getElementById(idOpenDoor)
     imDoor[idOpenDoor].addEventListener('click', () => enterDoor(door, myRoom))
 }
-//Si on clique sur la porte ouverte
+//Si on clique sur la porte ouverte, on entre dans une autre salle.
 function enterDoor (door, myRoom) {
-    debugger
-    // SI CLIC DEPUIS LE START 
     if (roomIAm === "start") {
-        // ON VA A LA SALLE ! 
-        roomIAm = door
-        imDoor.btnBack.style.display="block";
-        // SI LA SALLE EXISTE DEJA ON CHARGE LES SALLES VIA UPDATERENDERBACK()
-        if (room.numberDoor[door]) {
-            updateRenderBack(roomIAm)
-            (console.log("Depuis le start, j'arrive dans la salle explorée : ", roomIAm))
+        roomIAm = door ;
+        room.numberDoor[door] = randomNumber();
+        if (room.numberDoor[door] === 3) {
+        room.doorState[door] = {A: false, B: false, C: false}
         }
-        //SI LA SALLE NEXISTE PAS ON CREE LES SALLES
-        else {
-                room.numberDoor[door] = randomNumber();
-                if (room.numberDoor[door] === 3) {
-                room.doorState[door] = {A: "ferme", B: "ferme", C: "ferme"}
-                }
-                if (room.numberDoor[door] === 2) {
-                    room.doorState[door] = {A: "ferme", B: "ferme"}
-                }
-                if (room.numberDoor[door] === 1) {
-                    room.doorState[door] = {A: "ferme"}
-                }
-                console.log('depuis le start, jarrive dans la salle inexploree : ' , roomIAm)
-                updateRender(roomIAm)    
+        if (room.numberDoor[door] === 2) {
+            room.doorState[door] = {A: false, B: false}
         }
+        if (room.numberDoor[door] === 1) {
+            room.doorState[door] = {A: false, B}
+        }
+        console.log('entrez depuis le start, jarrive dans la salle' , roomIAm)
+        updateRender(roomIAm)
     }
-    //DEPUIS UNE AUTRE SALLE QUE LA SALLE DE DEPART
     else {
-        // ON VA A LA SALLE
-        roomIAm = roomIAm + door
-        //SI LA SALLE EXISTE DEJA ON CHARGE LA SALLE VIA UPDATERENDERBACK()
-        if (room.numberDoor[[myRoom]+[door]]) {
-            updateRenderBack(roomIAm)
-            (console.log("j'arrive dans la salle explorée : ", roomIAm))
-        }
-        //SI LA SALLE N'EXISTE PAS ON CREE LES SALLES ! 
-        else {
-                room.numberDoor[[myRoom]+[door]] = randomNumber();
-                if (room.numberDoor[[myRoom]+[door]] === 3) {
-                    room.doorState[[myRoom]+[door]] = {A: "ferme", B: "ferme", C: "ferme"}
-                }
-                if (room.numberDoor[[myRoom]+[door]] === 2) {
-                    room.doorState[[myRoom]+[door]] = {A: "ferme", B: "ferme"}
-                }
-                if (room.numberDoor[[myRoom]+[door]] === 1) {
-                    room.doorState[[myRoom]+[door]] = {A: "ferme"}
-                }
-                console.log("jarrive dans la salle inexploree : ", roomIAm)
-                updateRender(roomIAm);
-                }
-        }
+        roomIAm = roomIAm + door ;
+        room.numberDoor[[myRoom]+[door]] = randomNumber();
+            if (room.numberDoor[[myRoom]+[door]] === 3) {
+            room.doorState[[myRoom]+[door]] = {A: false, B: false, C: false}
+            }
+            if (room.numberDoor[[myRoom]+[door]] === 2) {
+                room.doorState[[myRoom]+[door]] = {A: false, B: false}
+            }
+            if (room.numberDoor[[myRoom]+[door]] === 1) {
+                room.doorState[[myRoom]+[door]] = {A: false}
+            }
+            console.log('entrez depuis ', roomIAm.slice(0, -1), "jarrive dans la salle ", roomIAm)
+        updateRender([myRoom]+[door]);
     }
-    
+}
 
 function delDoor() {
+    debugger
     try { imDoor.ImA.remove() }
             catch { }
         try { imDoor.ImB.remove() }
@@ -285,7 +260,7 @@ imDoor.ImA.addEventListener('click', () => openDoor("A", ImA, "ImOpenA", "D1", r
 imDoor.ImB.addEventListener('click', () => openDoor("B", ImB, "ImOpenB", "D2", roomIAm))
 imDoor.ImC.addEventListener('click', () => openDoor("C", ImC, "ImOpenC", "D3", roomIAm))
 //revenir en arriere
-imDoor.btnBack.addEventListener('click', () => back(roomIAm))
+imDoor.btnBack.addEventListener('click', () => back())
 
 
 
