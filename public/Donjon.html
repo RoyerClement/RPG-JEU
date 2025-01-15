@@ -16,11 +16,17 @@
         }
         #first {
             position:absolute;
-            right:800px
+            right:800px;
+            top: 150px;
         }
         #second {
             position:absolute;
-            right:1300px
+            right:1300px;
+            top: 150px;
+        }
+        #third {
+            position:absolute;
+            top: 150px;
         }
         #divDialogue {
             font-family: "MedievalSharp", serif;
@@ -69,48 +75,73 @@
             font-style: normal;
             font-size: 24px;
             color: #706c2e;
-            
+        }
+        #mur {
+            width: 100%;
+            height: 407px;
+            background-image: url("image/mur4.jpg");
+            background-position: center;
+            position: relative;
+            overflow: hidden;
+            background-repeat: repeat;
+        }
+        #sol {
+            width: 100%;
+            height: 207px;
+            background-image: url("image/sol.jpg");
+            background-position: center;
+            position: relative;
+            overflow: hidden;
+            background-repeat: repeat;
         }
     </style>
     </head>
     <body>
-        <div id = "porte">
-            <div id="UN">
-            <img 
-            src="image/porteFerme.jpg" 
-            id="ImA"
-            class="porteFerme" 
-            title="A"
-            width="300"
-            height="408"
-            />
-        </div>
-        <div id="DEUX">
-            <img 
-            src="image/porteFerme.jpg" 
-            id="ImB"
-            class="porteFerme" 
-            title="B"
-            width="300"
-            height="408"
-            />
-        </div>
-        <div id="TROIS">
-            <img 
-            src="image/porteFerme.jpg" 
-            id="ImC"
-            class="porteFerme" 
-            title="C"
-            width="300"
-            height="408"
-            />
+        <div id ="all">
+            <div id="mur">
+                <div id = "porte">
+                        <div id="UN">
+                        <img 
+                        src="image/porteFerme.webp" 
+                        id="ImA"
+                        class="porteFerme" 
+                        title="A"
+                        width="400"
+                        height="408"
+                        />
+                    </div>
+                    <div id="DEUX">
+                        <img 
+                        src="image/porteFerme.webp" 
+                        id="ImB"
+                        class="porteFerme" 
+                        title="B"
+                        width="400"
+                        height="408"
+                        />
+                    </div>
+                    <div id="TROIS">
+                        <img 
+                        src="image/porteFerme.webp" 
+                        id="ImC"
+                        class="porteFerme" 
+                        title="C"
+                        width="400"
+                        height="408"
+                        />
+                    </div>
+                </div>
+            </div>
+        
+        <div id="sol"></div>
+        <div id = "ennemi">
+            <div id ="first"><img id= "ImEnn1"></div>
+            <div id = "second"><img id= "ImEnn2"></div>
+            <div id = "third"><img id= "ImEnn3"></div>
         </div>
     </div>
-    <div id = "ennemi">
-        <div id ="first"><img id= "ImEnn1"></div>
-        <div id = "second"><img id= "ImEnn2"></div>
-        <div id = "third"><img id= "ImEnn3"></div>
-    </div>
+        
+    
         <button id="Inventaire">Ouvrir l'inventaire</button>
         <button id="back" style="display:none;">Revenir en arrière</button>
         <div id="divDialogue">

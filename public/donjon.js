@@ -50,7 +50,7 @@ let actualFight = []
 const ennemiList = [ "orc" , "gobelin", ]
 
 const ennemi = {
-    orc : {IMG: "image/orc.avif", ATQ : 20, DEF : 10, HP : 200, DEX : 0, XP : 10, LOOT : { 1 : "orcHache", 2 : "orcCasque", 3 : "orcArmure", 4 : "potionVie", or : 50}},
+    orc : {IMG: "image/orc.webp", ATQ : 20, DEF : 10, HP : 200, DEX : 0, XP : 10, LOOT : { 1 : "orcHache", 2 : "orcCasque", 3 : "orcArmure", 4 : "potionVie", or : 50}},
     gobelin : {IMG: "image/gobelin.webp", ATQ : 10, DEF : 3, HP : 50, DEX : 5, XP : 5, LOOT : { 1 : "gobArc", 2 : "anneauDex", 3 : "potionMana", 4 : "potionVie", or : 20}},
 }
 
@@ -91,7 +91,7 @@ function openDoor (door, image, idOpenDoor, imDiv, myRoom) {
         room.doorState[myRoom][door] = "ouvert";
     }
     const imDoorOpen= document.createElement("img")
-        imDoorOpen.src= 'image/porteOuverte.jpg'
+        imDoorOpen.src= 'image/porteOuverte.webp'
         imDoorOpen.width= "400"
         imDoorOpen.height= "408"
         imDoorOpen.alt='porte ouverte'
@@ -201,7 +201,7 @@ function updateRender(myRoom) {
     delDoor()
     if(room.numberDoor[myRoom] === 1) { 
             const imNewDoorA= document.createElement("img")
-            imNewDoorA.src= 'image/porteFerme.jpg'
+            imNewDoorA.src= 'image/porteFerme.webp'
             imNewDoorA.width= "400"
             imNewDoorA.height= "408"
             imNewDoorA.alt='porte ferme'
@@ -212,8 +212,8 @@ function updateRender(myRoom) {
         }
     else if (room.numberDoor[myRoom] === 2) {
         const imNewDoorA= document.createElement("img")
-        imNewDoorA.src= 'image/porteFerme.jpg'
-        imNewDoorA.width= "300"
+        imNewDoorA.src= 'image/porteFerme.webp'
+        imNewDoorA.width= "400"
         imNewDoorA.height= "408"
         imNewDoorA.alt='porte ferme'
         imNewDoorA.id="ImA"
@@ -222,8 +222,8 @@ function updateRender(myRoom) {
         imDoor.ImA.addEventListener('click', () => openDoor("A", ImA, "ImOpenA", "D1", roomIAm))
 
         const imNewDoorB= document.createElement("img")
-        imNewDoorB.src= 'image/porteFerme.jpg'
-        imNewDoorB.width= "300"
+        imNewDoorB.src= 'image/porteFerme.webp'
+        imNewDoorB.width= "400"
         imNewDoorB.height= "408"
         imNewDoorB.alt='porte ferme'
         imNewDoorB.id="ImB"
@@ -234,8 +234,8 @@ function updateRender(myRoom) {
     
     else {
         const imNewDoorA= document.createElement("img")
-        imNewDoorA.src= 'image/porteFerme.jpg'
-        imNewDoorA.width= "300"
+        imNewDoorA.src= 'image/porteFerme.webp'
+        imNewDoorA.width= "400"
         imNewDoorA.height= "408"
         imNewDoorA.alt='porte ferme'
         imNewDoorA.id="ImA"
@@ -244,8 +244,8 @@ function updateRender(myRoom) {
         imDoor.ImA.addEventListener('click', () => openDoor("A", ImA, "ImOpenA", "D1", roomIAm))
 
         const imNewDoorB= document.createElement("img")
-        imNewDoorB.src= 'image/porteFerme.jpg'
-        imNewDoorB.width= "300"
+        imNewDoorB.src= 'image/porteFerme.webp'
+        imNewDoorB.width= "400"
         imNewDoorB.height= "408"
         imNewDoorB.alt='porte ferme'
         imNewDoorB.id="ImB"
@@ -254,8 +254,8 @@ function updateRender(myRoom) {
         imDoor.ImB.addEventListener('click', () => openDoor("B", ImB, "ImOpenB", "D2", roomIAm))
 
         const imNewDoorC= document.createElement("img")
-        imNewDoorC.src= 'image/porteFerme.jpg'
-        imNewDoorC.width= "300"
+        imNewDoorC.src= 'image/porteFerme.webp'
+        imNewDoorC.width= "400"
         imNewDoorC.height= "408"
         imNewDoorC.alt='porte ferme'
         imNewDoorC.id="ImC"
@@ -269,7 +269,7 @@ function updateRenderBack(myRoom) {
     delDoor()
     if (room.doorState[myRoom].A === "ouvert") {
         const imNewDoorA= document.createElement("img")
-            imNewDoorA.src= 'image/porteOuverte.jpg'
+            imNewDoorA.src= 'image/porteOuverte.webp'
             imNewDoorA.width= "400"
             imNewDoorA.height= "408"
             imNewDoorA.alt='porte ouverte'
@@ -280,8 +280,8 @@ function updateRenderBack(myRoom) {
     }
     else if (room.doorState[myRoom].A === "ferme") {
         const imNewDoorA= document.createElement("img")
-            imNewDoorA.src= 'image/porteFerme.jpg'
-            imNewDoorA.width= "300"
+            imNewDoorA.src= 'image/porteFerme.webp'
+            imNewDoorA.width= "400"
             imNewDoorA.height= "408"
             imNewDoorA.alt='porte ferme'
             imNewDoorA.id="ImA"
@@ -295,7 +295,7 @@ function updateRenderBack(myRoom) {
 
     if (room.doorState[myRoom].B === "ouvert") {
         const imNewDoorB= document.createElement("img")
-            imNewDoorB.src= 'image/porteOuverte.jpg'
+            imNewDoorB.src= 'image/porteOuverte.webp'
             imNewDoorB.width= "400"
             imNewDoorB.height= "408"
             imNewDoorB.alt='porte ouverte'
@@ -306,8 +306,8 @@ function updateRenderBack(myRoom) {
     }
     else if (room.doorState[myRoom].B === "ferme") {
         const imNewDoorB= document.createElement("img")
-            imNewDoorB.src= 'image/porteFerme.jpg'
-            imNewDoorB.width= "300"
+            imNewDoorB.src= 'image/porteFerme.webp'
+            imNewDoorB.width= "400"
             imNewDoorB.height= "408"
             imNewDoorB.alt='porte ferme'
             imNewDoorB.id="ImB"
@@ -321,7 +321,7 @@ function updateRenderBack(myRoom) {
 
     if (room.doorState[myRoom].C === "ouvert") {
         const imNewDoorC= document.createElement("img")
-            imNewDoorC.src= 'image/porteOuverte.jpg'
+            imNewDoorC.src= 'image/porteOuverte.webp'
             imNewDoorC.width= "400"
             imNewDoorC.height= "408"
             imNewDoorC.alt='porte ouverte'
@@ -332,8 +332,8 @@ function updateRenderBack(myRoom) {
     }
     else if (room.doorState[myRoom].C === "ferme") {
         const imNewDoorC= document.createElement("img")
-            imNewDoorC.src= 'image/porteFerme.jpg'
-            imNewDoorC.width= "300"
+            imNewDoorC.src= 'image/porteFerme.webp'
+            imNewDoorC.width= "400"
             imNewDoorC.height= "408"
             imNewDoorC.alt='porte ferme'
             imNewDoorC.id="ImC"
@@ -350,8 +350,8 @@ function updateRenderFight(type1, type2, type3) {
     if (type1 !== undefined) {
     const imEnnemi = document.createElement("img")
         imEnnemi.src = ennemi[type1].IMG
-        imEnnemi.width= "100"
-        imEnnemi.height= "100"
+        imEnnemi.width= "300"
+        imEnnemi.height= "300"
         imEnnemi.alt='Ennemi féroce !'
         imEnnemi.id="ImEnn1"
         buttonDoorDiv.divEnn1.appendChild(imEnnemi)
@@ -360,8 +360,8 @@ function updateRenderFight(type1, type2, type3) {
         if (type2 !== undefined) {
             const imEnnemi2 = document.createElement("img")
                 imEnnemi2.src = ennemi[type2].IMG
-                imEnnemi2.width= "100"
-                imEnnemi2.height= "100"
+                imEnnemi2.width= "300"
+                imEnnemi2.height= "300"
                 imEnnemi2.alt='Ennemi féroce !'
                 imEnnemi2.id="ImEnn2"
                 buttonDoorDiv.divEnn2.appendChild(imEnnemi2)
@@ -370,8 +370,8 @@ function updateRenderFight(type1, type2, type3) {
             if (type3 !== undefined) {
             const imEnnemi3 = document.createElement("img")
                 imEnnemi3.src = ennemi[type3].IMG
-                imEnnemi3.width= "100"
-                imEnnemi3.height= "100"
+                imEnnemi3.width= "300"
+                imEnnemi3.height= "300"
                 imEnnemi3.alt='Ennemi féroce !'
                 imEnnemi3.id="ImEnn3"
                 buttonDoorDiv.divEnn3.appendChild(imEnnemi3)
@@ -385,8 +385,6 @@ imDoor.ImB.addEventListener('click', () => openDoor("B", ImB, "ImOpenB", "D2", r
 imDoor.ImC.addEventListener('click', () => openDoor("C", ImC, "ImOpenC", "D3", roomIAm))
 //revenir en arriere
 imDoor.btnBack.addEventListener('click', () => back(roomIAm))
-
-
 
 let dataStat = {}
 
