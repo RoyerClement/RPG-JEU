@@ -19,6 +19,8 @@ const imDoor = {
     ImEnn1: document.getElementById('ImEnn1'),
     ImEnn2: document.getElementById('ImEnn2'),
     ImEnn3: document.getElementById('ImEnn3'),
+    ImEnn4: document.getElementById('ImEnn4'),
+    ImEnn5: document.getElementById('ImEnn5'),
     btnBack: document.getElementById('back'),
     allDoor: document.getElementById('porte')
 }
@@ -49,7 +51,7 @@ const room = {
     }
 }
 let actualFight = []
-
+const actualEnnemiStatut = {}
 const ennemiList = [ "orc" , "gobelin", ]
 
 const ennemi = {
@@ -104,7 +106,8 @@ function openDoor (door, image, idOpenDoor, imDiv, myRoom) {
     imDoor[idOpenDoor].addEventListener('click', () => enterDoor(door, myRoom))
     boiteDialogue("txtOpen")
     const checkFight = randomNumber("3")
-    if (checkFight < 2) {
+    //RISQUE DE FAIRE DES COMBATS
+    if (checkFight < 3) {
         actualFight = []
         imDoor.btnBack.style.display="none"
         opInventaire.style.display="none"
@@ -122,30 +125,31 @@ function openDoor (door, image, idOpenDoor, imDiv, myRoom) {
         setTimeout(() => {boiteDialogue('txtEmptyRoom')}, 500);
     }
 }
-let numberEnn = 0
+//Compteur pour différencier les differents ennemis du meme type dans le combat.
+let compteur = {orc : 1, gobelin: 1}
+let numberEnn = 0   
+
 function triggerFight() {   
     
         if (roomIAm === "start") {
              numberEnn = 1 
         } else {
             const splitRoom = roomIAm.split('')
-            console.log({splitRoom})
             numberEnn = splitRoom.length  
-        } console.log({numberEnn})
+        } 
             if (numberEnn > 5) {
                 numberEnn = 5;
             }
-    const numberOfEnnemi = randomNumber(numberEnn)
-    console.log({numberOfEnnemi})
-    const findIndexEnnemi = ennemiList[randomNumber(ennemiList.length) - 1]
-    actualFight.push(findIndexEnnemi)
-    if (actualFight.length < numberOfEnnemi) {
-        triggerFight()
-    }
-    else {
+        for(let i = 0; i < numberEnn; i++) {
+            const numberOfEnnemi = randomNumber(numberEnn)
+            const findIndexEnnemi = ennemiList[randomNumber(ennemiList.length) - 1]
+            actualFight.push(findIndexEnnemi)
+            const nomEnnemi = `${findIndexEnnemi}${compteur[findIndexEnnemi]}`
+            actualEnnemiStatut[nomEnnemi] = { ...ennemi[findIndexEnnemi] }
+            compteur[findIndexEnnemi]++
+            console.log(actualEnnemiStatut)
+        }
         updateRenderFight(actualFight[0], actualFight[1], actualFight[2], actualFight[3], actualFight[4])
-        console.log(actualFight)
-    }
     
 }
 //Si on clique sur la porte ouverte
@@ -312,7 +316,6 @@ function updateRenderBack(myRoom) {
             imDoor.ImA.addEventListener('click', () => openDoor("A", ImA, "ImOpenA", "D1", roomIAm))
     }
     else {
-        console.log("bizarre")
     }
 
     if (room.doorState[myRoom].B === "ouvert") {
@@ -378,7 +381,7 @@ function updateRenderFight(type1, type2, type3, type4, type5) {
         imEnnemi.alt='Ennemi féroce !'
         imEnnemi.id="ImEnn1"
         buttonDoorDiv.divEnn1.appendChild(imEnnemi)
-        imDoor.ImEnn1.addEventListener('click', () => attaque())
+        imDoor.ImEnn1.addEventListener('click', () => attaque(type1, 1))
     }
         if (type2 !== undefined) {
             const imEnnemi2 = document.createElement("img")
@@ -388,7 +391,7 @@ function updateRenderFight(type1, type2, type3, type4, type5) {
                 imEnnemi2.alt='Ennemi féroce !'
                 imEnnemi2.id="ImEnn2"
                 buttonDoorDiv.divEnn2.appendChild(imEnnemi2)
-                imDoor.ImEnn2.addEventListener('click', () => attaque())
+                imDoor.ImEnn2.addEventListener('click', () => attaque(type2, 2))
         }
             if (type3 !== undefined) {
             const imEnnemi3 = document.createElement("img")
@@ -398,7 +401,7 @@ function updateRenderFight(type1, type2, type3, type4, type5) {
                 imEnnemi3.alt='Ennemi féroce !'
                 imEnnemi3.id="ImEnn3"
                 buttonDoorDiv.divEnn3.appendChild(imEnnemi3)
-                imDoor.ImEnn3.addEventListener('click', () => attaque())
+                imDoor.ImEnn3.addEventListener('click', () => attaque(type3))
             }
             if (type4 !== undefined) {
                 const imEnnemi4 = document.createElement("img")
@@ -408,7 +411,7 @@ function updateRenderFight(type1, type2, type3, type4, type5) {
                     imEnnemi4.alt='Ennemi féroce !'
                     imEnnemi4.id="ImEnn4"
                     buttonDoorDiv.divEnn4.appendChild(imEnnemi4)
-                    imDoor.ImEnn4.addEventListener('click', () => attaque())
+                    imDoor.ImEnn4.addEventListener('click', () => attaque(type4))
                 }
                 if (type5 !== undefined) {
                     const imEnnemi5 = document.createElement("img")
@@ -418,7 +421,7 @@ function updateRenderFight(type1, type2, type3, type4, type5) {
                         imEnnemi5.alt='Ennemi féroce !'
                         imEnnemi5.id="ImEnn5"
                         buttonDoorDiv.divEnn5.appendChild(imEnnemi5)
-                        imDoor.ImEnn5.addEventListener('click', () => attaque())
+                        imDoor.ImEnn5.addEventListener('click', () => attaque(type5))
                     }
 }
 
@@ -441,7 +444,6 @@ document.addEventListener('DOMContentLoaded', async function () {
         return dataStat; 
     }
     dataStat = await getData(); 
-    console.log(dataStat); 
 });
 
 opInventaire.addEventListener('click', () => savePath())
