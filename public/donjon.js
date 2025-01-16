@@ -7,6 +7,9 @@ const buttonDoorDiv = {
     divEnn1 : document.getElementById("first"),
     divEnn2 : document.getElementById("second"),
     divEnn3 : document.getElementById("third"),
+    divEnn4 : document.getElementById("fourth"),
+    divEnn5 : document.getElementById("fifth"),
+    fightDoor: document.getElementById('fightDoor'),
 }
 
 const imDoor = { 
@@ -101,11 +104,17 @@ function openDoor (door, image, idOpenDoor, imDiv, myRoom) {
     imDoor[idOpenDoor].addEventListener('click', () => enterDoor(door, myRoom))
     boiteDialogue("txtOpen")
     const checkFight = randomNumber("3")
-    if (checkFight < 3) {
+    if (checkFight < 2) {
         actualFight = []
         imDoor.btnBack.style.display="none"
         opInventaire.style.display="none"
         imDoor.allDoor.style.display="none"
+            const imDoorOpen= document.createElement("img")
+            imDoorOpen.src= 'image/porteOuverte.webp'
+            imDoorOpen.width= "400"
+            imDoorOpen.height= "408"
+            imDoorOpen.alt='porte ouverte'
+            buttonDoorDiv.fightDoor.appendChild(imDoorOpen)
         setTimeout(() => {boiteDialogue('txtFight')}, 500);
         triggerFight();
     }
@@ -113,15 +122,28 @@ function openDoor (door, image, idOpenDoor, imDiv, myRoom) {
         setTimeout(() => {boiteDialogue('txtEmptyRoom')}, 500);
     }
 }
-function triggerFight() {
-    const numberOfEnnemi = randomNumber(3)
+let numberEnn = 0
+function triggerFight() {   
+    
+        if (roomIAm === "start") {
+             numberEnn = 1 
+        } else {
+            const splitRoom = roomIAm.split('')
+            console.log({splitRoom})
+            numberEnn = splitRoom.length  
+        } console.log({numberEnn})
+            if (numberEnn > 5) {
+                numberEnn = 5;
+            }
+    const numberOfEnnemi = randomNumber(numberEnn)
+    console.log({numberOfEnnemi})
     const findIndexEnnemi = ennemiList[randomNumber(ennemiList.length) - 1]
     actualFight.push(findIndexEnnemi)
     if (actualFight.length < numberOfEnnemi) {
         triggerFight()
     }
     else {
-        updateRenderFight(actualFight[0], actualFight[1], actualFight[2])
+        updateRenderFight(actualFight[0], actualFight[1], actualFight[2], actualFight[3], actualFight[4])
         console.log(actualFight)
     }
     
@@ -346,7 +368,8 @@ function updateRenderBack(myRoom) {
     } 
 }
 function attaque () {}
-function updateRenderFight(type1, type2, type3) {
+
+function updateRenderFight(type1, type2, type3, type4, type5) {
     if (type1 !== undefined) {
     const imEnnemi = document.createElement("img")
         imEnnemi.src = ennemi[type1].IMG
@@ -377,6 +400,26 @@ function updateRenderFight(type1, type2, type3) {
                 buttonDoorDiv.divEnn3.appendChild(imEnnemi3)
                 imDoor.ImEnn3.addEventListener('click', () => attaque())
             }
+            if (type4 !== undefined) {
+                const imEnnemi4 = document.createElement("img")
+                    imEnnemi4.src = ennemi[type3].IMG
+                    imEnnemi4.width= "300"
+                    imEnnemi4.height= "300"
+                    imEnnemi4.alt='Ennemi féroce !'
+                    imEnnemi4.id="ImEnn4"
+                    buttonDoorDiv.divEnn4.appendChild(imEnnemi4)
+                    imDoor.ImEnn4.addEventListener('click', () => attaque())
+                }
+                if (type5 !== undefined) {
+                    const imEnnemi5 = document.createElement("img")
+                        imEnnemi5.src = ennemi[type3].IMG
+                        imEnnemi5.width= "300"
+                        imEnnemi5.height= "300"
+                        imEnnemi5.alt='Ennemi féroce !'
+                        imEnnemi5.id="ImEnn5"
+                        buttonDoorDiv.divEnn5.appendChild(imEnnemi5)
+                        imDoor.ImEnn5.addEventListener('click', () => attaque())
+                    }
 }
 
 //Ouvrir porte 
