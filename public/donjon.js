@@ -51,12 +51,12 @@ const room = {
     }
 }
 let actualFight = []
-const actualEnnemiStatut = {}
+let actualEnnemiStatut = {}
 const ennemiList = [ "orc" , "gobelin", ]
 
 const ennemi = {
-    orc : {IMG: "image/orc.webp", ATQ : 20, DEF : 10, HP : 200, DEX : 0, XP : 10, LOOT : { 1 : "orcHache", 2 : "orcCasque", 3 : "orcArmure", 4 : "potionVie", or : 50}},
-    gobelin : {IMG: "image/gobelin.webp", ATQ : 10, DEF : 3, HP : 50, DEX : 5, XP : 5, LOOT : { 1 : "gobArc", 2 : "anneauDex", 3 : "potionMana", 4 : "potionVie", or : 20}},
+    orc : {IMG: "image/orc.webp", IMGmort:"image/orcMort.webp", ATQ : 20, DEF : 10, HP : 200, DEX : 0, XP : 10, LOOT : { 1 : "orcHache", 2 : "orcCasque", 3 : "orcArmure", 4 : "potionVie", or : 50}},
+    gobelin : {IMG: "image/gobelin.webp", IMGmort:"image/gobelinMort.webp", ATQ : 10, DEF : 3, HP : 50, DEX : 5, XP : 5, LOOT : { 1 : "gobArc", 2 : "anneauDex", 3 : "potionMana", 4 : "potionVie", or : 20}},
 }
 
 const opInventaire = document.getElementById("Inventaire")
@@ -140,7 +140,7 @@ function triggerFight() {
             if (numberEnn > 5) {
                 numberEnn = 5;
             }
-            numberEnn =5
+            numberEnn = 5
         for(let i = 0; i < numberEnn; i++) {
             const findIndexEnnemi = ennemiList[randomNumber(ennemiList.length) - 1]
             actualFight.push(findIndexEnnemi)
@@ -149,11 +149,10 @@ function triggerFight() {
             compteur[findIndexEnnemi]++
             console.log(actualEnnemiStatut)
             const where = "divEnn" + divEnnemi
-            updateRenderFight(findIndexEnnemi, nomEnnemi, where)
+            const ImEnn = "ImEnn" + divEnnemi
+            updateRenderFight(findIndexEnnemi, nomEnnemi, where, ImEnn)
             divEnnemi++
         }
-        
-    
 }
 //Si on clique sur la porte ouverte
 function enterDoor (door, myRoom) {
@@ -363,6 +362,7 @@ function updateRenderBack(myRoom) {
             imDoor.ImA.addEventListener('click', () => openDoor("A", ImA, "ImOpenA", "D1", roomIAm))
     }
     else {
+
     }
 
     if (room.doorState[myRoom].B === "ouvert") {
@@ -418,22 +418,37 @@ function updateRenderBack(myRoom) {
     } 
 }
 
-function attaque (ennemi) {
-    console.log(dataStat)
-    actualEnnemiStatut[ennemi].HP -= (dataStat.DonneeStatPerso.mainGauche + dataStat.DonneeStatPerso.mainDroite)
-    if (actualEnnemiStatut[ennemi].HP <= 0)
-        dataStat.DonneeStatPerso.statPerso.XP += actualEnnemiStatut[ennemi].XP
+function attaque (nom, type, div, ImEnn) {
+    console.log(actualEnnemiStatut)
+    actualEnnemiStatut[nom].HP -= (dataStat.DonneeStatPerso.mainGauche + dataStat.DonneeStatPerso.mainDroite)
+    if (actualEnnemiStatut[nom].HP <= 0){
+        console.log(actualEnnemiStatut)
+        dataStat.DonneeStatPerso.statPerso.XP += actualEnnemiStatut[nom].XP
+        delete actualEnnemiStatut[nom]
+        imDoor[ImEnn].remove();
+        const imEnnemi = document.createElement("img")
+            imEnnemi.src = ennemi[type].IMGmort
+            imEnnemi.width= "300"
+            imEnnemi.height= "300"
+            imEnnemi.alt='Ennemi féroce !'
+            buttonDoorDiv[div].appendChild(imEnnemi)
+            console.log(actualEnnemiStatut)
+            if (!actualEnnemiStatut) {
+                
+            }
+        } 
 }
 
-function updateRenderFight(type, nomEnnemi, div) {
+function updateRenderFight(type, nomEnnemi, div, ImEnn) {
     const imEnnemi = document.createElement("img")
         imEnnemi.src = ennemi[type].IMG
         imEnnemi.width= "300"
         imEnnemi.height= "300"
         imEnnemi.alt='Ennemi féroce !'
-        imEnnemi.id = nomEnnemi
+        imEnnemi.id = ImEnn
         buttonDoorDiv[div].appendChild(imEnnemi)
-        buttonDoorDiv[div].addEventListener('click', () => attaque(nomEnnemi))
+        imDoor[ImEnn] = document.getElementById(ImEnn)
+        buttonDoorDiv[div].addEventListener('click', () => attaque(nomEnnemi, type, div, ImEnn))
 }
 //Ouvrir porte 
 imDoor.ImA.addEventListener('click', () => openDoor("A", ImA, "ImOpenA", "D1", roomIAm))
