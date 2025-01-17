@@ -1,172 +1,172 @@
 <!doctype html>
 <html>
     <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap" rel="stylesheet">
-        
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap"
+            rel="stylesheet"
+        />
+
         <style>
-        #UN {
-            position:absolute;
-            right:800px
-        }
-        #DEUX {
-            position:absolute;
-            right:1300px
-        }
-        #first {
-            position:absolute;
-            right:1000px;
-            top: 150px;
-        }
-        #second {
-            position:absolute;
-            right:1300px;
-            top: 150px;
-        }
-        #third {
-            position:absolute;
-            top: 150px;
-        }
-        #fourth {
-            position:absolute;
-            right:700px;
-            top: 150px;
-        }
-        #fifth {
-            position:absolute;
-            right:400px;
-            top: 150px;
-        }
-        #divDialogue {
-            font-family: "MedievalSharp", serif;
-            font-weight: 400;
-            font-style: normal;
-            position: absolute ;
-            bottom: 50px;
-            float: right;
-            border: 5px solid #4d372a;
-            background-color: #886146;
-            padding: 15px;
-            margin: 15px;
-            width: 300px;
-            height: 100px;
-        }
-        #Inventaire {
-            position: absolute ;
-            bottom: 250px;
-            top: 0px;
-            right: 53px;
-            border: 5px solid #4d372a;
-            background-color: #886146;
-            padding: 5px;
-            margin: 5px;
-            width: 180px;
-            height: 100px;
-            font-family: "MedievalSharp", serif;
-            font-weight: 400;
-            font-style: normal;
-            font-size: 24px;
-            color: #706c2e;
-        }
-        #back {
-            position: absolute ;
-            right : 53px;
-            top: 110px;
-            float: right;
-            border: 5px solid #4d372a;
-            background-color: #886146;
-            padding: 5px;
-            margin: 5px;
-            width: 180px;
-            height: 100px;
-            font-family: "MedievalSharp", serif;
-            font-weight: 400;
-            font-style: normal;
-            font-size: 24px;
-            color: #706c2e;
-        }
-        #mur {
-            width: 100%;
-            height: 407px;
-            background-image: url("image/mur4.jpg");
-            background-position: center;
-            position: relative;
-            overflow: hidden;
-            background-repeat: repeat;
-        }
-        #sol {
-            width: 100%;
-            height: 207px;
-            background-image: url("image/sol.jpg");
-            background-position: center;
-            position: relative;
-            overflow: hidden;
-            background-repeat: repeat;
-        }
-        #fightDoor {
-            position: absolute;
-            left: 550px;
-        }
-    </style>
+            #UN {
+                position: absolute;
+                right: 800px;
+            }
+            #DEUX {
+                position: absolute;
+                right: 1300px;
+            }
+            #first {
+                position: absolute;
+                right: 1000px;
+                top: 150px;
+            }
+            #second {
+                position: absolute;
+                right: 1300px;
+                top: 150px;
+            }
+            #third {
+                position: absolute;
+                top: 150px;
+            }
+            #fourth {
+                position: absolute;
+                right: 700px;
+                top: 150px;
+            }
+            #fifth {
+                position: absolute;
+                right: 400px;
+                top: 150px;
+            }
+            #divDialogue {
+                font-family: "MedievalSharp", serif;
+                font-weight: 400;
+                font-style: normal;
+                position: absolute;
+                bottom: 50px;
+                float: right;
+                border: 5px solid #4d372a;
+                background-color: #886146;
+                padding: 15px;
+                margin: 15px;
+                width: 300px;
+                height: 100px;
+            }
+            #Inventaire {
+                position: absolute;
+                bottom: 250px;
+                top: 0px;
+                right: 53px;
+                border: 5px solid #4d372a;
+                background-color: #886146;
+                padding: 5px;
+                margin: 5px;
+                width: 180px;
+                height: 100px;
+                font-family: "MedievalSharp", serif;
+                font-weight: 400;
+                font-style: normal;
+                font-size: 24px;
+                color: #706c2e;
+            }
+            #back {
+                position: absolute;
+                right: 53px;
+                top: 110px;
+                float: right;
+                border: 5px solid #4d372a;
+                background-color: #886146;
+                padding: 5px;
+                margin: 5px;
+                width: 180px;
+                height: 100px;
+                font-family: "MedievalSharp", serif;
+                font-weight: 400;
+                font-style: normal;
+                font-size: 24px;
+                color: #706c2e;
+            }
+            #mur {
+                width: 100%;
+                height: 407px;
+                background-image: url("image/mur4.jpg");
+                background-position: center;
+                position: relative;
+                overflow: hidden;
+                background-repeat: repeat;
+            }
+            #sol {
+                width: 100%;
+                height: 207px;
+                background-image: url("image/sol.jpg");
+                background-position: center;
+                position: relative;
+                overflow: hidden;
+                background-repeat: repeat;
+            }
+            #fightDoor {
+                position: absolute;
+                left: 550px;
+            }
+        </style>
     </head>
     <body>
-        <div id ="all">
+        <div id="all">
             <div id="mur">
-                <div id = "fightDoor"></div>
-                <div id = "porte">
-                        <div id="UN">
-                        <img 
-                        src="image/porteFerme.webp" 
-                        id="ImA"
-                        class="porteFerme" 
-                        title="A"
-                        width="400"
-                        height="408"
+                <div id="fightDoor"></div>
+                <div id="porte">
+                    <div id="UN">
+                        <img
+                            src="image/porteFerme.webp"
+                            id="ImA"
+                            class="porteFerme"
+                            title="A"
+                            width="400"
+                            height="408"
                         />
                     </div>
                     <div id="DEUX">
-                        <img 
-                        src="image/porteFerme.webp" 
-                        id="ImB"
-                        class="porteFerme" 
-                        title="B"
-                        width="400"
-                        height="408"
+                        <img
+                            src="image/porteFerme.webp"
+                            id="ImB"
+                            class="porteFerme"
+                            title="B"
+                            width="400"
+                            height="408"
                         />
                     </div>
                     <div id="TROIS">
-                        <img 
-                        src="image/porteFerme.webp" 
-                        id="ImC"
-                        class="porteFerme" 
-                        title="C"
-                        width="400"
-                        height="408"
+                        <img
+                            src="image/porteFerme.webp"
+                            id="ImC"
+                            class="porteFerme"
+                            title="C"
+                            width="400"
+                            height="408"
                         />
                     </div>
                 </div>
             </div>
-        
-        <div id="sol"></div>
-        <div id = "ennemi">
-            <div id ="first"></div>
-            <div id = "second"></div>
-            <div id = "third"></div>
-            <div id = "fourth"></div>
-            <div id = "fifth"></div>
+
+            <div id="sol"></div>
+            <div id="ennemi">
+                <div id="first"></div>
+                <div id="second"></div>
+                <div id="third"></div>
+                <div id="fourth"></div>
+                <div id="fifth"></div>
+            </div>
         </div>
-    </div>
-        
-    
+
         <button id="Inventaire">Ouvrir l'inventaire</button>
-        <button id="back" style="display:none;">Revenir en arrière</button>
+        <button id="back" style="display: none">Revenir en arrière</button>
         <div id="divDialogue">
             <span id="boiteDialogue"></span>
         </div>
     </body>
 
-    <script src="donjon.js" type="module">
-
-    </script>
+    <script src="donjon.js" type="module"></script>
 </html>

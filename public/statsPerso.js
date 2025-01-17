@@ -81,7 +81,6 @@ const inventaire = {
     Object: [],
 };
 
-
 function update() {
     document.getElementById("defense").textContent = `Défense : ${stats.Def}`;
     document.getElementById("degatsArmeG").textContent =
@@ -334,36 +333,35 @@ elements.FermerInv.addEventListener("click", () => FermerInv());
 // });
 // document.body.appendChild(button);
 
-async function FermerInv () {
+async function FermerInv() {
     const DonneeStatPerso = {
-
         mainGauche: stats.LeftHand,
         mainDroite: stats.RightHand,
-        def : stats.Def,
+        def: stats.Def,
         equipement,
         inventaire,
-        statPerso
-    }
-    const res = await fetch('http://localhost:8000/all-data', {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ DonneeStatPerso }),
-    })
-    const json = await res.json()
-    window.location.href = 'Donjon.html';
+        statPerso,
+    };
+    const res = await fetch("http://localhost:8000/all-data", {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ DonneeStatPerso }),
+    });
+    const json = await res.json();
+    window.location.href = "Donjon.html";
 }
 let recData = {};
-document.addEventListener('DOMContentLoaded', async function () {
+document.addEventListener("DOMContentLoaded", async function () {
     async function getData() {
         const res = await fetch("http://localhost:8000/all-data", {
             method: "GET",
-        });    
+        });
         const json = await res.json();
-        recData = json
+        recData = json;
     }
-    recData = await getData()
+    recData = await getData();
 
-    console.log(recData)
+    console.log(recData);
 });
