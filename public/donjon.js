@@ -128,9 +128,9 @@ function openDoor (door, image, idOpenDoor, imDiv, myRoom) {
 //Compteur pour différencier les differents ennemis du meme type dans le combat.
 let compteur = {orc : 1, gobelin: 1}
 let numberEnn = 0   
-
+let divEnnemi = 1
 function triggerFight() {   
-    
+        divEnnemi =1
         if (roomIAm === "start") {
              numberEnn = 1 
         } else {
@@ -140,16 +140,19 @@ function triggerFight() {
             if (numberEnn > 5) {
                 numberEnn = 5;
             }
+            numberEnn =5
         for(let i = 0; i < numberEnn; i++) {
-            const numberOfEnnemi = randomNumber(numberEnn)
             const findIndexEnnemi = ennemiList[randomNumber(ennemiList.length) - 1]
             actualFight.push(findIndexEnnemi)
             const nomEnnemi = `${findIndexEnnemi}${compteur[findIndexEnnemi]}`
             actualEnnemiStatut[nomEnnemi] = { ...ennemi[findIndexEnnemi] }
             compteur[findIndexEnnemi]++
             console.log(actualEnnemiStatut)
+            const where = "divEnn" + divEnnemi
+            updateRenderFight(findIndexEnnemi, nomEnnemi, where)
+            divEnnemi++
         }
-        updateRenderFight(actualFight[0], actualFight[1], actualFight[2], actualFight[3], actualFight[4])
+        
     
 }
 //Si on clique sur la porte ouverte
@@ -205,7 +208,6 @@ function enterDoor (door, myRoom) {
                 updateRender(roomIAm);
                 }
         }
-
     }
     
 
@@ -290,9 +292,54 @@ function updateRender(myRoom) {
         imDoor.ImC.addEventListener('click', () => openDoor("C", ImC, "ImOpenC", "D3", roomIAm))
     }
 }
+// let ABCporte = "A"
+// let DIVporte = "D1"
+// function updateRenderBack(myRoom, porte, imDoor, div) {
+//     delDoor()
+//     ABCporte = "A"
+//     DIVporte = "D1"
+//     for (let i = 0; i < room.numberDoor[myRoom]; i++) {
+//         if (room.doorState[myRoom][porte] === "ouvert") {
+//             const imNewDoor= document.createElement("img")
+//             imNewDoor.src= 'image/porteOuverte.webp'
+//             imNewDoor.width= "400"
+//             imNewDoor.height= "408"
+//             imNewDoor.alt='porte ouverte'
+//             imNewDoor.id="ImOpen"+[porte]
+//             buttonDoorDiv[div].appendChild(imNewDoor)
+//             imDoor[ImOpen+[porte]] = document.getElementById(imNewDoor.id)
+//             imDoor[ImOpen+[porte]].addEventListener('click', () => enterDoor(porte, roomIAm))
+//             if (ABCporte === "B") {
+//                 ABCporte = "C"
+//                 DIVporte = "D3"
+//             } else {
+//                 ABCporte = "B"
+//                 DIVporte = "D2"
+//             }
+//         } else if (room.doorState[myRoom][porte] === "ferme") {
+//             const imNewDoor= document.createElement("img")
+//             imNewDoor.src= 'image/porteFerme.webp'
+//             imNewDoor.width= "400"
+//             imNewDoor.height= "408"
+//             imNewDoor.alt='porte ferme'
+//             imNewDoor.id="Im"+[porte]
+//             buttonDoorDiv[div].appendChild(imNewDoor)
+//             imDoor[Im+[porte]] = document.getElementById(imNewDoor.id)
+//             imDoor[Im+[porte]].addEventListener('click', () => openDoor(porte, Im+[porte], "ImOpen"+[porte], DIVporte, roomIAm))
+//             if (ABCporte === "B") {
+//                 ABCporte = "C"
+//                 DIVporte = "D3"
+//             } else {
+//                 ABCporte = "B"
+//                 DIVporte = "D2"
+//             }
+//         }
+//     }
+// }
 
 function updateRenderBack(myRoom) {
     delDoor()
+    
     if (room.doorState[myRoom].A === "ouvert") {
         const imNewDoorA= document.createElement("img")
             imNewDoorA.src= 'image/porteOuverte.webp'
@@ -370,61 +417,24 @@ function updateRenderBack(myRoom) {
         
     } 
 }
-function attaque () {}
 
-function updateRenderFight(type1, type2, type3, type4, type5) {
-    if (type1 !== undefined) {
+function attaque (ennemi) {
+    console.log(dataStat)
+    actualEnnemiStatut[ennemi].HP -= (dataStat.DonneeStatPerso.mainGauche + dataStat.DonneeStatPerso.mainDroite)
+    if (actualEnnemiStatut[ennemi].HP <= 0)
+        dataStat.DonneeStatPerso.statPerso.XP += actualEnnemiStatut[ennemi].XP
+}
+
+function updateRenderFight(type, nomEnnemi, div) {
     const imEnnemi = document.createElement("img")
-        imEnnemi.src = ennemi[type1].IMG
+        imEnnemi.src = ennemi[type].IMG
         imEnnemi.width= "300"
         imEnnemi.height= "300"
         imEnnemi.alt='Ennemi féroce !'
-        imEnnemi.id="ImEnn1"
-        buttonDoorDiv.divEnn1.appendChild(imEnnemi)
-        imDoor.ImEnn1.addEventListener('click', () => attaque(type1, 1))
-    }
-        if (type2 !== undefined) {
-            const imEnnemi2 = document.createElement("img")
-                imEnnemi2.src = ennemi[type2].IMG
-                imEnnemi2.width= "300"
-                imEnnemi2.height= "300"
-                imEnnemi2.alt='Ennemi féroce !'
-                imEnnemi2.id="ImEnn2"
-                buttonDoorDiv.divEnn2.appendChild(imEnnemi2)
-                imDoor.ImEnn2.addEventListener('click', () => attaque(type2, 2))
-        }
-            if (type3 !== undefined) {
-            const imEnnemi3 = document.createElement("img")
-                imEnnemi3.src = ennemi[type3].IMG
-                imEnnemi3.width= "300"
-                imEnnemi3.height= "300"
-                imEnnemi3.alt='Ennemi féroce !'
-                imEnnemi3.id="ImEnn3"
-                buttonDoorDiv.divEnn3.appendChild(imEnnemi3)
-                imDoor.ImEnn3.addEventListener('click', () => attaque(type3))
-            }
-            if (type4 !== undefined) {
-                const imEnnemi4 = document.createElement("img")
-                    imEnnemi4.src = ennemi[type3].IMG
-                    imEnnemi4.width= "300"
-                    imEnnemi4.height= "300"
-                    imEnnemi4.alt='Ennemi féroce !'
-                    imEnnemi4.id="ImEnn4"
-                    buttonDoorDiv.divEnn4.appendChild(imEnnemi4)
-                    imDoor.ImEnn4.addEventListener('click', () => attaque(type4))
-                }
-                if (type5 !== undefined) {
-                    const imEnnemi5 = document.createElement("img")
-                        imEnnemi5.src = ennemi[type3].IMG
-                        imEnnemi5.width= "300"
-                        imEnnemi5.height= "300"
-                        imEnnemi5.alt='Ennemi féroce !'
-                        imEnnemi5.id="ImEnn5"
-                        buttonDoorDiv.divEnn5.appendChild(imEnnemi5)
-                        imDoor.ImEnn5.addEventListener('click', () => attaque(type5))
-                    }
+        imEnnemi.id = nomEnnemi
+        buttonDoorDiv[div].appendChild(imEnnemi)
+        buttonDoorDiv[div].addEventListener('click', () => attaque(nomEnnemi))
 }
-
 //Ouvrir porte 
 imDoor.ImA.addEventListener('click', () => openDoor("A", ImA, "ImOpenA", "D1", roomIAm))
 imDoor.ImB.addEventListener('click', () => openDoor("B", ImB, "ImOpenB", "D2", roomIAm))
@@ -432,7 +442,39 @@ imDoor.ImC.addEventListener('click', () => openDoor("C", ImC, "ImOpenC", "D3", r
 //revenir en arriere
 imDoor.btnBack.addEventListener('click', () => back(roomIAm))
 
-let dataStat = {}
+let dataStat = { DonneeStatPerso : { 
+                        mainDroite: 0,
+                        mainGauche: 0,
+                        def : 0,
+                        }, 
+                        equipement : { 
+                            Chest: "Chest",
+                            Head: "Head",
+                            LeftHand: "",
+                            Neck: "Neck",
+                            RightHand: "",
+                            Ring: "Ring",},
+                        inventaire : {
+                            Chest: [],
+                            Head: [],
+                            Neck:  [],
+                            Object: [],
+                            Ring: [],
+                            arme: [],
+                        },
+                        statPerso : {
+                            Dexterite: "",
+                            Force : "",
+                            HP : "",
+                            Intelligence: "",
+                            LVL: "",
+                            MP: "",
+                            Point : "",
+                            Vitalite: "",
+                            Volonte: "" ,
+                            XP: "", 
+                        }
+}
 
 document.addEventListener('DOMContentLoaded', async function () {
     async function getData() {

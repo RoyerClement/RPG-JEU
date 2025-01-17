@@ -354,14 +354,16 @@ async function FermerInv () {
     const json = await res.json()
     window.location.href = 'Donjon.html';
 }
-
+let recData = {};
 document.addEventListener('DOMContentLoaded', async function () {
     async function getData() {
         const res = await fetch("http://localhost:8000/all-data", {
             method: "GET",
         });    
         const json = await res.json();
+        recData = json
     }
-    const recData = await getData()
-    inventaire = recData.donjonpath.inventaire
+    recData = await getData()
+
+    console.log(recData)
 });
