@@ -10,6 +10,7 @@ const statPerso = {
     XP: 0,
     LVL: 0,
 };
+
 const arme = {
     mainGauche: { degats : () => 1 + 1 * statPerso.Dexterite, IMG : "image/mainGauche.jpg" },
     mainDroite: { degats : () => 1 + 1 * statPerso.Force, IMG : "image/mainDroite.jpg"},
@@ -17,15 +18,15 @@ const arme = {
     hacheDepart: { degats : () => 5 + 4 * statPerso.Force, IMG : "image/hacheDepart.jpg"},
     arcDepart: { degats : () => 7 + 1 * statPerso.Force + 3 * statPerso.Dexterite, IMG : "image/arcDepart.png"},
     batonDepart: { degats : () => 7 + 1 * statPerso.Force + 2 * statPerso.Intelligence, IMG : "image/batonDepart.avif"},
-};
+}
 const Chest = {
-    Chest: { def: 0, IMG:"image/Torse.jpg" },
-    armureEnCuir: {def : 10, IMG: "image/armureEnCuir.jpg" },
-    armureEnFer: {def : 20, IMG: "image/armureEnFer.jpg"},
+    Chest: { def: 0, IMG:"image/Torse.jpg", type:"Chest" },
+    armureEnCuir: {def : 10, IMG: "image/armureEnCuir.jpg", type:"Chest" },
+    armureEnFer: {def : 20, IMG: "image/armureEnFer.jpg", type:"Chest"},
     armureEnCuivre: 15,
     armureEnPeau: 5,
     armureEnTissu: 7,
-};
+}
 const Head = {
     Head: {def : 0, IMG : "image/Tete.jpg"},
     casqueEnCuir: {def: 10, IMG : "image/casqueEnCuir.webp"},
@@ -33,16 +34,16 @@ const Head = {
     casqueEnCuivre: 15,
     casqueEnPeau: 5,
     casqueEnTissu: 7,
-};
-
+}
 const Ring = {
     Ring: null,
-    anneauForce: false,
-    anneauDexterite: false,
-};
+    anneauForce: {effet : false, IMG : "image/anneauForce.jpg"},
+    anneauDexterite: {effet : false, IMG : "image/anneauForce.jpg"},
+}
 const Neck = {
     Neck: null,
-};
+}
+
 const Buff = {
     anneauForce: () => (statPerso.Force += 5),
     anneauDexterite: () => (statPerso.Dexterite += 5),
@@ -68,7 +69,7 @@ const stats = {
         return arme[equipement.RightHand].degats(); // Appelle la fonction de calcul dynamique
     },
     get Def() {
-        return Chest[equipement.Chest] + Head[equipement.Head];
+        return Chest[equipement.Chest].def + Head[equipement.Head].def;
     },
 };
 
@@ -151,6 +152,12 @@ const elements = {
     casqueEnCuir: document.getElementById("casqueEnCuir"),
     anneauForce: document.getElementById("anneauForce"),
     anneauDexterite: document.getElementById("anneauDexterite"),
+    mainGaucheBase: document.getElementById("mainGaucheBase"),
+    mainDroiteBase: document.getElementById("mainDroiteBase"),
+    baseChest: document.getElementById("baseChest"),
+    baseHead: document.getElementById("baseHead"),
+    baseRing : document.getElementById("baseRing"),
+    baseNeck: document.getElementById("baseNeck"),
     FermerInv: document.getElementById("FermerInv"),
 };
 const transf_mainGauche = document.getElementById("mainGauche");
@@ -380,14 +387,79 @@ async function FermerInv() {
             }
         });
         update()
-        debugger
+        VisualRender()
+    }
+    function delAllGearImage () {
+        if (equipement.Chest !== "Chest")
+        {elements.baseChest.remove()}
+        if (equipement.Head !== "Head")
+        {elements.baseHead.remove()}
+        if (equipement.Ring !== "Ring")
+        {elements.baseRing.remove()}
+        if (equipement.Neck !== "Neck")
+        elements.baseNeck.remove()
+        if (equipement.LeftHand !== "mainGauche")
+        {elements.mainGaucheBase.remove()}
+        if (equipement.RightHand !== "mainDroite")
+        {elements.mainDroiteBase.remove()}
     }
     function VisualRender () {
+        debugger
+        delAllGearImage() 
         Object.entries(equipement).forEach(([key, value]) => {
-            if (arme[key] === equipement[value]) {
+            if (equipement.LeftHand[value] === arme[key]) {
                 const image = document.createElement("img")
-                image.src = arme[key].IMG
-
+                image.src = arme[value].IMG
+                image.width = "100"
+                image.height = "108"
+                image.id = value
+                transf_mainGauche.appendChild(image);
+                elements[value].addEventListener("click", takeWeapon(value , "arme"))
+            }
+            if (equipement.RightHand[value] === arme[key]) {
+                const image = document.createElement("img")
+                image.src = arme[value].IMG
+                image.width = "100"
+                image.height = "108"
+                image.id = value
+                transf_mainDroite.appendChild(image);
+                elements[value].addEventListener("click", takeWeapon(value , "arme"))
+            }
+            if (equipement[value] === Chest[key]) {
+                const image = document.createElement("img")
+                image.src = Chest[value].IMG
+                image.width = "100"
+                image.height = "108"
+                image.id = value
+                transf_Object.Chest.appendChild(image);
+                elements[value].addEventListener("click", takeObject(value , "Chest", "baseChest"))
+            }
+            if (equipement[value] === Head[key]) {
+                const image = document.createElement("img")
+                image.src = Head[value].IMG
+                image.width = "100"
+                image.height = "108"
+                image.id = value
+                transf_Object.Head.appendChild(image);
+                elements[value].addEventListener("click", takeObject(value , "Head", "baseHead"))
+            }
+            if (equipement[value] === Ring[key]) {
+                const image = document.createElement("img")
+                image.src = Ring[value].IMG
+                image.width = "100"
+                image.height = "108"
+                image.id = value
+                transf_Object.Ring.appendChild(image);
+                elements[value].addEventListener("click", takeObject(value , "Ring", "baseRing"))
+            }
+            if (equipement[value] === Neck[key]) {
+                const image = document.createElement("img")
+                image.src = Neck[value].IMG
+                image.width = "100"
+                image.height = "108"
+                image.id = value
+                transf_Object.Neck.appendChild(image);
+                elements[value].addEventListener("click", takeObject(value , "Neck", "baseNeck"))
             }
         })
     }
