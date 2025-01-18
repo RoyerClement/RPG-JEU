@@ -22,6 +22,7 @@ const imDoor = {
     ImEnn4: document.getElementById("ImEnn4"),
     ImEnn5: document.getElementById("ImEnn5"),
     btnBack: document.getElementById("back"),
+    fightDoor: document.getElementById('fightDoor'),
     allDoor: document.getElementById("porte"),
 };
 const dialogue = {
@@ -33,6 +34,9 @@ const dialogue = {
     txtBack: "Vous revenez sur vos pas",
     txtFight: `Des ennemis surgissent de la porte !`,
     txtEmptyRoom: "La salle ouverte est vide",
+    txtVictory: "Vous avez remporté le combat",
+    txtAttaque: `Vous attaquez un ennemi`,
+    txtKill: `Vous attaquez et tuez un ennemi`
 };
 
 let textDialogue = "";
@@ -89,8 +93,6 @@ const ennemi = {
     },
 };
 
-const opInventaire = document.getElementById("Inventaire");
-
 function boiteDialogue(type) {
     message.unshift(dialogue[type]);
 
@@ -144,6 +146,7 @@ function openDoor(door, image, idOpenDoor, imDiv, myRoom) {
         imDoorOpen.width = "400";
         imDoorOpen.height = "408";
         imDoorOpen.alt = "porte ouverte";
+        imDoorOpen.id = "fightDoor"
         buttonDoorDiv.fightDoor.appendChild(imDoorOpen);
         setTimeout(() => {
             boiteDialogue("txtFight");
@@ -170,7 +173,6 @@ function triggerFight() {
     if (numberEnn > 5) {
         numberEnn = 5;
     }
-    numberEnn = 5;
     for (let i = 0; i < numberEnn; i++) {
         const findIndexEnnemi = ennemiList[randomNumber(ennemiList.length) - 1];
         actualFight.push(findIndexEnnemi);
@@ -339,50 +341,6 @@ function updateRender(myRoom) {
         );
     }
 }
-// let ABCporte = "A"
-// let DIVporte = "D1"
-// function updateRenderBack(myRoom, porte, imDoor, div) {
-//     delDoor()
-//     ABCporte = "A"
-//     DIVporte = "D1"
-//     for (let i = 0; i < room.numberDoor[myRoom]; i++) {
-//         if (room.doorState[myRoom][porte] === "ouvert") {
-//             const imNewDoor= document.createElement("img")
-//             imNewDoor.src= 'image/porteOuverte.webp'
-//             imNewDoor.width= "400"
-//             imNewDoor.height= "408"
-//             imNewDoor.alt='porte ouverte'
-//             imNewDoor.id="ImOpen"+[porte]
-//             buttonDoorDiv[div].appendChild(imNewDoor)
-//             imDoor[ImOpen+[porte]] = document.getElementById(imNewDoor.id)
-//             imDoor[ImOpen+[porte]].addEventListener('click', () => enterDoor(porte, roomIAm))
-//             if (ABCporte === "B") {
-//                 ABCporte = "C"
-//                 DIVporte = "D3"
-//             } else {
-//                 ABCporte = "B"
-//                 DIVporte = "D2"
-//             }
-//         } else if (room.doorState[myRoom][porte] === "ferme") {
-//             const imNewDoor= document.createElement("img")
-//             imNewDoor.src= 'image/porteFerme.webp'
-//             imNewDoor.width= "400"
-//             imNewDoor.height= "408"
-//             imNewDoor.alt='porte ferme'
-//             imNewDoor.id="Im"+[porte]
-//             buttonDoorDiv[div].appendChild(imNewDoor)
-//             imDoor[Im+[porte]] = document.getElementById(imNewDoor.id)
-//             imDoor[Im+[porte]].addEventListener('click', () => openDoor(porte, Im+[porte], "ImOpen"+[porte], DIVporte, roomIAm))
-//             if (ABCporte === "B") {
-//                 ABCporte = "C"
-//                 DIVporte = "D3"
-//             } else {
-//                 ABCporte = "B"
-//                 DIVporte = "D2"
-//             }
-//         }
-//     }
-// }
 
 function updateRenderBack(myRoom) {
     delDoor();
@@ -462,13 +420,16 @@ function updateRenderBack(myRoom) {
     } else {
     }
 }
-
+let ImToDel = []
 function attaque(nom, type, div, ImEnn) {
     console.log(actualEnnemiStatut);
     actualEnnemiStatut[nom].HP -=
         dataStat.DonneeStatPerso.mainGauche +
         dataStat.DonneeStatPerso.mainDroite;
-    if (actualEnnemiStatut[nom].HP <= 0) {
+    if (actualEnnemiStatut[nom].HP > 0) {
+        boiteDialogue("txtAttaque");
+    }
+    else {
         console.log(actualEnnemiStatut);
         dataStat.DonneeStatPerso.statPerso.XP += actualEnnemiStatut[nom].XP;
         delete actualEnnemiStatut[nom];
@@ -478,9 +439,27 @@ function attaque(nom, type, div, ImEnn) {
         imEnnemi.width = "300";
         imEnnemi.height = "300";
         imEnnemi.alt = "Ennemi féroce !";
+        imEnnemi.id = ImEnn
         buttonDoorDiv[div].appendChild(imEnnemi);
-        console.log(actualEnnemiStatut);
-        if (!actualEnnemiStatut) {
+        ImToDel.push(ImEnn)
+        
+        buttonDoorDiv[div].removeEventListener('click', attaque)
+        boiteDialogue("txtKill");
+        if (Object.keys(actualEnnemiStatut).length === 0) {
+            boiteDialogue("txtVictory")
+            setTimeout(function endFight() {
+                
+                while (ImToDel.length > 0) {
+                    
+                    imDoor[ImToDel[0]].remove()
+                    ImToDel[0].shift()
+                }
+                imDoor.btnBack.style.display = "block";
+                opInventaire.style.display = "block";
+                imDoor.allDoor.style.display = "block";
+                imDoor.fightDoor.remove();
+            },1000)
+            
         }
     }
 }
@@ -494,7 +473,7 @@ function updateRenderFight(type, nomEnnemi, div, ImEnn) {
     imEnnemi.id = ImEnn;
     buttonDoorDiv[div].appendChild(imEnnemi);
     imDoor[ImEnn] = document.getElementById(ImEnn);
-    buttonDoorDiv[div].addEventListener("click", () =>
+    imDoor[ImEnn].addEventListener("click", () =>
         attaque(nomEnnemi, type, div, ImEnn),
     );
 }
@@ -583,25 +562,17 @@ const serverResponse = {
     },
 };
 
-async function getData() {
-    const res = await fetch("http://localhost:8000/all-data", {
-        method: "GET",
-    });
-    const json = await res.json();
-    dataStat = json;
-    return dataStat;
-}
-getData()
-    .then((data) => (dataStat = data))
-    .catch((_) => (dataStat = serverResponse));
-
+const opInventaire = document.getElementById("Inventaire");
 opInventaire.addEventListener("click", () => savePath());
 
 async function savePath() {
+    
     const donjonpath = {
         room,
         roomIAm,
+        dataStat
     };
+    console.log({donjonpath})
     const res = await fetch("http://localhost:8000/all-data", {
         method: "PUT",
         headers: {
@@ -612,3 +583,17 @@ async function savePath() {
     const json = await res.json();
     window.location.href = "index.html";
 }
+
+async function getData() {
+    
+    const res = await fetch("http://localhost:8000/all-data", {
+        method: "GET",
+    });
+    const json = await res.json();
+    dataStat = json;
+    console.log(dataStat)
+    return dataStat;
+}
+getData()
+    // .then((data) => (dataStat = data))
+    // .catch((_) => (dataStat = serverResponse));

@@ -11,24 +11,24 @@ const statPerso = {
     LVL: 0,
 };
 const arme = {
-    mainGauche: () => 1 + 1 * statPerso.Dexterite,
-    mainDroite: () => 1 + 1 * statPerso.Force,
-    epeeDepart: () => 4 + (3 * statPerso.Force + 2 * statPerso.Dexterite),
-    hacheDepart: () => 5 + 4 * statPerso.Force,
-    arcDepart: () => 7 + 1 * statPerso.Force + 3 * statPerso.Dexterite,
-    batonDepart: () => 7 + 1 * statPerso.Force + 2 * statPerso.Intelligence,
+    mainGauche: { degats : () => 1 + 1 * statPerso.Dexterite, IMG : "image/mainGauche.jpg" },
+    mainDroite: { degats : () => 1 + 1 * statPerso.Force, IMG : "image/mainDroite.jpg"},
+    epeeDepart: { degats : () => 4 + (3 * statPerso.Force + 2 * statPerso.Dexterite), IMG : "image/epeeDepart.png"},
+    hacheDepart: { degats : () => 5 + 4 * statPerso.Force, IMG : "image/hacheDepart.jpg"},
+    arcDepart: { degats : () => 7 + 1 * statPerso.Force + 3 * statPerso.Dexterite, IMG : "image/arcDepart.png"},
+    batonDepart: { degats : () => 7 + 1 * statPerso.Force + 2 * statPerso.Intelligence, IMG : "image/batonDepart.avif"},
 };
 const Chest = {
-    Chest: 0,
-    armureEnCuir: 10,
-    armureEnFer: 20,
+    Chest: { def: 0, IMG:"image/Torse.jpg" },
+    armureEnCuir: {def : 10, IMG: "image/armureEnCuir.jpg" },
+    armureEnFer: {def : 20, IMG: "image/armureEnFer.jpg"},
     armureEnCuivre: 15,
     armureEnPeau: 5,
     armureEnTissu: 7,
 };
 const Head = {
-    Head: 0,
-    casqueEnCuir: 10,
+    Head: {def : 0, IMG : "image/Tete.jpg"},
+    casqueEnCuir: {def: 10, IMG : "image/casqueEnCuir.webp"},
     casqueEnFer: 20,
     casqueEnCuivre: 15,
     casqueEnPeau: 5,
@@ -62,10 +62,10 @@ const equipement = {
 
 const stats = {
     get LeftHand() {
-        return arme[equipement.LeftHand](); // Appelle la fonction de calcul dynamique
+        return arme[equipement.LeftHand].degats(); // Appelle la fonction de calcul dynamique
     },
     get RightHand() {
-        return arme[equipement.RightHand](); // Appelle la fonction de calcul dynamique
+        return arme[equipement.RightHand].degats(); // Appelle la fonction de calcul dynamique
     },
     get Def() {
         return Chest[equipement.Chest] + Head[equipement.Head];
@@ -321,19 +321,9 @@ elements.anneauDexterite.addEventListener("click", () =>
 );
 elements.FermerInv.addEventListener("click", () => FermerInv());
 
-// const button = document.createElement("button");
-// const text = "read stats ";
-// button.textContent = text;
-// button.addEventListener("click", async function () {
-//     const res = await fetch("http://localhost:8000/all-data", {
-//         method: "GET",
-//     });
-//     const json = await res.json();
-//     button.textContent = text + json.stats;
-// });
-// document.body.appendChild(button);
-
+let recData = {};
 async function FermerInv() {
+    
     const DonneeStatPerso = {
         mainGauche: stats.LeftHand,
         mainDroite: stats.RightHand,
@@ -352,16 +342,54 @@ async function FermerInv() {
     const json = await res.json();
     window.location.href = "Donjon.html";
 }
-let recData = {};
-document.addEventListener("DOMContentLoaded", async function () {
     async function getData() {
+        
         const res = await fetch("http://localhost:8000/all-data", {
             method: "GET",
         });
         const json = await res.json();
         recData = json;
+        console.log(recData)
+        replaceStat ()
+        return recData
     }
-    recData = await getData();
+    function replaceStat () {
+        // statPerso.Force = recData.donjonpath.dataStat.DonneeStatPerso.statPerso.Force
+        // statPerso.Dexterite = recData.donjonpath.dataStat.DonneeStatPerso.statPerso.Dexterite
+        // statPerso.Vitalite
+        // statPerso.Volonte
+        // statPerso.Intelligence
+        // statPerso.Point
+        // statPerso.HP
+        // statPerso.MP
+        // statPerso.XP
+        // statPerso.LVL
+        Object.entries(recData.donjonpath.dataStat.DonneeStatPerso.statPerso).forEach(([key, value]) => {
+            if (statPerso[key] !== undefined) {
+                statPerso[key] = value; 
+            }
+        });
+        Object.entries(recData.donjonpath.dataStat.DonneeStatPerso.equipement).forEach(([key, value]) => {
+            if (equipement[key] !== undefined) {
+                equipement[key] = value
+            }
+        });
+        Object.entries(recData.donjonpath.dataStat.DonneeStatPerso.inventaire).forEach(([key, value]) => {
+            if (inventaire[key] !== undefined) {
+                inventaire[key].push(value)
+            }
+        });
+        update()
+        debugger
+    }
+    function VisualRender () {
+        Object.entries(equipement).forEach(([key, value]) => {
+            if (arme[key] === equipement[value]) {
+                const image = document.createElement("img")
+                image.src = arme[key].IMG
 
-    console.log(recData);
-});
+            }
+        })
+    }
+getData();
+console.log("tout",recData)
