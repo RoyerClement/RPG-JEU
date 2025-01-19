@@ -19,29 +19,97 @@ const arme = {
     arcDepart: { degats : () => 7 + 1 * statPerso.Force + 3 * statPerso.Dexterite, IMG : "image/arcDepart.png"},
     batonDepart: { degats : () => 7 + 1 * statPerso.Force + 2 * statPerso.Intelligence, IMG : "image/batonDepart.avif"},
 }
-const Chest = {
-    Chest: { def: 0, IMG:"image/Torse.jpg", type:"Chest" },
-    armureEnCuir: {def : 10, IMG: "image/armureEnCuir.jpg", type:"Chest" },
-    armureEnFer: {def : 20, IMG: "image/armureEnFer.jpg", type:"Chest"},
-    armureEnCuivre: 15,
-    armureEnPeau: 5,
-    armureEnTissu: 7,
-}
-const Head = {
-    Head: {def : 0, IMG : "image/Tete.jpg"},
-    casqueEnCuir: {def: 10, IMG : "image/casqueEnCuir.webp"},
-    casqueEnFer: 20,
-    casqueEnCuivre: 15,
-    casqueEnPeau: 5,
-    casqueEnTissu: 7,
-}
-const Ring = {
-    Ring: null,
-    anneauForce: {effet : false, IMG : "image/anneauForce.jpg"},
-    anneauDexterite: {effet : false, IMG : "image/anneauForce.jpg"},
-}
-const Neck = {
-    Neck: null,
+const gear = {
+    LeftHand : {
+        mainGauche: { 
+            degats : () => 1 + 1 * statPerso.Dexterite, 
+            IMG : "image/mainGauche.jpg",
+            class : "depart",
+        },
+        epeeDepart: { 
+            degats : () => 4 + (3 * statPerso.Force + 2 * statPerso.Dexterite), 
+            IMG : "image/epeeDepart.png",
+            class : "depart"
+        },
+        hacheDepart: { 
+            degats : () => 5 + 4 * statPerso.Force, 
+            IMG : "image/hacheDepart.jpg",
+            class : "depart",
+        },
+        arcDepart: { 
+            degats : () => 7 + 1 * statPerso.Force + 3 * statPerso.Dexterite, 
+            IMG : "image/arcDepart.png",
+            class : "depart"
+        },
+        batonDepart: { 
+            degats : () => 7 + 1 * statPerso.Force + 2 * statPerso.Intelligence, 
+            IMG : "image/batonDepart.avif",
+            class : "depart",
+        },
+    },
+    RightHand : {
+        mainDroite: { 
+            degats : () => 1 + 1 * statPerso.Force, 
+            IMG : "image/mainDroite.jpg",
+            class : "depart",
+        },
+        epeeDepart: { 
+            degats : () => 4 + (3 * statPerso.Force + 2 * statPerso.Dexterite), 
+            IMG : "image/epeeDepart.png",
+            class : "depart"
+        },
+        hacheDepart: { 
+            degats : () => 5 + 4 * statPerso.Force, 
+            IMG : "image/hacheDepart.jpg",
+            class : "depart",
+        },
+        arcDepart: { 
+            degats : () => 7 + 1 * statPerso.Force + 3 * statPerso.Dexterite, 
+            IMG : "image/arcDepart.png",
+            class : "depart"
+        },
+        batonDepart: { 
+            degats : () => 7 + 1 * statPerso.Force + 2 * statPerso.Intelligence, 
+            IMG : "image/batonDepart.avif",
+            class : "depart",
+        }
+    },
+    Chest : {
+        Chest: { def: 0, IMG:"image/Torse.jpg",},
+        armureEnCuir: {def : 10, IMG: "image/armureEnCuir.jpg", },
+        armureEnFer: {def : 20, IMG: "image/armureEnFer.jpg", },
+        armureEnCuivre: 15,
+        armureEnPeau: 5,
+        armureEnTissu: 7,
+    },
+    Head : {
+        Head: {def : 0, IMG : "image/Tete.jpg"},
+        casqueEnCuir: {def: 10, IMG : "image/casqueEnCuir.webp"},
+        casqueEnFer: 20,
+        casqueEnCuivre: 15,
+        casqueEnPeau: 5,
+        casqueEnTissu: 7,
+    },
+    Ring : {
+        Ring: {
+            effet : null, 
+            IMG : "image/EmplacementAmulette.png"
+        },
+        anneauForce: {
+            effet : false, 
+            IMG : "image/anneauForce.jpg"
+        },
+        anneauDexterite: {
+            effet : false, 
+            IMG : "image/anneauForce.jpg"
+        },
+    },
+    Neck : {
+        Neck: {
+            effet: null, 
+            IMG : "image/EmplacementAmulette.png"
+        },
+    }
 }
 
 const Buff = {
@@ -69,15 +137,15 @@ const stats = {
         return arme[equipement.RightHand].degats(); // Appelle la fonction de calcul dynamique
     },
     get Def() {
-        return Chest[equipement.Chest].def + Head[equipement.Head].def;
+        return gear.Chest[equipement.Chest].def + gear.Head[equipement.Head].def;
     },
 };
 
 const inventaire = {
-    arme: [],
-    Chest: [],
-    Head: [],
-    Ring: [],
+    LeftHand: [],
+    Chest: ["armureEnFer", "armureEnCuir"],
+    Head: ["casqueEnCuir"],
+    Ring: ["anneauForce", "anneauDexterite"],
     Neck: [],
     Object: [],
 };
@@ -124,6 +192,296 @@ function addStat(stat) {
     }
 }
 
+
+let depart = false
+// CREATION DU HTML
+// CREATION DES STATS
+const statDiv = document.createElement("div");
+statDiv.id = "stat";
+
+const statsHTML = [
+    { id: "statFor", label: "Force", buttonId: "btnFor" },
+    { id: "statDex", label: "Dextérité", buttonId: "btnDex+" },
+    { id: "statVit", label: "Vitalité", buttonId: "btnVit+" },
+    { id: "statVol", label: "Volonté", buttonId: "btnVol+" },
+    { id: "statInt", label: "Intelligence", buttonId: "btnInt+" },
+];
+
+statsHTML.forEach(stat => {
+    const statSpan = document.createElement("span");
+    statSpan.id = stat.id;
+    statSpan.textContent = `${stat.label} : 0`;
+
+    const button = document.createElement("button");
+    button.id = stat.buttonId;
+    button.className = "btnStat";
+    button.textContent = "+";
+
+    statDiv.appendChild(statSpan);
+    statDiv.appendChild(button);
+
+    statDiv.appendChild(document.createElement("br"));
+    statDiv.appendChild(document.createElement("br"));
+});
+
+const pointsSpan = document.createElement("span");
+pointsSpan.id = "point";
+pointsSpan.textContent = "Point(s) disponible(s) : 10";
+statDiv.appendChild(pointsSpan);
+
+document.body.appendChild(statDiv);
+
+//CREATION DES INFOS DU PERSONNAGE : 
+const infoDiv = document.createElement("div");
+infoDiv.id = "info";
+
+const hpSpan = document.createElement("span");
+hpSpan.id = "hp";
+hpSpan.textContent = "Points de vie : 50/50";
+infoDiv.appendChild(hpSpan);
+infoDiv.appendChild(document.createElement("br"));
+
+const mpSpan = document.createElement("span");
+mpSpan.id = "mp";
+mpSpan.textContent = "Points de mana : 30/30";
+infoDiv.appendChild(mpSpan);
+infoDiv.appendChild(document.createElement("br"));
+
+infoDiv.appendChild(document.createElement("br"));
+
+const damageTitle = document.createElement("p");
+damageTitle.textContent = "Dégâts";
+infoDiv.appendChild(damageTitle);
+
+const degatsArmeG = document.createElement("span");
+degatsArmeG.id = "degatsArmeG";
+degatsArmeG.textContent = "Arme gauche : 1";
+infoDiv.appendChild(degatsArmeG);
+infoDiv.appendChild(document.createElement("br"));
+
+const degatsArmeD = document.createElement("span");
+degatsArmeD.id = "degatsArmeD";
+degatsArmeD.textContent = "Arme droite : 1";
+infoDiv.appendChild(degatsArmeD);
+infoDiv.appendChild(document.createElement("br"));
+
+const defenseSpan = document.createElement("span");
+defenseSpan.id = "defense";
+defenseSpan.textContent = "Défense : 0";
+infoDiv.appendChild(defenseSpan);
+infoDiv.appendChild(document.createElement("br"));
+
+infoDiv.appendChild(document.createElement("br"));
+
+const experienceSpan = document.createElement("span");
+experienceSpan.id = "experience";
+experienceSpan.textContent = "Expérience : 0/10";
+infoDiv.appendChild(experienceSpan);
+
+document.body.appendChild(infoDiv);
+//CREATION EQUIPEMENT
+
+const equipementDiv = document.createElement("div");
+equipementDiv.id = "equipement";
+
+const equipementTitle = document.createElement("span");
+equipementTitle.textContent = "Equipement";
+equipementDiv.appendChild(equipementTitle);
+
+const equipements = [
+    {
+        id: "LeftHand",
+        imgSrc: "image/mainGauche.jpg",
+        imgId: "mainGauche",
+        title: "Arme de base",
+        class: "image"
+    },
+    {
+        id: "RightHand",
+        imgSrc: "image/mainDroite.jpg",
+        imgId: "mainDroite",
+        title: "Arme de base",
+        class: "image"
+    },
+    {
+        id: "Chest",
+        imgSrc: "image/Torse.jpg",
+        imgId: "ChestImage",
+        title: "Equipez vous d'armure pour subir moins de dégats",
+        class: "image"
+    },
+    {
+        id: "Head",
+        imgSrc: "image/Tete.jpg",
+        imgId: "HeadImage",
+        title: "Equipez vous d'armure pour subir moins de dégats",
+        class: "image"
+    },
+    {
+        id: "Ring",
+        imgSrc: "image/EmplacementAmulette.png",
+        imgId: "RingImage",
+        title: "Ici pour vous équipez de bijou",
+        class: "image"
+    },
+    {
+        id: "Neck",
+        imgSrc: "image/EmplacementAmulette.png",
+        imgId: "NeckImage",
+        title: "Ici pour vous équipez de bijou",
+        class: "image"
+    },
+];
+
+equipements.forEach(equipement => {
+
+    const equipementContainer = document.createElement("div");
+    equipementContainer.id = equipement.id;
+
+    const img = document.createElement("img");
+    img.src = equipement.imgSrc;
+    img.id = equipement.imgId;
+    img.className = equipement.class
+    img.title = equipement.title;
+    img.width = 100;
+    img.height = 108;
+
+    equipementContainer.appendChild(img);
+
+    equipementDiv.appendChild(equipementContainer);
+});
+
+document.body.appendChild(equipementDiv);
+
+// CREATION INVENTAIRE 
+
+const inventaireDiv = document.createElement("div");
+inventaireDiv.id = "inventaire";
+
+const inventaireTitle = document.createElement("span");
+inventaireTitle.textContent = "Inventaire";
+inventaireDiv.appendChild(inventaireTitle);
+
+const equipementSpan = document.createElement("span");
+
+const equipementDansInventaire = [{
+    id: "armureEnCuir",
+    class: "image",
+    imgSrc: "image/armureEnCuir.jpg",
+    title: "Armure simple en cuir, protège relativement",
+},
+{
+    id: "armureEnFer",
+    class: "image",
+    imgSrc: "image/armureEnFer.jpg",
+    title: "Armure en fer, protège bien",
+},
+{
+    id: "casqueEnCuir",
+    class: "image",
+    imgSrc: "image/casqueEnCuir.webp",
+    title: "Casque en cuir, protège relativement",
+},
+{
+    id: "anneauForce",
+    class: "image",
+    imgSrc: "image/anneauForce.jpg",
+    title: "Anneau qui vous rend plus fort",
+},
+{
+    id: "anneauDexterite",
+    class: "image",
+    imgSrc: "image/anneauForce.jpg",
+    title: "Anneau qui vous rend plus agile",
+}]
+equipementDansInventaire.forEach(equipement => {
+
+    const equipementDiv = document.createElement("div");
+    equipementDiv.id = equipement.id;
+    
+
+    const equipementImg = document.createElement("img");
+    equipementImg.src = equipement.imgSrc;
+    equipementImg.title = equipement.title;
+    equipementImg.className = equipement.class;
+    equipementImg.width = 100;
+    equipementImg.height = 108;
+
+    equipementDiv.appendChild(equipementImg);
+
+    equipementSpan.appendChild(equipementDiv);
+});
+inventaireDiv.appendChild(equipementSpan)
+
+document.body.appendChild(inventaireDiv);
+
+//CREATION SECTION ARME DE DEPART
+if (!depart) {
+const armeDepartDiv = document.createElement("div");
+armeDepartDiv.id = "armeDepart";
+
+const armeTitle = document.createElement("p");
+armeTitle.textContent = "Choisissez votre arme";
+armeDepartDiv.appendChild(armeTitle);
+
+const equipementSpan = document.createElement("span");
+
+const equipementDepart = [
+    {
+        id: "epeeDepart",
+        class: "depart",
+        imgSrc: "image/epeeDepart.png",
+        title: "Epee simple || Inflige plus de dégats avec votre force et dexterité",
+    },
+    {
+        id: "hacheDepart",
+        class: "depart",
+        imgSrc: "image/hacheDepart.jpg",
+        title: "Hache simple || Inflige plus de dégats avec votre force",
+    },
+    {
+        id: "arcDepart",
+        class: "depart",
+        imgSrc: "image/arcDepart.png",
+        title: "Arc simple || Inflige plus de dégats avec votre force et dexterité",
+    },
+    {
+        id: "batonDepart",
+        class: "depart",
+        imgSrc: "image/batonDepart.avif",
+        title: "Baton simple || Inflige plus de dégats avec votre force et intelligence",
+    },
+    
+];
+
+equipementDepart.forEach(equipement => {
+
+    const equipementDiv = document.createElement("div");
+    equipementDiv.id = equipement.id;
+    equipementDiv.className = equipement.class;
+
+    const equipementImg = document.createElement("img");
+    equipementImg.src = equipement.imgSrc;
+    equipementImg.title = equipement.title;
+    equipementImg.width = 100;
+    equipementImg.height = 108;
+
+    equipementDiv.appendChild(equipementImg);
+
+    equipementSpan.appendChild(equipementDiv);
+});
+
+armeDepartDiv.appendChild(equipementSpan);
+
+document.body.appendChild(armeDepartDiv);
+}
+//CREATION BOUTON FERMER INVENTAIRE
+const fermerButton = document.createElement("button");
+fermerButton.id = "FermerInv";
+fermerButton.textContent = "Fermer l'inventaire";
+
+document.body.appendChild(fermerButton);
+
 document
     .getElementById("btnFor")
     .addEventListener("click", () => addStat("Force"));
@@ -141,8 +499,7 @@ document
     .addEventListener("click", () => addStat("Intelligence"));
 
 const elements = {
-    mainGauche: document.getElementById("mainGauche"),
-    mainDroite: document.getElementById("mainDroite"),
+    
     epeeDepart: document.getElementById("epeeDepart"),
     hacheDepart: document.getElementById("hacheDepart"),
     arcDepart: document.getElementById("arcDepart"),
@@ -152,26 +509,44 @@ const elements = {
     casqueEnCuir: document.getElementById("casqueEnCuir"),
     anneauForce: document.getElementById("anneauForce"),
     anneauDexterite: document.getElementById("anneauDexterite"),
-    mainGaucheBase: document.getElementById("mainGaucheBase"),
-    mainDroiteBase: document.getElementById("mainDroiteBase"),
-    baseChest: document.getElementById("baseChest"),
-    baseHead: document.getElementById("baseHead"),
-    baseRing : document.getElementById("baseRing"),
-    baseNeck: document.getElementById("baseNeck"),
+    mainGauche: document.getElementById("mainGauche"),
+    mainDroite: document.getElementById("mainDroite"),
+    Chest: document.getElementById("ChestImage"),
+    Head: document.getElementById("HeadImage"),
+    Ring : document.getElementById("RingImage"),
+    Neck: document.getElementById("NeckImage"),
     FermerInv: document.getElementById("FermerInv"),
+    div : {
+        Chest: document.getElementById("Chest"),
+        Head: document.getElementById("Head"),
+        Ring: document.getElementById("Ring"),
+        Neck: document.getElementById("Neck"),
+        LeftHand: document.getElementById("LeftHand"),
+        RightHand: document.getElementById("RightHand"),
+    },
+    depart : document.querySelectorAll(".depart"),
+    allPicture: document.querySelectorAll(".image"),
+    inventaire : document.getElementById("inventaire")
 };
-const transf_mainGauche = document.getElementById("mainGauche");
-const transf_mainDroite = document.getElementById("mainDroite");
-const transf_Object = {
-    Chest: document.getElementById("Chest"),
-    Head: document.getElementById("Head"),
-    Ring: document.getElementById("Ring"),
-    Neck: document.getElementById("Neck"),
-};
-const transf_inventaire = document.getElementById("inventaire");
 
-function takeWeapon(name, type) {
-    const element = document.getElementById(name);
+function whatObject (value, key, valueImage) {
+    if (key === "arme") {
+        key = "LeftHand"
+    }
+    if (key !== 'LeftHand' && key !== "RightHand") {
+        takeObject(value, key, valueImage)
+    }
+    else  {
+        takeWeapon(value, key, valueImage)
+    }
+}
+
+function takeWeapon(name, type, genre) {
+    if (genre === "depart") {
+        depart = true
+        suppDepart()
+
+    }
     // En premier c'est pour retirer une arme des mains.
     // si l'arme n'est pas dans l'inventaire & est dans main gauche ou main droite
     if (
@@ -180,7 +555,6 @@ function takeWeapon(name, type) {
     ) {
         //je la met dans l'inventaire
         inventaire[type].push(name);
-        transf_inventaire.appendChild(elements[name]);
         //Si c'est la main gauche je la retire de la main gauche
         if (equipement.LeftHand === name) {
             equipement.LeftHand = "mainGauche";
@@ -192,7 +566,6 @@ function takeWeapon(name, type) {
         // Si l'objet n'est pas dans l'inventaire, je la met dans l'inventaire
     } else if (!inventaire[type].includes(name)) {
         inventaire[type].push(name);
-        transf_inventaire.appendChild(elements[name]);
     } // En Troisieme c'est pour equiper une arme de l'inventaire dans mon equipement
     // Si l'arme est dans linventaire je l'equipe
     else if (inventaire[type].includes(name)) {
@@ -208,30 +581,30 @@ function takeWeapon(name, type) {
         if (equipement.LeftHand !== "mainGauche") {
             if (equipement.RightHand !== "mainDroite") {
                 inventaire[type].push(equipement.LeftHand);
-                transf_inventaire.appendChild(elements[equipement.LeftHand]);
                 equipement.LeftHand = name;
-                transf_mainGauche.appendChild(elements[name]);
             } else {
                 equipement.RightHand = name;
-                transf_mainDroite.appendChild(elements[name]);
             }
         } else {
             equipement.LeftHand = name;
-            transf_mainGauche.appendChild(elements[name]);
         }
     }
     update();
-    checkArmePicture();
+    VisualRender()
 }
-
+function suppDepart () {
+    
+    if (depart === true) {
+        
+        elements.depart.forEach(element => element.remove());
+    }
+}
 function takeObject(name, type, baseType) {
-    const element = document.getElementById(name);
     // En premier c'est pour retirer un objet de l'equipement.
     // si l'objet n'est pas dans l'inventaire & est dans l'equipement
     if (!inventaire[type].includes(name) && equipement[type] === name) {
         //je la met dans l'inventaire
         inventaire[type].push(name);
-        transf_inventaire.appendChild(elements[name]);
         //et je la retire de l'equipement
         equipement[type] = type;
         //Si l'equipement est un bijou alors j'enleve le buff de ce bijou
@@ -242,7 +615,6 @@ function takeObject(name, type, baseType) {
         // Si l'objet n'est pas dans l'inventaire, je la met dans l'inventaire
     } else if (!inventaire[type].includes(name)) {
         inventaire[type].push(name);
-        transf_inventaire.appendChild(elements[name]);
     } // En Troisieme c'est pour equiper un objet de l'inventaire dans mon equipement
     // Si l'objet est dans linventaire je l'equipe
     else if (inventaire[type].includes(name)) {
@@ -255,9 +627,7 @@ function takeObject(name, type, baseType) {
                     Debuff[equipement[type]]();
                 }
                 inventaire[type].push(equipement[type]);
-                transf_inventaire.appendChild(elements[equipement[type]]);
                 equipement[type] = name;
-                transf_Object[type].appendChild(elements[name]);
                 if (type === "Ring" || type === "Neck") {
                     Buff[name]();
                 }
@@ -266,65 +636,40 @@ function takeObject(name, type, baseType) {
                 if (type === "Ring" || type === "Neck") {
                     Buff[name]();
                 }
-                transf_Object[type].appendChild(elements[name]);
             }
         }
     }
     update();
-    checkEquipementPicture(type, baseType);
+    VisualRender();
 }
 
-function checkArmePicture() {
-    const imageMainG = document.getElementById("mainGaucheBase");
-    const imageMainD = document.getElementById("mainDroiteBase");
-    if (equipement.LeftHand === "mainGauche") {
-        imageMainG.style.display = "block";
-    }
-    if (equipement.RightHand === "mainDroite") {
-        imageMainD.style.display = "block";
-    }
-    if (equipement.LeftHand !== "mainGauche") {
-        imageMainG.style.display = "none";
-    }
-    if (equipement.RightHand !== "mainDroite") {
-        imageMainD.style.display = "none";
-    }
-}
-function checkEquipementPicture(type, baseType) {
-    const element = document.getElementById(baseType);
-    if (equipement[type] === type) {
-        element.style.display = "block";
-    } else {
-        element.style.display = "none";
-    }
-}
 
 elements.epeeDepart.addEventListener("click", () =>
-    takeWeapon("epeeDepart", "arme"),
+    takeWeapon("epeeDepart", "LeftHand", "depart"),
 );
 elements.hacheDepart.addEventListener("click", () =>
-    takeWeapon("hacheDepart", "arme"),
+    takeWeapon("hacheDepart", "LeftHand", "depart"),
 );
 elements.arcDepart.addEventListener("click", () =>
-    takeWeapon("arcDepart", "arme"),
+    takeWeapon("arcDepart", "LeftHand", "depart"),
 );
 elements.batonDepart.addEventListener("click", () =>
-    takeWeapon("batonDepart", "arme"),
+    takeWeapon("batonDepart", "LeftHand", "depart"),
 );
 elements.armureEnCuir.addEventListener("click", () =>
-    takeObject("armureEnCuir", "Chest", "baseChest"),
+    takeObject("armureEnCuir", "Chest", "ChestImage"),
 );
 elements.armureEnFer.addEventListener("click", () =>
-    takeObject("armureEnFer", "Chest", "baseChest"),
+    takeObject("armureEnFer", "Chest", "ChestImage"),
 );
 elements.casqueEnCuir.addEventListener("click", () =>
-    takeObject("casqueEnCuir", "Head", "baseHead"),
+    takeObject("casqueEnCuir", "Head", "HeadImage"),
 );
 elements.anneauForce.addEventListener("click", () =>
-    takeObject("anneauForce", "Ring", "baseRing"),
+    takeObject("anneauForce", "Ring", "RingImage"),
 );
 elements.anneauDexterite.addEventListener("click", () =>
-    takeObject("anneauDexterite", "Ring", "baseRing"),
+    takeObject("anneauDexterite", "Ring", "RingImage"),
 );
 elements.FermerInv.addEventListener("click", () => FermerInv());
 
@@ -338,6 +683,7 @@ async function FermerInv() {
         equipement,
         inventaire,
         statPerso,
+        depart
     };
     const res = await fetch("http://localhost:8000/all-data", {
         method: "PUT",
@@ -356,21 +702,10 @@ async function FermerInv() {
         });
         const json = await res.json();
         recData = json;
-        console.log(recData)
         replaceStat ()
         return recData
     }
     function replaceStat () {
-        // statPerso.Force = recData.donjonpath.dataStat.DonneeStatPerso.statPerso.Force
-        // statPerso.Dexterite = recData.donjonpath.dataStat.DonneeStatPerso.statPerso.Dexterite
-        // statPerso.Vitalite
-        // statPerso.Volonte
-        // statPerso.Intelligence
-        // statPerso.Point
-        // statPerso.HP
-        // statPerso.MP
-        // statPerso.XP
-        // statPerso.LVL
         Object.entries(recData.donjonpath.dataStat.DonneeStatPerso.statPerso).forEach(([key, value]) => {
             if (statPerso[key] !== undefined) {
                 statPerso[key] = value; 
@@ -383,85 +718,57 @@ async function FermerInv() {
         });
         Object.entries(recData.donjonpath.dataStat.DonneeStatPerso.inventaire).forEach(([key, value]) => {
             if (inventaire[key] !== undefined) {
-                inventaire[key].push(value)
+                inventaire[key] = value
             }
         });
+        depart = recData.donjonpath.dataStat.DonneeStatPerso.depart
+        suppDepart()
         update()
-        VisualRender()
+        VisualRender()  
     }
     function delAllGearImage () {
-        if (equipement.Chest !== "Chest")
-        {elements.baseChest.remove()}
-        if (equipement.Head !== "Head")
-        {elements.baseHead.remove()}
-        if (equipement.Ring !== "Ring")
-        {elements.baseRing.remove()}
-        if (equipement.Neck !== "Neck")
-        elements.baseNeck.remove()
-        if (equipement.LeftHand !== "mainGauche")
-        {elements.mainGaucheBase.remove()}
-        if (equipement.RightHand !== "mainDroite")
-        {elements.mainDroiteBase.remove()}
+        const allDelete = document.querySelectorAll(".image")
+        allDelete.forEach( element => element.remove())
     }
     function VisualRender () {
-        debugger
         delAllGearImage() 
         Object.entries(equipement).forEach(([key, value]) => {
-            if (equipement.LeftHand[value] === arme[key]) {
+            if (equipement[key] !== undefined){
                 const image = document.createElement("img")
-                image.src = arme[value].IMG
+                image.src = gear[key][value].IMG
                 image.width = "100"
                 image.height = "108"
                 image.id = value
-                transf_mainGauche.appendChild(image);
-                elements[value].addEventListener("click", takeWeapon(value , "arme"))
-            }
-            if (equipement.RightHand[value] === arme[key]) {
-                const image = document.createElement("img")
-                image.src = arme[value].IMG
-                image.width = "100"
-                image.height = "108"
-                image.id = value
-                transf_mainDroite.appendChild(image);
-                elements[value].addEventListener("click", takeWeapon(value , "arme"))
-            }
-            if (equipement[value] === Chest[key]) {
-                const image = document.createElement("img")
-                image.src = Chest[value].IMG
-                image.width = "100"
-                image.height = "108"
-                image.id = value
-                transf_Object.Chest.appendChild(image);
-                elements[value].addEventListener("click", takeObject(value , "Chest", "baseChest"))
-            }
-            if (equipement[value] === Head[key]) {
-                const image = document.createElement("img")
-                image.src = Head[value].IMG
-                image.width = "100"
-                image.height = "108"
-                image.id = value
-                transf_Object.Head.appendChild(image);
-                elements[value].addEventListener("click", takeObject(value , "Head", "baseHead"))
-            }
-            if (equipement[value] === Ring[key]) {
-                const image = document.createElement("img")
-                image.src = Ring[value].IMG
-                image.width = "100"
-                image.height = "108"
-                image.id = value
-                transf_Object.Ring.appendChild(image);
-                elements[value].addEventListener("click", takeObject(value , "Ring", "baseRing"))
-            }
-            if (equipement[value] === Neck[key]) {
-                const image = document.createElement("img")
-                image.src = Neck[value].IMG
-                image.width = "100"
-                image.height = "108"
-                image.id = value
-                transf_Object.Neck.appendChild(image);
-                elements[value].addEventListener("click", takeObject(value , "Neck", "baseNeck"))
+                image.className = "image"
+                elements.div[key].appendChild(image);
+                elements[value].addEventListener("click", () => whatObject(value , key , [value+"Image"]))
+                console.log([elements[value]])
             }
         })
-    }
-getData();
-console.log("tout",recData)
+        Object.entries(inventaire).forEach(([key, items]) => {
+            // Parcourir chaque item dans la catégorie
+            items.forEach((value) => {
+                // Vérifier si gear contient une correspondance pour key et value
+                if (gear[key] && gear[key][value]) {
+                    // Créer une image pour l'objet trouvé
+                    const image = document.createElement("img")
+                    image.src = gear[key][value].IMG 
+                    image.width = 100
+                    image.height = 108
+                    image.className = "image"
+                    image.id = value
+        
+                    // Ajouter l'image à l'inventaire dans le DOM
+                    elements.inventaire.appendChild(image);
+        
+                    // Ajouter un gestionnaire d'événement pour cet objet
+                    image.addEventListener("click", () => whatObject(value, key, [`${value}Image`]));
+        
+                    console.log(`Ajouté : ${value} (${key}) à l'inventaire visuel`);
+                }
+            });
+        });
+        }
+
+    suppDepart()
+getData()
