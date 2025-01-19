@@ -290,42 +290,42 @@ equipementDiv.appendChild(equipementTitle);
 
 const equipements = [
     {
-        id: "LeftHand",
+        id: "DivLeftHand",
         imgSrc: "image/mainGauche.jpg",
         imgId: "mainGauche",
         title: "Arme de base",
         class: "image"
     },
     {
-        id: "RightHand",
+        id: "DivRightHand",
         imgSrc: "image/mainDroite.jpg",
         imgId: "mainDroite",
         title: "Arme de base",
         class: "image"
     },
     {
-        id: "Chest",
+        id: "DivChest",
         imgSrc: "image/Torse.jpg",
         imgId: "ChestImage",
         title: "Equipez vous d'armure pour subir moins de dégats",
         class: "image"
     },
     {
-        id: "Head",
+        id: "DivHead",
         imgSrc: "image/Tete.jpg",
         imgId: "HeadImage",
         title: "Equipez vous d'armure pour subir moins de dégats",
         class: "image"
     },
     {
-        id: "Ring",
+        id: "DivRing",
         imgSrc: "image/EmplacementAmulette.png",
         imgId: "RingImage",
         title: "Ici pour vous équipez de bijou",
         class: "image"
     },
     {
-        id: "Neck",
+        id: "DivNeck",
         imgSrc: "image/EmplacementAmulette.png",
         imgId: "NeckImage",
         title: "Ici pour vous équipez de bijou",
@@ -517,12 +517,13 @@ const elements = {
     Neck: document.getElementById("NeckImage"),
     FermerInv: document.getElementById("FermerInv"),
     div : {
-        Chest: document.getElementById("Chest"),
-        Head: document.getElementById("Head"),
-        Ring: document.getElementById("Ring"),
-        Neck: document.getElementById("Neck"),
-        LeftHand: document.getElementById("LeftHand"),
-        RightHand: document.getElementById("RightHand"),
+        Chest: document.getElementById("DivChest"),
+        Head: document.getElementById("DivHead"),
+        Ring: document.getElementById("DivRing"),
+        Neck: document.getElementById("DivNeck"),
+        LeftHand: document.getElementById("DivLeftHand"),
+        RightHand: document.getElementById("DivRightHand"),
+        armeDepart: document.getElementById("armeDepart")
     },
     depart : document.querySelectorAll(".depart"),
     allPicture: document.querySelectorAll(".image"),
@@ -595,7 +596,7 @@ function takeWeapon(name, type, genre) {
 function suppDepart () {
     
     if (depart === true) {
-        
+        elements.div.armeDepart.remove()
         elements.depart.forEach(element => element.remove());
     }
 }
@@ -741,30 +742,27 @@ async function FermerInv() {
                 image.id = value
                 image.className = "image"
                 elements.div[key].appendChild(image);
-                elements[value].addEventListener("click", () => whatObject(value , key , [value+"Image"]))
-                console.log([elements[value]])
+                const listeImage = ["mainGauche","mainDroite","Chest","Head","Ring","Neck",]
+            if (!listeImage.includes(value)) {
+                image.addEventListener("click", () => whatObject(value , key , [value+"Image"]))
+            }
+            else {
+                console.log("pas de EventLister pour toi !")
+            }
             }
         })
         Object.entries(inventaire).forEach(([key, items]) => {
-            // Parcourir chaque item dans la catégorie
             items.forEach((value) => {
-                // Vérifier si gear contient une correspondance pour key et value
                 if (gear[key] && gear[key][value]) {
-                    // Créer une image pour l'objet trouvé
                     const image = document.createElement("img")
                     image.src = gear[key][value].IMG 
                     image.width = 100
                     image.height = 108
                     image.className = "image"
                     image.id = value
-        
-                    // Ajouter l'image à l'inventaire dans le DOM
                     elements.inventaire.appendChild(image);
-        
-                    // Ajouter un gestionnaire d'événement pour cet objet
                     image.addEventListener("click", () => whatObject(value, key, [`${value}Image`]));
         
-                    console.log(`Ajouté : ${value} (${key}) à l'inventaire visuel`);
                 }
             });
         });
