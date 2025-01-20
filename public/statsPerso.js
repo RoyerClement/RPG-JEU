@@ -738,8 +738,19 @@ elements.anneauDexterite.addEventListener("click", () =>
     takeObject("anneauDexterite", "Ring", "RingImage"),
 );
 elements.FermerInv.addEventListener("click", () => FermerInv());
-
-let recData = {};
+let roomIAm = ""
+let room = {
+    numberDoor : {},
+    doorState : {}
+}
+let recData = {
+    donjonpath : {
+        room : {},
+        roomIAm : "",
+        backCheck : "",
+    }
+};
+let backCheck = ""
 async function FermerInv() {
     
     const DonneeStatPerso = {
@@ -750,7 +761,10 @@ async function FermerInv() {
         inventaire,
         statPerso,
         depart,
-        btnCheck
+        btnCheck,
+        room,
+        roomIAm,
+        backCheck,
     };
     const res = await fetch("http://localhost:8000/all-data", {
         method: "PUT",
@@ -769,6 +783,7 @@ async function FermerInv() {
         });
         const json = await res.json();
         recData = json;
+        console.log({recData})
         replaceStat ()
         return recData
     }
@@ -789,8 +804,16 @@ async function FermerInv() {
                 inventaire[key] = value
             }
         });
+        Object.entries(recData.donjonpath.room.numberDoor).forEach(([key, value]) => {
+            room.numberDoor[key] = value
+        });
+        Object.entries(recData.donjonpath.room.doorState).forEach(([key, value]) => {
+            room.doorState[key] = value
+        });
+        roomIAm = recData.donjonpath.roomIAm
         btnCheck = recData.donjonpath.dataStat.DonneeStatPerso.btnCheck
         depart = recData.donjonpath.dataStat.DonneeStatPerso.depart
+        backCheck = recData.donjonpath.backCheck
         suppDepart()
         btnStat()   
         update()

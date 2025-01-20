@@ -105,11 +105,20 @@ function boiteDialogue(type) {
 }
 
 const randomNumber = (max) => Math.floor(Math.random() * max) + 1;
+let backCheck = false
 
+function backCheckFn () {
+    if (backCheck) {
+        imDoor.btnBack.style.display = "block"
+    } else {
+        imDoor.btnBack.style.display = "none"
+    }
+}
 function back() {
     roomIAm = roomIAm.slice(0, -1);
     if (!roomIAm) {
         roomIAm = "start";
+        backCheck = false
         imDoor.btnBack.style.display = "none";
     }
     boiteDialogue("txtBack");
@@ -136,7 +145,7 @@ function openDoor(door, image, idOpenDoor, imDiv, myRoom) {
     boiteDialogue("txtOpen");
     const checkFight = randomNumber("3");
     //RISQUE DE FAIRE DES COMBATS
-    if (checkFight < 3) {
+    if (!checkFight) {
         actualFight = [];
         imDoor.btnBack.style.display = "none";
         opInventaire.style.display = "none";
@@ -192,6 +201,7 @@ function enterDoor(door, myRoom) {
     if (roomIAm === "start") {
         // ON VA A LA SALLE !
         roomIAm = door;
+        backCheck = true
         imDoor.btnBack.style.display = "block";
         // SI LA SALLE EXISTE DEJA ON CHARGE LES SALLES VIA UPDATERENDERBACK()
         if (room.numberDoor[door]) {
@@ -341,85 +351,6 @@ function updateRender(myRoom) {
         );
     }
 }
-
-function updateRenderBack(myRoom) {
-    delDoor();
-
-    if (room.doorState[myRoom].A === "ouvert") {
-        const imNewDoorA = document.createElement("img");
-        imNewDoorA.src = "image/porteOuverte.webp";
-        imNewDoorA.width = "400";
-        imNewDoorA.height = "408";
-        imNewDoorA.alt = "porte ouverte";
-        imNewDoorA.id = "ImOpenA";
-        buttonDoorDiv.D1.appendChild(imNewDoorA);
-        imDoor.ImOpenA = document.getElementById("ImOpenA");
-        imDoor.ImOpenA.addEventListener("click", () => enterDoor("A", roomIAm));
-    } else if (room.doorState[myRoom].A === "ferme") {
-        const imNewDoorA = document.createElement("img");
-        imNewDoorA.src = "image/porteFerme.webp";
-        imNewDoorA.width = "400";
-        imNewDoorA.height = "408";
-        imNewDoorA.alt = "porte ferme";
-        imNewDoorA.id = "ImA";
-        buttonDoorDiv.D1.appendChild(imNewDoorA);
-        imDoor.ImA = document.getElementById("ImA");
-        imDoor.ImA.addEventListener("click", () =>
-            openDoor("A", ImA, "ImOpenA", "D1", roomIAm),
-        );
-    } else {
-    }
-
-    if (room.doorState[myRoom].B === "ouvert") {
-        const imNewDoorB = document.createElement("img");
-        imNewDoorB.src = "image/porteOuverte.webp";
-        imNewDoorB.width = "400";
-        imNewDoorB.height = "408";
-        imNewDoorB.alt = "porte ouverte";
-        imNewDoorB.id = "ImOpenB";
-        buttonDoorDiv.D2.appendChild(imNewDoorB);
-        imDoor.ImOpenB = document.getElementById("ImOpenB");
-        imDoor.ImOpenB.addEventListener("click", () => enterDoor("B", roomIAm));
-    } else if (room.doorState[myRoom].B === "ferme") {
-        const imNewDoorB = document.createElement("img");
-        imNewDoorB.src = "image/porteFerme.webp";
-        imNewDoorB.width = "400";
-        imNewDoorB.height = "408";
-        imNewDoorB.alt = "porte ferme";
-        imNewDoorB.id = "ImB";
-        buttonDoorDiv.D2.appendChild(imNewDoorB);
-        imDoor.ImB = document.getElementById("ImB");
-        imDoor.ImB.addEventListener("click", () =>
-            openDoor("B", ImB, "ImOpenB", "D2", roomIAm),
-        );
-    } else {
-    }
-
-    if (room.doorState[myRoom].C === "ouvert") {
-        const imNewDoorC = document.createElement("img");
-        imNewDoorC.src = "image/porteOuverte.webp";
-        imNewDoorC.width = "400";
-        imNewDoorC.height = "408";
-        imNewDoorC.alt = "porte ouverte";
-        imNewDoorC.id = "ImOpenC";
-        buttonDoorDiv.D3.appendChild(imNewDoorC);
-        imDoor.ImOpenC = document.getElementById("ImOpenC");
-        imDoor.ImOpenC.addEventListener("click", () => enterDoor("C", roomIAm));
-    } else if (room.doorState[myRoom].C === "ferme") {
-        const imNewDoorC = document.createElement("img");
-        imNewDoorC.src = "image/porteFerme.webp";
-        imNewDoorC.width = "400";
-        imNewDoorC.height = "408";
-        imNewDoorC.alt = "porte ferme";
-        imNewDoorC.id = "ImC";
-        buttonDoorDiv.D3.appendChild(imNewDoorC);
-        imDoor.ImC = document.getElementById("ImC");
-        imDoor.ImC.addEventListener("click", () =>
-            openDoor("C", ImC, "ImOpenC", "D3", roomIAm),
-        );
-    } else {
-    }
-}
 let ImToDel = []
 function attaque(nom, type, div, ImEnn) {
     console.log(actualEnnemiStatut);
@@ -525,7 +456,21 @@ let dataStat = {
         XP: "",
     },
 };
-
+function replaceStat () {
+    Object.entries(dataStat.DonneeStatPerso.room.numberDoor).forEach(([key, value]) => {
+        room.numberDoor[key] = value; 
+    });
+    Object.entries(dataStat.DonneeStatPerso.room.doorState).forEach(([key, value]) => {
+        room.doorState[key] = value; 
+    });
+    roomIAm = dataStat.DonneeStatPerso.roomIAm
+    if (!roomIAm) {
+        roomIAm = "start"
+    }
+    backCheck = dataStat.DonneeStatPerso.backCheck
+    backCheckFn()
+    updateRenderBack(roomIAm)
+}
 const serverResponse = {
     DonneeStatPerso: {
         mainGauche: 5,
@@ -545,7 +490,7 @@ const serverResponse = {
             Head: [],
             Ring: ["anneauForce"],
             Neck: [],
-            Object: [],
+            Object: [], 
         },
         statPerso: {
             Force: 0,
@@ -570,7 +515,8 @@ async function savePath() {
     const donjonpath = {
         room,
         roomIAm,
-        dataStat
+        dataStat,
+        backCheck,
     };
     console.log({donjonpath})
     const res = await fetch("http://localhost:8000/all-data", {
@@ -591,9 +537,87 @@ async function getData() {
     });
     const json = await res.json();
     dataStat = json;
-    console.log(dataStat)
+    console.log({dataStat})
+    replaceStat()
     return dataStat;
 }
 getData()
     // .then((data) => (dataStat = data))
     // .catch((_) => (dataStat = serverResponse));
+    function updateRenderBack(myRoom) {
+        delDoor();
+        if (room.doorState[myRoom].A === "ouvert") {
+            const imNewDoorA = document.createElement("img");
+            imNewDoorA.src = "image/porteOuverte.webp";
+            imNewDoorA.width = "400";
+            imNewDoorA.height = "408";
+            imNewDoorA.alt = "porte ouverte";
+            imNewDoorA.id = "ImOpenA";
+            buttonDoorDiv.D1.appendChild(imNewDoorA);
+            imDoor.ImOpenA = document.getElementById("ImOpenA");
+            imDoor.ImOpenA.addEventListener("click", () => enterDoor("A", roomIAm));
+        } else if (room.doorState[myRoom].A === "ferme") {
+            const imNewDoorA = document.createElement("img");
+            imNewDoorA.src = "image/porteFerme.webp";
+            imNewDoorA.width = "400";
+            imNewDoorA.height = "408";
+            imNewDoorA.alt = "porte ferme";
+            imNewDoorA.id = "ImA";
+            buttonDoorDiv.D1.appendChild(imNewDoorA);
+            imDoor.ImA = document.getElementById("ImA");
+            imDoor.ImA.addEventListener("click", () =>
+                openDoor("A", ImA, "ImOpenA", "D1", roomIAm),
+            );
+        } else {
+        }
+    
+        if (room.doorState[myRoom].B === "ouvert") {
+            const imNewDoorB = document.createElement("img");
+            imNewDoorB.src = "image/porteOuverte.webp";
+            imNewDoorB.width = "400";
+            imNewDoorB.height = "408";
+            imNewDoorB.alt = "porte ouverte";
+            imNewDoorB.id = "ImOpenB";
+            buttonDoorDiv.D2.appendChild(imNewDoorB);
+            imDoor.ImOpenB = document.getElementById("ImOpenB");
+            imDoor.ImOpenB.addEventListener("click", () => enterDoor("B", roomIAm));
+        } else if (room.doorState[myRoom].B === "ferme") {
+            const imNewDoorB = document.createElement("img");
+            imNewDoorB.src = "image/porteFerme.webp";
+            imNewDoorB.width = "400";
+            imNewDoorB.height = "408";
+            imNewDoorB.alt = "porte ferme";
+            imNewDoorB.id = "ImB";
+            buttonDoorDiv.D2.appendChild(imNewDoorB);
+            imDoor.ImB = document.getElementById("ImB");
+            imDoor.ImB.addEventListener("click", () =>
+                openDoor("B", ImB, "ImOpenB", "D2", roomIAm),
+            );
+        } else {
+        }
+    
+        if (room.doorState[myRoom].C === "ouvert") {
+            const imNewDoorC = document.createElement("img");
+            imNewDoorC.src = "image/porteOuverte.webp";
+            imNewDoorC.width = "400";
+            imNewDoorC.height = "408";
+            imNewDoorC.alt = "porte ouverte";
+            imNewDoorC.id = "ImOpenC";
+            buttonDoorDiv.D3.appendChild(imNewDoorC);
+            imDoor.ImOpenC = document.getElementById("ImOpenC");
+            imDoor.ImOpenC.addEventListener("click", () => enterDoor("C", roomIAm));
+        } else if (room.doorState[myRoom].C === "ferme") {
+            const imNewDoorC = document.createElement("img");
+            imNewDoorC.src = "image/porteFerme.webp";
+            imNewDoorC.width = "400";
+            imNewDoorC.height = "408";
+            imNewDoorC.alt = "porte ferme";
+            imNewDoorC.id = "ImC";
+            buttonDoorDiv.D3.appendChild(imNewDoorC);
+            imDoor.ImC = document.getElementById("ImC");
+            imDoor.ImC.addEventListener("click", () =>
+                openDoor("C", ImC, "ImOpenC", "D3", roomIAm),
+            );
+        } else {
+        }
+    }
