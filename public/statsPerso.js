@@ -748,9 +748,11 @@ let recData = {
         room : {},
         roomIAm : "",
         backCheck : "",
+        message : []
     }
 };
 let backCheck = ""
+let message = []
 async function FermerInv() {
     
     const DonneeStatPerso = {
@@ -765,6 +767,7 @@ async function FermerInv() {
         room,
         roomIAm,
         backCheck,
+        message,
     };
     const res = await fetch("http://localhost:8000/all-data", {
         method: "PUT",
@@ -814,6 +817,7 @@ async function FermerInv() {
         btnCheck = recData.donjonpath.dataStat.DonneeStatPerso.btnCheck
         depart = recData.donjonpath.dataStat.DonneeStatPerso.depart
         backCheck = recData.donjonpath.backCheck
+        message = recData.donjonpath.message
         suppDepart()
         btnStat()   
         update()

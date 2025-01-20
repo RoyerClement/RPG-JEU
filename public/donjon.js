@@ -94,14 +94,19 @@ const ennemi = {
 };
 
 function boiteDialogue(type) {
-    message.unshift(dialogue[type]);
+    if (type !== "recDonnee") {
+        message.unshift(dialogue[type]);
 
-    if (message.length > 4) {
-        message.pop();
-    }
-
+        if (message.length > 4) {
+            message.pop();
+        }
+    
     let textDialogue = message.join("<br>");
     dialogue.txtId.innerHTML = textDialogue;
+    } else {
+        let textDialogue = message.join("<br>");
+        dialogue.txtId.innerHTML = textDialogue;
+    }
 }
 
 const randomNumber = (max) => Math.floor(Math.random() * max) + 1;
@@ -468,7 +473,9 @@ function replaceStat () {
         roomIAm = "start"
     }
     backCheck = dataStat.DonneeStatPerso.backCheck
+    message = dataStat.DonneeStatPerso.message
     backCheckFn()
+    boiteDialogue("recDonnee")
     updateRenderBack(roomIAm)
 }
 const serverResponse = {
@@ -517,6 +524,7 @@ async function savePath() {
         roomIAm,
         dataStat,
         backCheck,
+        message,
     };
     console.log({donjonpath})
     const res = await fetch("http://localhost:8000/all-data", {
