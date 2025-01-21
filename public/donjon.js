@@ -10,6 +10,8 @@ const buttonDoorDiv = {
     divEnn4: document.getElementById("fourth"),
     divEnn5: document.getElementById("fifth"),
     fightDoor: document.getElementById("fightDoor"),
+    market: document.getElementById("market"),
+    itemMarket: document.getElementById("itemMarket"),
 };
 
 const imDoor = {
@@ -36,7 +38,8 @@ const dialogue = {
     txtEmptyRoom: "La salle ouverte est vide",
     txtVictory: "Vous avez remporté le combat",
     txtAttaque: `Vous attaquez un ennemi`,
-    txtKill: `Vous attaquez et tuez un ennemi`
+    txtKill: `Vous attaquez et tuez un ennemi`,
+    txtMarchand: `Il y a un marchand dans cette salle`
 };
 
 let textDialogue = "";
@@ -54,10 +57,41 @@ const room = {
         },
     },
 };
+const marketMemory = { start : [] }
+const itemList = ["anneauForce", "espadon", "anneauDexterite", "armureEnFer", "armureEnCuir", "casqueEnCuir", "dague", ]
+const item = {
+    anneauForce : {
+        IMG : "image/anneauForce.jpg",
+        cost : 100,
+    },
+    espadon : {
+        IMG : "image/espadon.webp",
+        cost : 200,
+    },
+    anneauDexterite : {
+        IMG : "image/anneauForce.jpg",
+        cost : 100,
+    },
+    armureEnFer : {
+        IMG : "image/armureEnFer.jpg",
+        cost: 200,
+    },
+    armureEnCuir: {
+        IMG : " image/armureEnCuir.jpg",
+        cost: 100,
+    },
+    casqueEnCuir: {
+        IMG : "image/casqueEnCuir.webp",
+        cost: 100,
+    },
+    dague: {
+        IMG : "image/dague.webp",
+        cost : 100,
+    }
+}
 let actualFight = [];
 let actualEnnemiStatut = {};
 const ennemiList = ["orc", "gobelin"];
-
 const ennemi = {
     orc: {
         IMG: "image/orc.webp",
@@ -234,33 +268,59 @@ function enterDoor(door, myRoom) {
         // ON VA A LA SALLE
         roomIAm = roomIAm + door;
         //SI LA SALLE EXISTE DEJA ON CHARGE LA SALLE VIA UPDATERENDERBACK()
-        if (room.numberDoor[[myRoom] + [door]]) {
+        if (room.numberDoor[[myRoom]+[door]] === "marchand") {
+            updateRenderBack(roomIAm, "marchand")
+            boiteDialogue("txtMarchand")
+        } else if (room.numberDoor[[myRoom] + [door]]) {
             updateRenderBack(roomIAm);
             boiteDialogue("txtEnterExplored");
         }
         //SI LA SALLE N'EXISTE PAS ON CREE LES SALLES !
         else {
-            room.numberDoor[[myRoom] + [door]] = randomNumber("3");
-            if (room.numberDoor[[myRoom] + [door]] === 3) {
-                room.doorState[[myRoom] + [door]] = {
-                    A: "ferme",
-                    B: "ferme",
-                    C: "ferme",
-                };
+            //CONDITION MARCHAND
+            const marchand = randomNumber("100")
+            if (marchand > 80) {
+                let howDeep = ""
+                const splitRoom = roomIAm.split("");
+                howDeep = splitRoom.length;
+                room.numberDoor[[myRoom]+[door]] = "marchand"
+                //PETIT MARCHAND
+                if (howDeep < 4) {
+                    room.doorState[[myRoom]+[door]] = "smallMarket"
+                } 
+                //MOYEN MARCHAND
+                else if (howDeep < 7) {
+                    room.doorState[[myRoom]+[door]] = "mediumMarket"
+                }
+                //GRAND MARCHAND
+                else {
+                    room.doorState[[myRoom]+[door]] = "bigMarket"
+                }
+                updateRender(roomIAm, "marchand")
+            } else {
+                room.numberDoor[[myRoom] + [door]] = randomNumber("3");
+                if (room.numberDoor[[myRoom] + [door]] === 3) {
+                    room.doorState[[myRoom] + [door]] = {
+                        A: "ferme",
+                        B: "ferme",
+                        C: "ferme",
+                    };
+                }
+                if (room.numberDoor[[myRoom] + [door]] === 2) {
+                    room.doorState[[myRoom] + [door]] = { A: "ferme", B: "ferme" };
+                }
+                if (room.numberDoor[[myRoom] + [door]] === 1) {
+                    room.doorState[[myRoom] + [door]] = { A: "ferme" };
+                }
+                boiteDialogue("txtEnterInexplored");
+                updateRender(roomIAm);
             }
-            if (room.numberDoor[[myRoom] + [door]] === 2) {
-                room.doorState[[myRoom] + [door]] = { A: "ferme", B: "ferme" };
-            }
-            if (room.numberDoor[[myRoom] + [door]] === 1) {
-                room.doorState[[myRoom] + [door]] = { A: "ferme" };
-            }
-            boiteDialogue("txtEnterInexplored");
-            updateRender(roomIAm);
         }
     }
 }
 
-function delDoor() {
+function delDoor(myRoom) {
+    buttonDoorDiv.itemMarket.style.display="none"
     try {
         imDoor.ImA.remove();
     } catch {}
@@ -279,82 +339,103 @@ function delDoor() {
     try {
         imDoor.ImOpenC.remove();
     } catch {}
+    try {
+        imDoor.smallMarket = document.getElementById("smallMarket");
+        imDoor.smallMarket.remove();
+    } catch {}
+    try {
+        imDoor.mediumMarketMarket = document.getElementById("mediumMarket");
+        imDoor.mediumMarket.remove();
+    } catch {}
+    try {
+        imDoor.bigMarket = document.getElementById("bigMarket");
+        imDoor.bigMarket.remove();
+    } catch {}
+    try {
+        marketMemory[myRoom].forEach((value) => {
+            imDoor[value] = document.getElementById(value)
+            imDoor[value].remove
+        })
+    } catch {}
 }
-function updateRender(myRoom) {
+function updateRender(myRoom, marchand) {
     delDoor();
-    if (room.numberDoor[myRoom] === 1) {
-        const imNewDoorA = document.createElement("img");
-        imNewDoorA.src = "image/porteFerme.webp";
-        imNewDoorA.width = "400";
-        imNewDoorA.height = "408";
-        imNewDoorA.alt = "porte ferme";
-        imNewDoorA.id = "ImA";
-        buttonDoorDiv.D1.appendChild(imNewDoorA);
-        imDoor.ImA = document.getElementById("ImA");
-        imDoor.ImA.addEventListener("click", () =>
-            openDoor("A", ImA, "ImOpenA", "D1", roomIAm),
-        );
-    } else if (room.numberDoor[myRoom] === 2) {
-        const imNewDoorA = document.createElement("img");
-        imNewDoorA.src = "image/porteFerme.webp";
-        imNewDoorA.width = "400";
-        imNewDoorA.height = "408";
-        imNewDoorA.alt = "porte ferme";
-        imNewDoorA.id = "ImA";
-        buttonDoorDiv.D1.appendChild(imNewDoorA);
-        imDoor.ImA = document.getElementById("ImA");
-        imDoor.ImA.addEventListener("click", () =>
-            openDoor("A", ImA, "ImOpenA", "D1", roomIAm),
-        );
-
-        const imNewDoorB = document.createElement("img");
-        imNewDoorB.src = "image/porteFerme.webp";
-        imNewDoorB.width = "400";
-        imNewDoorB.height = "408";
-        imNewDoorB.alt = "porte ferme";
-        imNewDoorB.id = "ImB";
-        buttonDoorDiv.D2.appendChild(imNewDoorB);
-        imDoor.ImB = document.getElementById("ImB");
-        imDoor.ImB.addEventListener("click", () =>
-            openDoor("B", ImB, "ImOpenB", "D2", roomIAm),
-        );
-    } else {
-        const imNewDoorA = document.createElement("img");
-        imNewDoorA.src = "image/porteFerme.webp";
-        imNewDoorA.width = "400";
-        imNewDoorA.height = "408";
-        imNewDoorA.alt = "porte ferme";
-        imNewDoorA.id = "ImA";
-        buttonDoorDiv.D1.appendChild(imNewDoorA);
-        imDoor.ImA = document.getElementById("ImA");
-        imDoor.ImA.addEventListener("click", () =>
-            openDoor("A", ImA, "ImOpenA", "D1", roomIAm),
-        );
-
-        const imNewDoorB = document.createElement("img");
-        imNewDoorB.src = "image/porteFerme.webp";
-        imNewDoorB.width = "400";
-        imNewDoorB.height = "408";
-        imNewDoorB.alt = "porte ferme";
-        imNewDoorB.id = "ImB";
-        buttonDoorDiv.D2.appendChild(imNewDoorB);
-        imDoor.ImB = document.getElementById("ImB");
-        imDoor.ImB.addEventListener("click", () =>
-            openDoor("B", ImB, "ImOpenB", "D2", roomIAm),
-        );
-
-        const imNewDoorC = document.createElement("img");
-        imNewDoorC.src = "image/porteFerme.webp";
-        imNewDoorC.width = "400";
-        imNewDoorC.height = "408";
-        imNewDoorC.alt = "porte ferme";
-        imNewDoorC.id = "ImC";
-        buttonDoorDiv.D3.appendChild(imNewDoorC);
-        imDoor.ImC = document.getElementById("ImC");
-        imDoor.ImC.addEventListener("click", () =>
-            openDoor("C", ImC, "ImOpenC", "D3", roomIAm),
-        );
+    if (marchand === "marchand") {
+        updateRenderMarket(myRoom)
     }
+        if (room.numberDoor[myRoom] === 1) {
+            const imNewDoorA = document.createElement("img");
+            imNewDoorA.src = "image/porteFerme.webp";
+            imNewDoorA.width = "400";
+            imNewDoorA.height = "408";
+            imNewDoorA.alt = "porte ferme";
+            imNewDoorA.id = "ImA";
+            buttonDoorDiv.D1.appendChild(imNewDoorA);
+            imDoor.ImA = document.getElementById("ImA");
+            imDoor.ImA.addEventListener("click", () =>
+                openDoor("A", ImA, "ImOpenA", "D1", roomIAm),
+            );
+        } else if (room.numberDoor[myRoom] === 2) {
+            const imNewDoorA = document.createElement("img");
+            imNewDoorA.src = "image/porteFerme.webp";
+            imNewDoorA.width = "400";
+            imNewDoorA.height = "408";
+            imNewDoorA.alt = "porte ferme";
+            imNewDoorA.id = "ImA";
+            buttonDoorDiv.D1.appendChild(imNewDoorA);
+            imDoor.ImA = document.getElementById("ImA");
+            imDoor.ImA.addEventListener("click", () =>
+                openDoor("A", ImA, "ImOpenA", "D1", roomIAm),
+            );
+
+            const imNewDoorB = document.createElement("img");
+            imNewDoorB.src = "image/porteFerme.webp";
+            imNewDoorB.width = "400";
+            imNewDoorB.height = "408";
+            imNewDoorB.alt = "porte ferme";
+            imNewDoorB.id = "ImB";
+            buttonDoorDiv.D2.appendChild(imNewDoorB);
+            imDoor.ImB = document.getElementById("ImB");
+            imDoor.ImB.addEventListener("click", () =>
+                openDoor("B", ImB, "ImOpenB", "D2", roomIAm),
+            );
+        } else if (room.numberDoor[myRoom] === 3) {
+            const imNewDoorA = document.createElement("img");
+            imNewDoorA.src = "image/porteFerme.webp";
+            imNewDoorA.width = "400";
+            imNewDoorA.height = "408";
+            imNewDoorA.alt = "porte ferme";
+            imNewDoorA.id = "ImA";
+            buttonDoorDiv.D1.appendChild(imNewDoorA);
+            imDoor.ImA = document.getElementById("ImA");
+            imDoor.ImA.addEventListener("click", () =>
+                openDoor("A", ImA, "ImOpenA", "D1", roomIAm),
+            );
+
+            const imNewDoorB = document.createElement("img");
+            imNewDoorB.src = "image/porteFerme.webp";
+            imNewDoorB.width = "400";
+            imNewDoorB.height = "408";
+            imNewDoorB.alt = "porte ferme";
+            imNewDoorB.id = "ImB";
+            buttonDoorDiv.D2.appendChild(imNewDoorB);
+            imDoor.ImB = document.getElementById("ImB");
+            imDoor.ImB.addEventListener("click", () =>
+                openDoor("B", ImB, "ImOpenB", "D2", roomIAm),
+            );
+
+            const imNewDoorC = document.createElement("img");
+            imNewDoorC.src = "image/porteFerme.webp";
+            imNewDoorC.width = "400";
+            imNewDoorC.height = "408";
+            imNewDoorC.alt = "porte ferme";
+            imNewDoorC.id = "ImC";
+            buttonDoorDiv.D3.appendChild(imNewDoorC);
+            imDoor.ImC = document.getElementById("ImC");
+            imDoor.ImC.addEventListener("click", () =>
+                openDoor("C", ImC, "ImOpenC", "D3", roomIAm),
+            );
+        }
 }
 let ImToDel = []
 function attaque(nom, type, div, ImEnn) {
@@ -552,80 +633,155 @@ async function getData() {
 getData()
     // .then((data) => (dataStat = data))
     // .catch((_) => (dataStat = serverResponse));
+    
+    function updateRenderItemMarket(itemInShop,) {
+        itemInShop.forEach((value) => {
+            const ImItem = document.createElement("img")
+            ImItem.src = item[value].IMG
+            ImItem.width = 100
+            ImItem.height = 108
+            ImItem.id = value
+            buttonDoorDiv.itemMarket.appendChild(ImItem)
+            imDoor[value] = document.getElementById(value)
+            imDoor[value].addEventListener("click", () => console.log(value, "a été acheté", imDoor))
+        })
+    }
+    function itemMarket (myRoom) {
+        buttonDoorDiv.itemMarket.style.display="block"
+        if (marketMemory[myRoom] === undefined) {
+            marketMemory[myRoom] = []
+                for (let i = 0 ; i < 7; i++) {
+                    debugger
+                    if (room.doorState[myRoom] === "smallMarket") {
+                        i += 2
+                    } else if (room.doorState[myRoom] === "mediumMarket") {
+                        i += 1
+                    } 
+                    let findIndexItem = itemList[randomNumber(itemList.length) - 1];
+                        while (marketMemory[myRoom].includes(findIndexItem)) {
+                            findIndexItem = itemList[randomNumber(itemList.length) - 1]
+                    }
+                    marketMemory[myRoom].push(findIndexItem);
+                }
+                updateRenderItemMarket(marketMemory[myRoom])
+        } else {
+            updateRenderItemMarket(marketMemory[myRoom])
+        }
+    }
+    function updateRenderMarket(myRoom) {
+        if (room.doorState[myRoom] === "smallMarket") {
+            const smallMarket = document.createElement("img");
+            smallMarket.src = "image/etal2.webp";
+            smallMarket.width = "500";
+            smallMarket.height = "500";
+            smallMarket.alt = "Un marchand pour dépenser vos sous";
+            smallMarket.id = "smallMarket";
+            buttonDoorDiv.market.appendChild(smallMarket);
+            imDoor.smallMarket = document.getElementById("smallMarket");
+            imDoor.smallMarket.addEventListener("click", () =>
+                itemMarket(myRoom));
+        } else if (room.doorState[myRoom] === "mediumMarket") {
+            const mediumMarket = document.createElement("img");
+            mediumMarket.src = "image/etal.webp";
+            mediumMarket.width = "700";
+            mediumMarket.height = "600";
+            mediumMarket.alt = "Un marchand pour dépenser vos sous";
+            mediumMarket.id = "mediumMarket";
+            buttonDoorDiv.market.appendChild(mediumMarket);
+            imDoor.mediumMarket = document.getElementById("mediumMarket");
+            imDoor.mediumMarket.addEventListener("click", () =>
+                itemMarket(myRoom));
+        } else {
+            const bigMarket = document.createElement("img");
+            bigMarket.src = "image/etal3.webp";
+            bigMarket.width = "900";
+            bigMarket.height = "650";
+            bigMarket.alt = "Un marchand pour dépenser vos sous";
+            bigMarket.id = "bigMarket";
+            buttonDoorDiv.market.appendChild(bigMarket);
+            imDoor.bigMarket = document.getElementById("bigMarket");
+            imDoor.bigMarket.addEventListener("click", () =>
+                itemMarket(myRoom));
+        }
+    }
     function updateRenderBack(myRoom) {
-        delDoor();
-        if (room.doorState[myRoom].A === "ouvert") {
-            const imNewDoorA = document.createElement("img");
-            imNewDoorA.src = "image/porteOuverte.webp";
-            imNewDoorA.width = "400";
-            imNewDoorA.height = "408";
-            imNewDoorA.alt = "porte ouverte";
-            imNewDoorA.id = "ImOpenA";
-            buttonDoorDiv.D1.appendChild(imNewDoorA);
-            imDoor.ImOpenA = document.getElementById("ImOpenA");
-            imDoor.ImOpenA.addEventListener("click", () => enterDoor("A", roomIAm));
-        } else if (room.doorState[myRoom].A === "ferme") {
-            const imNewDoorA = document.createElement("img");
-            imNewDoorA.src = "image/porteFerme.webp";
-            imNewDoorA.width = "400";
-            imNewDoorA.height = "408";
-            imNewDoorA.alt = "porte ferme";
-            imNewDoorA.id = "ImA";
-            buttonDoorDiv.D1.appendChild(imNewDoorA);
-            imDoor.ImA = document.getElementById("ImA");
-            imDoor.ImA.addEventListener("click", () =>
-                openDoor("A", ImA, "ImOpenA", "D1", roomIAm),
-            );
+        delDoor(myRoom);
+        if (room.numberDoor[myRoom] === "marchand") {
+            updateRenderMarket(myRoom)
         } else {
-        }
-    
-        if (room.doorState[myRoom].B === "ouvert") {
-            const imNewDoorB = document.createElement("img");
-            imNewDoorB.src = "image/porteOuverte.webp";
-            imNewDoorB.width = "400";
-            imNewDoorB.height = "408";
-            imNewDoorB.alt = "porte ouverte";
-            imNewDoorB.id = "ImOpenB";
-            buttonDoorDiv.D2.appendChild(imNewDoorB);
-            imDoor.ImOpenB = document.getElementById("ImOpenB");
-            imDoor.ImOpenB.addEventListener("click", () => enterDoor("B", roomIAm));
-        } else if (room.doorState[myRoom].B === "ferme") {
-            const imNewDoorB = document.createElement("img");
-            imNewDoorB.src = "image/porteFerme.webp";
-            imNewDoorB.width = "400";
-            imNewDoorB.height = "408";
-            imNewDoorB.alt = "porte ferme";
-            imNewDoorB.id = "ImB";
-            buttonDoorDiv.D2.appendChild(imNewDoorB);
-            imDoor.ImB = document.getElementById("ImB");
-            imDoor.ImB.addEventListener("click", () =>
-                openDoor("B", ImB, "ImOpenB", "D2", roomIAm),
-            );
-        } else {
-        }
-    
-        if (room.doorState[myRoom].C === "ouvert") {
-            const imNewDoorC = document.createElement("img");
-            imNewDoorC.src = "image/porteOuverte.webp";
-            imNewDoorC.width = "400";
-            imNewDoorC.height = "408";
-            imNewDoorC.alt = "porte ouverte";
-            imNewDoorC.id = "ImOpenC";
-            buttonDoorDiv.D3.appendChild(imNewDoorC);
-            imDoor.ImOpenC = document.getElementById("ImOpenC");
-            imDoor.ImOpenC.addEventListener("click", () => enterDoor("C", roomIAm));
-        } else if (room.doorState[myRoom].C === "ferme") {
-            const imNewDoorC = document.createElement("img");
-            imNewDoorC.src = "image/porteFerme.webp";
-            imNewDoorC.width = "400";
-            imNewDoorC.height = "408";
-            imNewDoorC.alt = "porte ferme";
-            imNewDoorC.id = "ImC";
-            buttonDoorDiv.D3.appendChild(imNewDoorC);
-            imDoor.ImC = document.getElementById("ImC");
-            imDoor.ImC.addEventListener("click", () =>
-                openDoor("C", ImC, "ImOpenC", "D3", roomIAm),
-            );
-        } else {
+            if (room.doorState[myRoom].A === "ouvert") {
+                const imNewDoorA = document.createElement("img");
+                imNewDoorA.src = "image/porteOuverte.webp";
+                imNewDoorA.width = "400";
+                imNewDoorA.height = "408";
+                imNewDoorA.alt = "porte ouverte";
+                imNewDoorA.id = "ImOpenA";
+                buttonDoorDiv.D1.appendChild(imNewDoorA);
+                imDoor.ImOpenA = document.getElementById("ImOpenA");
+                imDoor.ImOpenA.addEventListener("click", () => enterDoor("A", roomIAm));
+            } else if (room.doorState[myRoom].A === "ferme") {
+                const imNewDoorA = document.createElement("img");
+                imNewDoorA.src = "image/porteFerme.webp";
+                imNewDoorA.width = "400";
+                imNewDoorA.height = "408";
+                imNewDoorA.alt = "porte ferme";
+                imNewDoorA.id = "ImA";
+                buttonDoorDiv.D1.appendChild(imNewDoorA);
+                imDoor.ImA = document.getElementById("ImA");
+                imDoor.ImA.addEventListener("click", () =>
+                    openDoor("A", ImA, "ImOpenA", "D1", roomIAm),
+                );
+            } else {
+            }
+        
+            if (room.doorState[myRoom].B === "ouvert") {
+                const imNewDoorB = document.createElement("img");
+                imNewDoorB.src = "image/porteOuverte.webp";
+                imNewDoorB.width = "400";
+                imNewDoorB.height = "408";
+                imNewDoorB.alt = "porte ouverte";
+                imNewDoorB.id = "ImOpenB";
+                buttonDoorDiv.D2.appendChild(imNewDoorB);
+                imDoor.ImOpenB = document.getElementById("ImOpenB");
+                imDoor.ImOpenB.addEventListener("click", () => enterDoor("B", roomIAm));
+            } else if (room.doorState[myRoom].B === "ferme") {
+                const imNewDoorB = document.createElement("img");
+                imNewDoorB.src = "image/porteFerme.webp";
+                imNewDoorB.width = "400";
+                imNewDoorB.height = "408";
+                imNewDoorB.alt = "porte ferme";
+                imNewDoorB.id = "ImB";
+                buttonDoorDiv.D2.appendChild(imNewDoorB);
+                imDoor.ImB = document.getElementById("ImB");
+                imDoor.ImB.addEventListener("click", () =>
+                    openDoor("B", ImB, "ImOpenB", "D2", roomIAm),
+                );
+            } else {
+            }
+        
+            if (room.doorState[myRoom].C === "ouvert") {
+                const imNewDoorC = document.createElement("img");
+                imNewDoorC.src = "image/porteOuverte.webp";
+                imNewDoorC.width = "400";
+                imNewDoorC.height = "408";
+                imNewDoorC.alt = "porte ouverte";
+                imNewDoorC.id = "ImOpenC";
+                buttonDoorDiv.D3.appendChild(imNewDoorC);
+                imDoor.ImOpenC = document.getElementById("ImOpenC");
+                imDoor.ImOpenC.addEventListener("click", () => enterDoor("C", roomIAm));
+            } else if (room.doorState[myRoom].C === "ferme") {
+                const imNewDoorC = document.createElement("img");
+                imNewDoorC.src = "image/porteFerme.webp";
+                imNewDoorC.width = "400";
+                imNewDoorC.height = "408";
+                imNewDoorC.alt = "porte ferme";
+                imNewDoorC.id = "ImC";
+                buttonDoorDiv.D3.appendChild(imNewDoorC);
+                imDoor.ImC = document.getElementById("ImC");
+                imDoor.ImC.addEventListener("click", () =>
+                    openDoor("C", ImC, "ImOpenC", "D3", roomIAm),
+                );
+            } else {
+            }
         }
     }
