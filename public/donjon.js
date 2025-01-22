@@ -24,7 +24,7 @@ const imDoor = {
     ImEnn4: document.getElementById("ImEnn4"),
     ImEnn5: document.getElementById("ImEnn5"),
     btnBack: document.getElementById("back"),
-    fightDoor: document.getElementById('fightDoor'),
+    fightDoor: document.getElementById("fightDoor"),
     allDoor: document.getElementById("porte"),
 };
 const dialogue = {
@@ -39,7 +39,7 @@ const dialogue = {
     txtVictory: "Vous avez remporté le combat",
     txtAttaque: `Vous attaquez un ennemi`,
     txtKill: `Vous attaquez et tuez un ennemi`,
-    txtMarchand: `Il y a un marchand dans cette salle`
+    txtMarchand: `Il y a un marchand dans cette salle`,
 };
 
 let textDialogue = "";
@@ -57,38 +57,46 @@ const room = {
         },
     },
 };
-const marketMemory = { start : [] }
-const itemList = ["anneauForce", "espadon", "anneauDexterite", "armureEnFer", "armureEnCuir", "casqueEnCuir", "dague", ]
+const marketMemory = { start: [] };
+const itemList = [
+    "anneauForce",
+    "espadon",
+    "anneauDexterite",
+    "armureEnFer",
+    "armureEnCuir",
+    "casqueEnCuir",
+    "dague",
+];
 const item = {
-    anneauForce : {
-        IMG : "image/anneauForce.jpg",
-        cost : 100,
+    anneauForce: {
+        IMG: "image/anneauForce.jpg",
+        cost: 100,
     },
-    espadon : {
-        IMG : "image/espadon.webp",
-        cost : 200,
+    espadon: {
+        IMG: "image/espadon.webp",
+        cost: 200,
     },
-    anneauDexterite : {
-        IMG : "image/anneauForce.jpg",
-        cost : 100,
+    anneauDexterite: {
+        IMG: "image/anneauForce.jpg",
+        cost: 100,
     },
-    armureEnFer : {
-        IMG : "image/armureEnFer.jpg",
+    armureEnFer: {
+        IMG: "image/armureEnFer.jpg",
         cost: 200,
     },
     armureEnCuir: {
-        IMG : " image/armureEnCuir.jpg",
+        IMG: " image/armureEnCuir.jpg",
         cost: 100,
     },
     casqueEnCuir: {
-        IMG : "image/casqueEnCuir.webp",
+        IMG: "image/casqueEnCuir.webp",
         cost: 100,
     },
     dague: {
-        IMG : "image/dague.webp",
-        cost : 100,
-    }
-}
+        IMG: "image/dague.webp",
+        cost: 100,
+    },
+};
 let actualFight = [];
 let actualEnnemiStatut = {};
 const ennemiList = ["orc", "gobelin"];
@@ -134,9 +142,9 @@ function boiteDialogue(type) {
         if (message.length > 4) {
             message.pop();
         }
-    
-    let textDialogue = message.join("<br>");
-    dialogue.txtId.innerHTML = textDialogue;
+
+        let textDialogue = message.join("<br>");
+        dialogue.txtId.innerHTML = textDialogue;
     } else {
         let textDialogue = message.join("<br>");
         dialogue.txtId.innerHTML = textDialogue;
@@ -144,20 +152,20 @@ function boiteDialogue(type) {
 }
 
 const randomNumber = (max) => Math.floor(Math.random() * max) + 1;
-let backCheck = false
+let backCheck = false;
 
-function backCheckFn () {
+function backCheckFn() {
     if (backCheck) {
-        imDoor.btnBack.style.display = "block"
+        imDoor.btnBack.style.display = "block";
     } else {
-        imDoor.btnBack.style.display = "none"
+        imDoor.btnBack.style.display = "none";
     }
 }
 function back() {
     roomIAm = roomIAm.slice(0, -1);
     if (!roomIAm) {
         roomIAm = "start";
-        backCheck = false
+        backCheck = false;
         imDoor.btnBack.style.display = "none";
     }
     boiteDialogue("txtBack");
@@ -178,6 +186,7 @@ function openDoor(door, image, idOpenDoor, imDiv, myRoom) {
     imDoorOpen.height = "408";
     imDoorOpen.alt = "porte ouverte";
     imDoorOpen.id = idOpenDoor;
+    imDoorOpen.dataset.testid = "firstOpenDoor"
     buttonDoorDiv[imDiv].appendChild(imDoorOpen);
     imDoor[idOpenDoor] = document.getElementById(idOpenDoor);
     imDoor[idOpenDoor].addEventListener("click", () => enterDoor(door, myRoom));
@@ -194,7 +203,7 @@ function openDoor(door, image, idOpenDoor, imDiv, myRoom) {
         imDoorOpen.width = "400";
         imDoorOpen.height = "408";
         imDoorOpen.alt = "porte ouverte";
-        imDoorOpen.id = "fightDoor"
+        imDoorOpen.id = "fightDoor";
         buttonDoorDiv.fightDoor.appendChild(imDoorOpen);
         setTimeout(() => {
             boiteDialogue("txtFight");
@@ -240,7 +249,7 @@ function enterDoor(door, myRoom) {
     if (roomIAm === "start") {
         // ON VA A LA SALLE !
         roomIAm = door;
-        backCheck = true
+        backCheck = true;
         imDoor.btnBack.style.display = "block";
         // SI LA SALLE EXISTE DEJA ON CHARGE LES SALLES VIA UPDATERENDERBACK()
         if (room.numberDoor[door]) {
@@ -268,9 +277,9 @@ function enterDoor(door, myRoom) {
         // ON VA A LA SALLE
         roomIAm = roomIAm + door;
         //SI LA SALLE EXISTE DEJA ON CHARGE LA SALLE VIA UPDATERENDERBACK()
-        if (room.numberDoor[[myRoom]+[door]] === "marchand") {
-            updateRenderBack(roomIAm, "marchand")
-            boiteDialogue("txtMarchand")
+        if (room.numberDoor[[myRoom] + [door]] === "marchand") {
+            updateRenderBack(roomIAm, "marchand");
+            boiteDialogue("txtMarchand");
         } else if (room.numberDoor[[myRoom] + [door]]) {
             updateRenderBack(roomIAm);
             boiteDialogue("txtEnterExplored");
@@ -278,25 +287,25 @@ function enterDoor(door, myRoom) {
         //SI LA SALLE N'EXISTE PAS ON CREE LES SALLES !
         else {
             //CONDITION MARCHAND
-            const marchand = randomNumber("100")
+            const marchand = randomNumber("100");
             if (marchand > 80) {
-                let howDeep = ""
+                let howDeep = "";
                 const splitRoom = roomIAm.split("");
                 howDeep = splitRoom.length;
-                room.numberDoor[[myRoom]+[door]] = "marchand"
+                room.numberDoor[[myRoom] + [door]] = "marchand";
                 //PETIT MARCHAND
                 if (howDeep < 4) {
-                    room.doorState[[myRoom]+[door]] = "smallMarket"
-                } 
+                    room.doorState[[myRoom] + [door]] = "smallMarket";
+                }
                 //MOYEN MARCHAND
                 else if (howDeep < 7) {
-                    room.doorState[[myRoom]+[door]] = "mediumMarket"
+                    room.doorState[[myRoom] + [door]] = "mediumMarket";
                 }
                 //GRAND MARCHAND
                 else {
-                    room.doorState[[myRoom]+[door]] = "bigMarket"
+                    room.doorState[[myRoom] + [door]] = "bigMarket";
                 }
-                updateRender(roomIAm, "marchand")
+                updateRender(roomIAm, "marchand");
             } else {
                 room.numberDoor[[myRoom] + [door]] = randomNumber("3");
                 if (room.numberDoor[[myRoom] + [door]] === 3) {
@@ -307,7 +316,10 @@ function enterDoor(door, myRoom) {
                     };
                 }
                 if (room.numberDoor[[myRoom] + [door]] === 2) {
-                    room.doorState[[myRoom] + [door]] = { A: "ferme", B: "ferme" };
+                    room.doorState[[myRoom] + [door]] = {
+                        A: "ferme",
+                        B: "ferme",
+                    };
                 }
                 if (room.numberDoor[[myRoom] + [door]] === 1) {
                     room.doorState[[myRoom] + [door]] = { A: "ferme" };
@@ -320,7 +332,7 @@ function enterDoor(door, myRoom) {
 }
 
 function delDoor(myRoom) {
-    buttonDoorDiv.itemMarket.style.display="none"
+    buttonDoorDiv.itemMarket.style.display = "none";
     try {
         imDoor.ImA.remove();
     } catch {}
@@ -353,91 +365,91 @@ function delDoor(myRoom) {
     } catch {}
     try {
         marketMemory[myRoom].forEach((value) => {
-            imDoor[value] = document.getElementById(value)
-            imDoor[value].remove
-        })
+            imDoor[value] = document.getElementById(value);
+            imDoor[value].remove;
+        });
     } catch {}
 }
 function updateRender(myRoom, marchand) {
     delDoor();
     if (marchand === "marchand") {
-        updateRenderMarket(myRoom)
+        updateRenderMarket(myRoom);
     }
-        if (room.numberDoor[myRoom] === 1) {
-            const imNewDoorA = document.createElement("img");
-            imNewDoorA.src = "image/porteFerme.webp";
-            imNewDoorA.width = "400";
-            imNewDoorA.height = "408";
-            imNewDoorA.alt = "porte ferme";
-            imNewDoorA.id = "ImA";
-            buttonDoorDiv.D1.appendChild(imNewDoorA);
-            imDoor.ImA = document.getElementById("ImA");
-            imDoor.ImA.addEventListener("click", () =>
-                openDoor("A", ImA, "ImOpenA", "D1", roomIAm),
-            );
-        } else if (room.numberDoor[myRoom] === 2) {
-            const imNewDoorA = document.createElement("img");
-            imNewDoorA.src = "image/porteFerme.webp";
-            imNewDoorA.width = "400";
-            imNewDoorA.height = "408";
-            imNewDoorA.alt = "porte ferme";
-            imNewDoorA.id = "ImA";
-            buttonDoorDiv.D1.appendChild(imNewDoorA);
-            imDoor.ImA = document.getElementById("ImA");
-            imDoor.ImA.addEventListener("click", () =>
-                openDoor("A", ImA, "ImOpenA", "D1", roomIAm),
-            );
+    if (room.numberDoor[myRoom] === 1) {
+        const imNewDoorA = document.createElement("img");
+        imNewDoorA.src = "image/porteFerme.webp";
+        imNewDoorA.width = "400";
+        imNewDoorA.height = "408";
+        imNewDoorA.alt = "porte ferme";
+        imNewDoorA.id = "ImA";
+        buttonDoorDiv.D1.appendChild(imNewDoorA);
+        imDoor.ImA = document.getElementById("ImA");
+        imDoor.ImA.addEventListener("click", () =>
+            openDoor("A", ImA, "ImOpenA", "D1", roomIAm),
+        );
+    } else if (room.numberDoor[myRoom] === 2) {
+        const imNewDoorA = document.createElement("img");
+        imNewDoorA.src = "image/porteFerme.webp";
+        imNewDoorA.width = "400";
+        imNewDoorA.height = "408";
+        imNewDoorA.alt = "porte ferme";
+        imNewDoorA.id = "ImA";
+        buttonDoorDiv.D1.appendChild(imNewDoorA);
+        imDoor.ImA = document.getElementById("ImA");
+        imDoor.ImA.addEventListener("click", () =>
+            openDoor("A", ImA, "ImOpenA", "D1", roomIAm),
+        );
 
-            const imNewDoorB = document.createElement("img");
-            imNewDoorB.src = "image/porteFerme.webp";
-            imNewDoorB.width = "400";
-            imNewDoorB.height = "408";
-            imNewDoorB.alt = "porte ferme";
-            imNewDoorB.id = "ImB";
-            buttonDoorDiv.D2.appendChild(imNewDoorB);
-            imDoor.ImB = document.getElementById("ImB");
-            imDoor.ImB.addEventListener("click", () =>
-                openDoor("B", ImB, "ImOpenB", "D2", roomIAm),
-            );
-        } else if (room.numberDoor[myRoom] === 3) {
-            const imNewDoorA = document.createElement("img");
-            imNewDoorA.src = "image/porteFerme.webp";
-            imNewDoorA.width = "400";
-            imNewDoorA.height = "408";
-            imNewDoorA.alt = "porte ferme";
-            imNewDoorA.id = "ImA";
-            buttonDoorDiv.D1.appendChild(imNewDoorA);
-            imDoor.ImA = document.getElementById("ImA");
-            imDoor.ImA.addEventListener("click", () =>
-                openDoor("A", ImA, "ImOpenA", "D1", roomIAm),
-            );
+        const imNewDoorB = document.createElement("img");
+        imNewDoorB.src = "image/porteFerme.webp";
+        imNewDoorB.width = "400";
+        imNewDoorB.height = "408";
+        imNewDoorB.alt = "porte ferme";
+        imNewDoorB.id = "ImB";
+        buttonDoorDiv.D2.appendChild(imNewDoorB);
+        imDoor.ImB = document.getElementById("ImB");
+        imDoor.ImB.addEventListener("click", () =>
+            openDoor("B", ImB, "ImOpenB", "D2", roomIAm),
+        );
+    } else if (room.numberDoor[myRoom] === 3) {
+        const imNewDoorA = document.createElement("img");
+        imNewDoorA.src = "image/porteFerme.webp";
+        imNewDoorA.width = "400";
+        imNewDoorA.height = "408";
+        imNewDoorA.alt = "porte ferme";
+        imNewDoorA.id = "ImA";
+        buttonDoorDiv.D1.appendChild(imNewDoorA);
+        imDoor.ImA = document.getElementById("ImA");
+        imDoor.ImA.addEventListener("click", () =>
+            openDoor("A", ImA, "ImOpenA", "D1", roomIAm),
+        );
 
-            const imNewDoorB = document.createElement("img");
-            imNewDoorB.src = "image/porteFerme.webp";
-            imNewDoorB.width = "400";
-            imNewDoorB.height = "408";
-            imNewDoorB.alt = "porte ferme";
-            imNewDoorB.id = "ImB";
-            buttonDoorDiv.D2.appendChild(imNewDoorB);
-            imDoor.ImB = document.getElementById("ImB");
-            imDoor.ImB.addEventListener("click", () =>
-                openDoor("B", ImB, "ImOpenB", "D2", roomIAm),
-            );
+        const imNewDoorB = document.createElement("img");
+        imNewDoorB.src = "image/porteFerme.webp";
+        imNewDoorB.width = "400";
+        imNewDoorB.height = "408";
+        imNewDoorB.alt = "porte ferme";
+        imNewDoorB.id = "ImB";
+        buttonDoorDiv.D2.appendChild(imNewDoorB);
+        imDoor.ImB = document.getElementById("ImB");
+        imDoor.ImB.addEventListener("click", () =>
+            openDoor("B", ImB, "ImOpenB", "D2", roomIAm),
+        );
 
-            const imNewDoorC = document.createElement("img");
-            imNewDoorC.src = "image/porteFerme.webp";
-            imNewDoorC.width = "400";
-            imNewDoorC.height = "408";
-            imNewDoorC.alt = "porte ferme";
-            imNewDoorC.id = "ImC";
-            buttonDoorDiv.D3.appendChild(imNewDoorC);
-            imDoor.ImC = document.getElementById("ImC");
-            imDoor.ImC.addEventListener("click", () =>
-                openDoor("C", ImC, "ImOpenC", "D3", roomIAm),
-            );
-        }
+        const imNewDoorC = document.createElement("img");
+        imNewDoorC.src = "image/porteFerme.webp";
+        imNewDoorC.width = "400";
+        imNewDoorC.height = "408";
+        imNewDoorC.alt = "porte ferme";
+        imNewDoorC.id = "ImC";
+        buttonDoorDiv.D3.appendChild(imNewDoorC);
+        imDoor.ImC = document.getElementById("ImC");
+        imDoor.ImC.addEventListener("click", () =>
+            openDoor("C", ImC, "ImOpenC", "D3", roomIAm),
+        );
+    }
 }
-let ImToDel = []
+let ImToDel = [];
 function attaque(nom, type, div, ImEnn) {
     console.log(actualEnnemiStatut);
     actualEnnemiStatut[nom].HP -=
@@ -445,8 +457,7 @@ function attaque(nom, type, div, ImEnn) {
         dataStat.DonneeStatPerso.mainDroite;
     if (actualEnnemiStatut[nom].HP > 0) {
         boiteDialogue("txtAttaque");
-    }
-    else {
+    } else {
         console.log(actualEnnemiStatut);
         dataStat.DonneeStatPerso.statPerso.XP += actualEnnemiStatut[nom].XP;
         delete actualEnnemiStatut[nom];
@@ -456,27 +467,24 @@ function attaque(nom, type, div, ImEnn) {
         imEnnemi.width = "300";
         imEnnemi.height = "300";
         imEnnemi.alt = "Ennemi féroce !";
-        imEnnemi.id = ImEnn
+        imEnnemi.id = ImEnn;
         buttonDoorDiv[div].appendChild(imEnnemi);
-        ImToDel.push(ImEnn)
-        
-        buttonDoorDiv[div].removeEventListener('click', attaque)
+        ImToDel.push(ImEnn);
+
+        buttonDoorDiv[div].removeEventListener("click", attaque);
         boiteDialogue("txtKill");
         if (Object.keys(actualEnnemiStatut).length === 0) {
-            boiteDialogue("txtVictory")
+            boiteDialogue("txtVictory");
             setTimeout(function endFight() {
-                
                 while (ImToDel.length > 0) {
-                    
-                    imDoor[ImToDel[0]].remove()
-                    ImToDel[0].shift()
+                    imDoor[ImToDel[0]].remove();
+                    ImToDel[0].shift();
                 }
                 imDoor.btnBack.style.display = "block";
                 opInventaire.style.display = "block";
                 imDoor.allDoor.style.display = "block";
                 imDoor.fightDoor.remove();
-            },1000)
-            
+            }, 1000);
         }
     }
 }
@@ -542,22 +550,26 @@ let dataStat = {
         XP: "",
     },
 };
-function replaceStat () {
-    Object.entries(dataStat.DonneeStatPerso.room.numberDoor).forEach(([key, value]) => {
-        room.numberDoor[key] = value; 
-    });
-    Object.entries(dataStat.DonneeStatPerso.room.doorState).forEach(([key, value]) => {
-        room.doorState[key] = value; 
-    });
-    roomIAm = dataStat.DonneeStatPerso.roomIAm
+function replaceStat() {
+    Object.entries(dataStat.DonneeStatPerso.room.numberDoor).forEach(
+        ([key, value]) => {
+            room.numberDoor[key] = value;
+        },
+    );
+    Object.entries(dataStat.DonneeStatPerso.room.doorState).forEach(
+        ([key, value]) => {
+            room.doorState[key] = value;
+        },
+    );
+    roomIAm = dataStat.DonneeStatPerso.roomIAm;
     if (!roomIAm) {
-        roomIAm = "start"
+        roomIAm = "start";
     }
-    backCheck = dataStat.DonneeStatPerso.backCheck
-    message = dataStat.DonneeStatPerso.message
-    backCheckFn()
-    boiteDialogue("recDonnee")
-    updateRenderBack(roomIAm)
+    backCheck = dataStat.DonneeStatPerso.backCheck;
+    message = dataStat.DonneeStatPerso.message;
+    backCheckFn();
+    boiteDialogue("recDonnee");
+    updateRenderBack(roomIAm);
 }
 const serverResponse = {
     DonneeStatPerso: {
@@ -578,7 +590,7 @@ const serverResponse = {
             Head: [],
             Ring: ["anneauForce"],
             Neck: [],
-            Object: [], 
+            Object: [],
         },
         statPerso: {
             Force: 0,
@@ -599,7 +611,6 @@ const opInventaire = document.getElementById("Inventaire");
 opInventaire.addEventListener("click", () => savePath());
 
 async function savePath() {
-    
     const donjonpath = {
         room,
         roomIAm,
@@ -607,7 +618,7 @@ async function savePath() {
         backCheck,
         message,
     };
-    console.log({donjonpath})
+    console.log({ donjonpath });
     const res = await fetch("http://localhost:8000/all-data", {
         method: "PUT",
         headers: {
@@ -620,168 +631,172 @@ async function savePath() {
 }
 
 async function getData() {
-    
     const res = await fetch("http://localhost:8000/all-data", {
         method: "GET",
     });
     const json = await res.json();
     dataStat = json;
-    console.log({dataStat})
-    replaceStat()
+    console.log({ dataStat });
+    replaceStat();
     return dataStat;
 }
-getData()
-    // .then((data) => (dataStat = data))
-    // .catch((_) => (dataStat = serverResponse));
-    
-    function updateRenderItemMarket(itemInShop,) {
-        itemInShop.forEach((value) => {
-            const ImItem = document.createElement("img")
-            ImItem.src = item[value].IMG
-            ImItem.width = 100
-            ImItem.height = 108
-            ImItem.id = value
-            buttonDoorDiv.itemMarket.appendChild(ImItem)
-            imDoor[value] = document.getElementById(value)
-            imDoor[value].addEventListener("click", () => console.log(value, "a été acheté", imDoor))
-        })
+getData();
+// .then((data) => (dataStat = data))
+// .catch((_) => (dataStat = serverResponse));
+
+function updateRenderItemMarket(itemInShop) {
+    itemInShop.forEach((value) => {
+        const ImItem = document.createElement("img");
+        ImItem.src = item[value].IMG;
+        ImItem.width = 100;
+        ImItem.height = 108;
+        ImItem.id = value;
+        buttonDoorDiv.itemMarket.appendChild(ImItem);
+        imDoor[value] = document.getElementById(value);
+        imDoor[value].addEventListener("click", () =>
+            console.log(value, "a été acheté", imDoor),
+        );
+    });
+}
+function itemMarket(myRoom) {
+    buttonDoorDiv.itemMarket.style.display = "block";
+    if (marketMemory[myRoom] === undefined) {
+        marketMemory[myRoom] = [];
+        for (let i = 0; i < 7; i++) {
+            debugger;
+            if (room.doorState[myRoom] === "smallMarket") {
+                i += 2;
+            } else if (room.doorState[myRoom] === "mediumMarket") {
+                i += 1;
+            }
+            let findIndexItem = itemList[randomNumber(itemList.length) - 1];
+            while (marketMemory[myRoom].includes(findIndexItem)) {
+                findIndexItem = itemList[randomNumber(itemList.length) - 1];
+            }
+            marketMemory[myRoom].push(findIndexItem);
+        }
+        updateRenderItemMarket(marketMemory[myRoom]);
+    } else {
+        updateRenderItemMarket(marketMemory[myRoom]);
     }
-    function itemMarket (myRoom) {
-        buttonDoorDiv.itemMarket.style.display="block"
-        if (marketMemory[myRoom] === undefined) {
-            marketMemory[myRoom] = []
-                for (let i = 0 ; i < 7; i++) {
-                    debugger
-                    if (room.doorState[myRoom] === "smallMarket") {
-                        i += 2
-                    } else if (room.doorState[myRoom] === "mediumMarket") {
-                        i += 1
-                    } 
-                    let findIndexItem = itemList[randomNumber(itemList.length) - 1];
-                        while (marketMemory[myRoom].includes(findIndexItem)) {
-                            findIndexItem = itemList[randomNumber(itemList.length) - 1]
-                    }
-                    marketMemory[myRoom].push(findIndexItem);
-                }
-                updateRenderItemMarket(marketMemory[myRoom])
+}
+function updateRenderMarket(myRoom) {
+    if (room.doorState[myRoom] === "smallMarket") {
+        const smallMarket = document.createElement("img");
+        smallMarket.src = "image/etal2.webp";
+        smallMarket.width = "500";
+        smallMarket.height = "500";
+        smallMarket.alt = "Un marchand pour dépenser vos sous";
+        smallMarket.id = "smallMarket";
+        buttonDoorDiv.market.appendChild(smallMarket);
+        imDoor.smallMarket = document.getElementById("smallMarket");
+        imDoor.smallMarket.addEventListener("click", () => itemMarket(myRoom));
+    } else if (room.doorState[myRoom] === "mediumMarket") {
+        const mediumMarket = document.createElement("img");
+        mediumMarket.src = "image/etal.webp";
+        mediumMarket.width = "700";
+        mediumMarket.height = "600";
+        mediumMarket.alt = "Un marchand pour dépenser vos sous";
+        mediumMarket.id = "mediumMarket";
+        buttonDoorDiv.market.appendChild(mediumMarket);
+        imDoor.mediumMarket = document.getElementById("mediumMarket");
+        imDoor.mediumMarket.addEventListener("click", () => itemMarket(myRoom));
+    } else {
+        const bigMarket = document.createElement("img");
+        bigMarket.src = "image/etal3.webp";
+        bigMarket.width = "900";
+        bigMarket.height = "650";
+        bigMarket.alt = "Un marchand pour dépenser vos sous";
+        bigMarket.id = "bigMarket";
+        buttonDoorDiv.market.appendChild(bigMarket);
+        imDoor.bigMarket = document.getElementById("bigMarket");
+        imDoor.bigMarket.addEventListener("click", () => itemMarket(myRoom));
+    }
+}
+function updateRenderBack(myRoom) {
+    delDoor(myRoom);
+    if (room.numberDoor[myRoom] === "marchand") {
+        updateRenderMarket(myRoom);
+    } else {
+        if (room.doorState[myRoom].A === "ouvert") {
+            const imNewDoorA = document.createElement("img");
+            imNewDoorA.src = "image/porteOuverte.webp";
+            imNewDoorA.width = "400";
+            imNewDoorA.height = "408";
+            imNewDoorA.alt = "porte ouverte";
+            imNewDoorA.id = "ImOpenA";
+            buttonDoorDiv.D1.appendChild(imNewDoorA);
+            imDoor.ImOpenA = document.getElementById("ImOpenA");
+            imDoor.ImOpenA.addEventListener("click", () =>
+                enterDoor("A", roomIAm),
+            );
+        } else if (room.doorState[myRoom].A === "ferme") {
+            const imNewDoorA = document.createElement("img");
+            imNewDoorA.src = "image/porteFerme.webp";
+            imNewDoorA.width = "400";
+            imNewDoorA.height = "408";
+            imNewDoorA.alt = "porte ferme";
+            imNewDoorA.id = "ImA";
+            buttonDoorDiv.D1.appendChild(imNewDoorA);
+            imDoor.ImA = document.getElementById("ImA");
+            imDoor.ImA.addEventListener("click", () =>
+                openDoor("A", ImA, "ImOpenA", "D1", roomIAm),
+            );
         } else {
-            updateRenderItemMarket(marketMemory[myRoom])
+        }
+
+        if (room.doorState[myRoom].B === "ouvert") {
+            const imNewDoorB = document.createElement("img");
+            imNewDoorB.src = "image/porteOuverte.webp";
+            imNewDoorB.width = "400";
+            imNewDoorB.height = "408";
+            imNewDoorB.alt = "porte ouverte";
+            imNewDoorB.id = "ImOpenB";
+            buttonDoorDiv.D2.appendChild(imNewDoorB);
+            imDoor.ImOpenB = document.getElementById("ImOpenB");
+            imDoor.ImOpenB.addEventListener("click", () =>
+                enterDoor("B", roomIAm),
+            );
+        } else if (room.doorState[myRoom].B === "ferme") {
+            const imNewDoorB = document.createElement("img");
+            imNewDoorB.src = "image/porteFerme.webp";
+            imNewDoorB.width = "400";
+            imNewDoorB.height = "408";
+            imNewDoorB.alt = "porte ferme";
+            imNewDoorB.id = "ImB";
+            buttonDoorDiv.D2.appendChild(imNewDoorB);
+            imDoor.ImB = document.getElementById("ImB");
+            imDoor.ImB.addEventListener("click", () =>
+                openDoor("B", ImB, "ImOpenB", "D2", roomIAm),
+            );
+        } else {
+        }
+
+        if (room.doorState[myRoom].C === "ouvert") {
+            const imNewDoorC = document.createElement("img");
+            imNewDoorC.src = "image/porteOuverte.webp";
+            imNewDoorC.width = "400";
+            imNewDoorC.height = "408";
+            imNewDoorC.alt = "porte ouverte";
+            imNewDoorC.id = "ImOpenC";
+            buttonDoorDiv.D3.appendChild(imNewDoorC);
+            imDoor.ImOpenC = document.getElementById("ImOpenC");
+            imDoor.ImOpenC.addEventListener("click", () =>
+                enterDoor("C", roomIAm),
+            );
+        } else if (room.doorState[myRoom].C === "ferme") {
+            const imNewDoorC = document.createElement("img");
+            imNewDoorC.src = "image/porteFerme.webp";
+            imNewDoorC.width = "400";
+            imNewDoorC.height = "408";
+            imNewDoorC.alt = "porte ferme";
+            imNewDoorC.id = "ImC";
+            buttonDoorDiv.D3.appendChild(imNewDoorC);
+            imDoor.ImC = document.getElementById("ImC");
+            imDoor.ImC.addEventListener("click", () =>
+                openDoor("C", ImC, "ImOpenC", "D3", roomIAm),
+            );
+        } else {
         }
     }
-    function updateRenderMarket(myRoom) {
-        if (room.doorState[myRoom] === "smallMarket") {
-            const smallMarket = document.createElement("img");
-            smallMarket.src = "image/etal2.webp";
-            smallMarket.width = "500";
-            smallMarket.height = "500";
-            smallMarket.alt = "Un marchand pour dépenser vos sous";
-            smallMarket.id = "smallMarket";
-            buttonDoorDiv.market.appendChild(smallMarket);
-            imDoor.smallMarket = document.getElementById("smallMarket");
-            imDoor.smallMarket.addEventListener("click", () =>
-                itemMarket(myRoom));
-        } else if (room.doorState[myRoom] === "mediumMarket") {
-            const mediumMarket = document.createElement("img");
-            mediumMarket.src = "image/etal.webp";
-            mediumMarket.width = "700";
-            mediumMarket.height = "600";
-            mediumMarket.alt = "Un marchand pour dépenser vos sous";
-            mediumMarket.id = "mediumMarket";
-            buttonDoorDiv.market.appendChild(mediumMarket);
-            imDoor.mediumMarket = document.getElementById("mediumMarket");
-            imDoor.mediumMarket.addEventListener("click", () =>
-                itemMarket(myRoom));
-        } else {
-            const bigMarket = document.createElement("img");
-            bigMarket.src = "image/etal3.webp";
-            bigMarket.width = "900";
-            bigMarket.height = "650";
-            bigMarket.alt = "Un marchand pour dépenser vos sous";
-            bigMarket.id = "bigMarket";
-            buttonDoorDiv.market.appendChild(bigMarket);
-            imDoor.bigMarket = document.getElementById("bigMarket");
-            imDoor.bigMarket.addEventListener("click", () =>
-                itemMarket(myRoom));
-        }
-    }
-    function updateRenderBack(myRoom) {
-        delDoor(myRoom);
-        if (room.numberDoor[myRoom] === "marchand") {
-            updateRenderMarket(myRoom)
-        } else {
-            if (room.doorState[myRoom].A === "ouvert") {
-                const imNewDoorA = document.createElement("img");
-                imNewDoorA.src = "image/porteOuverte.webp";
-                imNewDoorA.width = "400";
-                imNewDoorA.height = "408";
-                imNewDoorA.alt = "porte ouverte";
-                imNewDoorA.id = "ImOpenA";
-                buttonDoorDiv.D1.appendChild(imNewDoorA);
-                imDoor.ImOpenA = document.getElementById("ImOpenA");
-                imDoor.ImOpenA.addEventListener("click", () => enterDoor("A", roomIAm));
-            } else if (room.doorState[myRoom].A === "ferme") {
-                const imNewDoorA = document.createElement("img");
-                imNewDoorA.src = "image/porteFerme.webp";
-                imNewDoorA.width = "400";
-                imNewDoorA.height = "408";
-                imNewDoorA.alt = "porte ferme";
-                imNewDoorA.id = "ImA";
-                buttonDoorDiv.D1.appendChild(imNewDoorA);
-                imDoor.ImA = document.getElementById("ImA");
-                imDoor.ImA.addEventListener("click", () =>
-                    openDoor("A", ImA, "ImOpenA", "D1", roomIAm),
-                );
-            } else {
-            }
-        
-            if (room.doorState[myRoom].B === "ouvert") {
-                const imNewDoorB = document.createElement("img");
-                imNewDoorB.src = "image/porteOuverte.webp";
-                imNewDoorB.width = "400";
-                imNewDoorB.height = "408";
-                imNewDoorB.alt = "porte ouverte";
-                imNewDoorB.id = "ImOpenB";
-                buttonDoorDiv.D2.appendChild(imNewDoorB);
-                imDoor.ImOpenB = document.getElementById("ImOpenB");
-                imDoor.ImOpenB.addEventListener("click", () => enterDoor("B", roomIAm));
-            } else if (room.doorState[myRoom].B === "ferme") {
-                const imNewDoorB = document.createElement("img");
-                imNewDoorB.src = "image/porteFerme.webp";
-                imNewDoorB.width = "400";
-                imNewDoorB.height = "408";
-                imNewDoorB.alt = "porte ferme";
-                imNewDoorB.id = "ImB";
-                buttonDoorDiv.D2.appendChild(imNewDoorB);
-                imDoor.ImB = document.getElementById("ImB");
-                imDoor.ImB.addEventListener("click", () =>
-                    openDoor("B", ImB, "ImOpenB", "D2", roomIAm),
-                );
-            } else {
-            }
-        
-            if (room.doorState[myRoom].C === "ouvert") {
-                const imNewDoorC = document.createElement("img");
-                imNewDoorC.src = "image/porteOuverte.webp";
-                imNewDoorC.width = "400";
-                imNewDoorC.height = "408";
-                imNewDoorC.alt = "porte ouverte";
-                imNewDoorC.id = "ImOpenC";
-                buttonDoorDiv.D3.appendChild(imNewDoorC);
-                imDoor.ImOpenC = document.getElementById("ImOpenC");
-                imDoor.ImOpenC.addEventListener("click", () => enterDoor("C", roomIAm));
-            } else if (room.doorState[myRoom].C === "ferme") {
-                const imNewDoorC = document.createElement("img");
-                imNewDoorC.src = "image/porteFerme.webp";
-                imNewDoorC.width = "400";
-                imNewDoorC.height = "408";
-                imNewDoorC.alt = "porte ferme";
-                imNewDoorC.id = "ImC";
-                buttonDoorDiv.D3.appendChild(imNewDoorC);
-                imDoor.ImC = document.getElementById("ImC");
-                imDoor.ImC.addEventListener("click", () =>
-                    openDoor("C", ImC, "ImOpenC", "D3", roomIAm),
-                );
-            } else {
-            }
-        }
-    }
+}

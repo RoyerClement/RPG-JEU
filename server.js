@@ -21,6 +21,7 @@ app.get("/healthcheck", function (req, res) {
 app.put("/all-data", function (req, res) {
     console.log(req.body);
     data.DonneeStatPerso = req.body.DonneeStatPerso;
+    data.donjonpath = req.body.donjonpath;
     res.send(data);
 });
 

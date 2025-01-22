@@ -1,7 +1,9 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import fs from "fs/promises";
 import path from "path";
-
+function sleep(ms) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+}
 const serverResponse = {
     DonneeStatPerso: {
         mainGauche: 5,
@@ -77,6 +79,7 @@ describe("donjon", () => {
                 json: () => Promise.resolve(serverResponse),
             }),
         );
+
         const htmlPath = path.join(__dirname, "public", "Donjon.html");
         const html = await fs.readFile(htmlPath, "utf-8");
         document.body.innerHTML = html;
@@ -86,6 +89,36 @@ describe("donjon", () => {
     });
 
     it("jouer commence dans la premiere salle", () => {
-        expect(true).toEqual(false);
+        const btnBack = document.getElementById("back");
+        expect(btnBack.style.display).toEqual("none");
+    });
+
+    // it("On peut sortir de la premiere salle", async () => {
+    //     //Chance qu'il n'y ait pas de combat
+    //     vi.spyOn(Math, "floor").mockReturnValue(
+    //         4
+    //     );
+    //     //Utilisateur doit cliquer sur une porte ferme
+    //     const clicPorteFerme = document.getElementById('UN');
+    //     await clicPorteFerme.click();
+    //     //Utilisateur doit cliquer sur une porte ouverte
+    //     const clicPorteOuvert = document.getElementById('UN')
+    //     await clicPorteOuvert.click();
+    //     //sleep
+    //     await sleep(1000);
+    //     const Back = document.getElementById('back')
+    //     expect(Back.style.display).toEqual('none')
+    // })
+
+    it("On ouvre une porte", async () => {
+        //Chance qu'il n'y ait pas de combat
+        vi.spyOn(Math, "floor").mockReturnValue(4);
+        //Utilisateur doit cliquer sur une porte ferme
+        const clicPorteFerme = document.getElementById("UN");
+        await clicPorteFerme.click();
+
+        const dialogue = document.getElementById("boiteDialogue");
+
+        expect(dialogue).toEqual("Vous ouvrez une porte...");
     });
 });

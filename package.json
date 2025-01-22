@@ -7,7 +7,8 @@
         "format": "prettier . --write",
         "start:server": "nodemon server.js",
         "start:client": "nodemon client.js",
-        "test": "vitest"
+        "test": "vitest",
+        "test:e2e": "playwright test --ui"
     },
     "repository": {
         "type": "git",
@@ -27,6 +28,8 @@
     },
     "devDependencies": {
         "@eslint/js": "^9.17.0",
+        "@playwright/test": "^1.49.1",
+        "@types/node": "^22.10.7",
         "@vitest/browser": "^2.1.8",
         "eslint": "^9.17.0",
         "globals": "^15.14.0",
