@@ -22,22 +22,21 @@ test("fermer l'inventaire puis cliquer sur la premiere porte, puis cliquer sur l
     await expect(closeInv).toBeVisible(); //DOUBLE VERIF
     // Attendre la navigation vers donjon.html
     await closeInv.click(),
-    sleep(2000)
-    await Promise.all([
-        page.waitForURL("http://localhost:3000/donjon.html"),
-    ]);
+    await page.waitForURL("http://localhost:3000/Donjon.html");
     // Expect : être sur la page donjon.html
-    await expect(page.url()).toBe("http://localhost:3000/donjon.html");
+    
     //Cliquer sur la premiere porte (A)
-    const closedDoor = await page.getByTitle("A");
+    const closedDoor = await page.getByTestId("firstClosedDoor");
+    await expect (closedDoor).toBeVisible();
     await closedDoor.click();
     //Expect : voir la premiere porte ouverte.
-    await expect (page.getByTitle("firstOpenDoor")).toBeVisible();
+    
     //Cliquer sur la porte ouverte (A)
     const openDoor = await page.getByTestId("firstOpenDoor");
+    await expect (openDoor).not.toBeVisible()
     await openDoor.click();
     //Expect : être dans une autre pièce avec toutes les portes fermées
-    await expect (page.getByTestId("firstOpenDoor")).not.toBeVisible()
+    await expect (openDoor).not.toBeVisible()
 });
 
 test('Selectionner une arme de départ, puis l\'équiper' , async ({page }) => {
