@@ -5,8 +5,8 @@
     "scripts": {
         "lint": "eslint .",
         "format": "prettier . --write",
-        "start:server": "nodemon server.js",
-        "start:client": "nodemon client.js",
+        "start:server": "nodemon server.js --watch server.js",
+        "start:client": "nodemon client.js --watch public",
         "test": "vitest",
         "test:e2e": "playwright test --ui"
     },
