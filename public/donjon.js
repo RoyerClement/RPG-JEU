@@ -186,7 +186,7 @@ function openDoor(door, image, idOpenDoor, imDiv, myRoom) {
     imDoorOpen.height = "408";
     imDoorOpen.alt = "porte ouverte";
     imDoorOpen.id = idOpenDoor;
-    imDoorOpen.dataset.testid = "firstOpenDoor"
+    imDoorOpen.setAttribute("data-testid", "firstOpenDoor")
     buttonDoorDiv[imDiv].appendChild(imDoorOpen);
     imDoor[idOpenDoor] = document.getElementById(idOpenDoor);
     imDoor[idOpenDoor].addEventListener("click", () => enterDoor(door, myRoom));
@@ -726,6 +726,7 @@ function updateRenderBack(myRoom) {
             imNewDoorA.alt = "porte ouverte";
             imNewDoorA.id = "ImOpenA";
             buttonDoorDiv.D1.appendChild(imNewDoorA);
+            imNewDoorA.setAttribute("data-testid", "firstOpenDoor")
             imDoor.ImOpenA = document.getElementById("ImOpenA");
             imDoor.ImOpenA.addEventListener("click", () =>
                 enterDoor("A", roomIAm),
@@ -737,6 +738,7 @@ function updateRenderBack(myRoom) {
             imNewDoorA.height = "408";
             imNewDoorA.alt = "porte ferme";
             imNewDoorA.id = "ImA";
+            imNewDoorA.setAttribute("data-testid", "firstClosedDoor")
             buttonDoorDiv.D1.appendChild(imNewDoorA);
             imDoor.ImA = document.getElementById("ImA");
             imDoor.ImA.addEventListener("click", () =>

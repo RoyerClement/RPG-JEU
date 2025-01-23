@@ -290,11 +290,11 @@ const statDiv = document.createElement("div");
 statDiv.id = "stat";
 
 const statsHTML = [
-    { id: "statFor", label: "Force", buttonId: "btnFor" },
-    { id: "statDex", label: "Dextérité", buttonId: "btnDex+" },
-    { id: "statVit", label: "Vitalité", buttonId: "btnVit+" },
-    { id: "statVol", label: "Volonté", buttonId: "btnVol+" },
-    { id: "statInt", label: "Intelligence", buttonId: "btnInt+" },
+    { id: "statFor", label: "Force", buttonId: "btnFor", buttonTestId:"testForce" },
+    { id: "statDex", label: "Dextérité", buttonId: "btnDex+", buttonTestId:"testDexterite" },
+    { id: "statVit", label: "Vitalité", buttonId: "btnVit+", buttonTestId:"testVitalite" },
+    { id: "statVol", label: "Volonté", buttonId: "btnVol+", buttonTestId:"testVolonte" },
+    { id: "statInt", label: "Intelligence", buttonId: "btnInt+", buttonTestId:"testIntelligence" },
 ];
 
 statsHTML.forEach((stat) => {
@@ -304,6 +304,7 @@ statsHTML.forEach((stat) => {
 
     const button = document.createElement("button");
     button.id = stat.buttonId;
+    button.setAttribute("data-testid", stat.buttonTestId)
     button.className = "btnStat";
     button.textContent = "+";
     statDiv.appendChild(statSpan);

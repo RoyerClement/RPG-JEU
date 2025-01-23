@@ -144,21 +144,18 @@
                         <img
                             src="image/porteFerme.webp"
                             id="ImA"
-                            
+                            title="A"
                             class="porteFerme"
                             title="A"
-                            width="400"
-                            height="408"
                         />
                     </div>
                     <div id="DEUX">
                         <img
                             src="image/porteFerme.webp"
                             id="ImB"
+                            data-testid="firstClosedDoor"
                             class="porteFerme"
                             title="B"
-                            width="400"
-                            height="408"
                         />
                     </div>
                     <div id="TROIS">
@@ -166,10 +163,8 @@
                             src="image/porteFerme.webp"
                             id="ImC"
                             class="porteFerme"
-                            data-testid="firstClosedDoor"
+
                             title="C"
-                            width="400"
-                            height="408"
                         />
                     </div>
                 </div>
@@ -188,8 +183,8 @@
         <div id="itemMarket" style="display: none">
             <p>Voici ce que le marchand propose :</p>
         </div>
-        <button id="Inventaire">Ouvrir l'inventaire</button>
-        <button id="back" style="display: none">Revenir en arrière</button>
+        <button id="Inventaire" data-testid="testOpInv">Ouvrir l'inventaire</button>
+        <button id="back" style="display: none" data-testid="testBack">Revenir en arrière</button>
         <div id="divDialogue">
             <span id="boiteDialogue"></span>
         </div>
