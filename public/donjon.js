@@ -701,27 +701,35 @@ function itemMarket(myRoom) {
     console.log(itemList)
     if (buttonDoorDiv.itemMarket.style.display === "none") {
         buttonDoorDiv.itemMarket.style.display = "block"
-        if (marketMemory[myRoom] === undefined) {
-            marketMemory[myRoom] = [];
-            for (let i = 0; i < 7; i++) {
-                if (room.doorState[myRoom] === "smallMarket") {
-                    i += 2;
-                } else if (room.doorState[myRoom] === "mediumMarket") {
-                    i += 1;
+        if (itemList !== "") {
+            if (marketMemory[myRoom] === undefined) {
+                marketMemory[myRoom] = [];
+                for (let i = 0; i < 7; i++) {
+                    if (room.doorState[myRoom] === "smallMarket") {
+                        i += 2;
+                    } else if (room.doorState[myRoom] === "mediumMarket") {
+                        i += 1;
+                    }
+                    let findIndexItem = itemList[randomNumber(itemList.length) - 1];
+                    while (marketMemory[myRoom].includes(findIndexItem)) {
+                        if (findIndexItem === undefined) {
+                            break
+                        }
+                        findIndexItem = itemList[randomNumber(itemList.length) - 1];
+
+                    }
+                    marketMemory[myRoom].push(findIndexItem);
+                    const index = itemList.findIndex((objet) => objet === findIndexItem);
+                        if (index !== -1) {
+                    itemList.splice(index, 1);
+                    }
                 }
-                let findIndexItem = itemList[randomNumber(itemList.length) - 1];
-                while (marketMemory[myRoom].includes(findIndexItem)) {
-                    findIndexItem = itemList[randomNumber(itemList.length) - 1];
-                }
-                marketMemory[myRoom].push(findIndexItem);
-                const index = itemList.findIndex((objet) => objet === findIndexItem);
-                    if (index !== -1) {
-                itemList.splice(index, 1);
-                }
-            }
-            updateRenderItemMarket(myRoom);
-        } else {
                 updateRenderItemMarket(myRoom);
+            } else {
+                    updateRenderItemMarket(myRoom);
+            }
+        } else {
+            console.log("le marchand n'a rien à proposer")
         }
     } else {
         buttonDoorDiv.itemMarket.style.display = "none"
