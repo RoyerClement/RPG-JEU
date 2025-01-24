@@ -49,117 +49,133 @@ const arme = {
 const gear = {
     LeftHand: {
         mainGauche: {
-            degats: () => 1 + 1 * statPerso.Dexterite,
+            degats: () => 1 + 1 * statPerso.Force,
             IMG: "image/mainGauche.jpg",
             class: "depart",
-            title: "titleMainGauche",
+            test: "testMainGauche",
+            title: "votre main gauche",
         },
         mainDroite: {
             degats: () => 1 + 1 * statPerso.Dexterite,
             IMG: "image/mainDroite.jpg",
             class: "depart",
-            title: "titleMainDroite",
+            test: "testMainDroite",
+            title :"votre main droite",
         },
         espadon: {
             degats: () => 3 + (3 * statPerso.Force + 2 * statPerso.Dexterite),
             IMG: "image/espadon.webp",
             class: "image",
-            title: "titleEspadon",
+            test: "testEspadon",
+            title: "Une épée à deux mains",
             twoHand: true,
         },
         dague: {
             degats: () => 3 + 3 * statPerso.Dexterite,
             IMG: "image/dague.webp",
             class: "image",
-            title: "titleDague",
+            test: "testDague",
+            title : "une dague en bon état"
         },
         epeeDepart: {
             degats: () => 4 + (2 * statPerso.Force + 1 * statPerso.Dexterite),
             IMG: "image/epeeDepart.png",
             class: "depart",
-            title: "titleEpeeDepart",
+            test: "testEpeeDepart",
+            title: "une épée de mauvaise qualité"
         },
         hacheDepart: {
             degats: () => 5 + 3 * statPerso.Force,
             IMG: "image/hacheDepart.jpg",
             class: "depart",
-            title: "titleHacheDepart",
+            test: "testHacheDepart",
+            title: "une hache emoussée"
         },
         arcDepart: {
             degats: () => 4 + 1 * statPerso.Force + 2 * statPerso.Dexterite,
             IMG: "image/arcDepart.png",
             class: "depart",
-            title: "titleArcDepart",
+            test: "testArcDepart",
+            title: "un arc rudimentaire"
         },
         batonDepart: {
             degats: () => 7 + 1 * statPerso.Force + 2 * statPerso.Intelligence,
             IMG: "image/batonDepart.avif",
             class: "depart",
-            title: "titleBatonDepart",
+            test: "testBatonDepart",
+            title: "un baton rudimentaire"
         },
     },
     RightHand: {
         mainGauche: {
-            degats: () => 1 + 1 * statPerso.Dexterite,
+            degats: () => 1 + 1 * statPerso.Force,
             IMG: "image/mainGauche.jpg",
             class: "depart",
-            title: "titleMainGauche",
+            test: "testMainGauche",
+            title: "votre main gauche",
         },
         mainDroite: {
             degats: () => 1 + 1 * statPerso.Dexterite,
             IMG: "image/mainDroite.jpg",
             class: "depart",
-            title: "titleMainDroite",
+            test: "testMainDroite",
+            title :"votre main droite",
         },
         espadon: {
             degats: () => 3 + (3 * statPerso.Force + 2 * statPerso.Dexterite),
             IMG: "image/espadon.webp",
             class: "image",
-            title: "titleEspadon",
+            test: "testEspadon",
+            title: "Une épée à deux mains",
             twoHand: true,
         },
         dague: {
             degats: () => 3 + 3 * statPerso.Dexterite,
             IMG: "image/dague.webp",
             class: "image",
-            title: "titleDague",
+            test: "testDague",
+            title : "une dague en bon état"
         },
         epeeDepart: {
             degats: () => 4 + (2 * statPerso.Force + 1 * statPerso.Dexterite),
             IMG: "image/epeeDepart.png",
             class: "depart",
-            title: "titleEpeeDepart",
+            test: "testEpeeDepart",
+            title: "une épée de mauvaise qualité"
         },
         hacheDepart: {
             degats: () => 5 + 3 * statPerso.Force,
             IMG: "image/hacheDepart.jpg",
             class: "depart",
-            title: "titleHacheDepart",
+            test: "testHacheDepart",
+            title: "une hache emoussée"
         },
         arcDepart: {
             degats: () => 4 + 1 * statPerso.Force + 2 * statPerso.Dexterite,
             IMG: "image/arcDepart.png",
             class: "depart",
-            title: "titleArcDepart",
+            test: "testArcDepart",
+            title: "un arc rudimentaire"
         },
         batonDepart: {
             degats: () => 7 + 1 * statPerso.Force + 2 * statPerso.Intelligence,
             IMG: "image/batonDepart.avif",
             class: "depart",
-            title: "titleBatonDepart",
+            test: "testBatonDepart",
+            title: "un baton rudimentaire"
         },
     },
     Chest: {
-        Chest: { def: 0, IMG: "image/Torse.jpg", title: "titleChest" },
-        armureEnCuir: { def: 10, IMG: "image/armureEnCuir.jpg", title: "titleArmureEnCuir", },
-        armureEnFer: { def: 20, IMG: "image/armureEnFer.jpg", title: "titleArmureEnFer", },
+        Chest: { def: 0, IMG: "image/Torse.jpg", test: "testChest", title:"votre torse" },
+        armureEnCuir: { def: 10, IMG: "image/armureEnCuir.jpg", test: "testArmureEnCuir", title: "une armure en cuir vous protègeant des coups" },
+        armureEnFer: { def: 20, IMG: "image/armureEnFer.jpg", test: "testArmureEnFer", title :"une armure en fer vous protègeant de biens des attaques" },
         armureEnCuivre: 15,
         armureEnPeau: 5,
         armureEnTissu: 7,
     },
     Head: {
-        Head: { def: 0, IMG: "image/Tete.jpg", title: "titleHead", },
-        casqueEnCuir: { def: 10, IMG: "image/casqueEnCuir.webp", title: "titleCasqueEnCuir", },
+        Head: { def: 0, IMG: "image/Tete.jpg", test: "testHead", title:"votre tête" },
+        casqueEnCuir: { def: 10, IMG: "image/casqueEnCuir.webp", test: "testCasqueEnCuir", title: "un casque en cuir vous protègeant des coups" },
         casqueEnFer: 20,
         casqueEnCuivre: 15,
         casqueEnPeau: 5,
@@ -169,24 +185,28 @@ const gear = {
         Ring: {
             effet: null,
             IMG: "image/EmplacementAmulette.png",
-            title: "titleEmplacementAnneau",
+            test: "testRing",
+            title : "emplacement pour ajouter un anneau"
         },
         anneauForce: {
             effet: false,
             IMG: "image/anneauForce.jpg",
-            title: "titleAnneauForce",
+            test: "testAnneauForce",
+            title:"anneau qui augmente votre force !"
         },
         anneauDexterite: {
             effet: false,
             IMG: "image/anneauForce.jpg",
-            title: "titleAnneauDexterite",
+            test: "testAnneauDexterite",
+            title: "anneau qui augmentaire votre dexterite"
         },
     },
     Neck: {
         Neck: {
             effet: null,
             IMG: "image/EmplacementAmulette.png",
-            title: "titleEmplacementAmulette",
+            test: "testNeck",
+            title: "emplacement pour ajouter une amulette"
         },
     },
 };
@@ -223,11 +243,11 @@ const stats = {
 };
 
 const inventaire = {
-    LeftHand: ["espadon", "dague"],
+    LeftHand: [],
     RightHand: [],
-    Chest: ["armureEnFer", "armureEnCuir"],
-    Head: ["casqueEnCuir"],
-    Ring: ["anneauForce", "anneauDexterite"],
+    Chest: [],
+    Head: [],
+    Ring: [],
     Neck: [],
     Object: [],
 };
@@ -288,7 +308,6 @@ let depart = false;
 // CREATION DES STATS
 const statDiv = document.createElement("div");
 statDiv.id = "stat";
-
 const statsHTML = [
     { id: "statFor", label: "Force", buttonId: "btnFor", buttonTestId:"testForce" },
     { id: "statDex", label: "Dextérité", buttonId: "btnDex+", buttonTestId:"testDexterite" },
@@ -385,6 +404,7 @@ const equipements = [
         imgId: "mainGauche",
         title: "Arme en main gauche",
         class: "image",
+        test : "testMainGauche"
     },
     {
         id: "DivRightHand",
@@ -392,6 +412,7 @@ const equipements = [
         imgId: "mainDroite",
         title: "Arme en main droite",
         class: "image",
+        test : "testMainDroite"
     },
     {
         id: "DivChest",
@@ -399,6 +420,7 @@ const equipements = [
         imgId: "ChestImage",
         title: "Equipez vous d'armure pour subir moins de dégats",
         class: "image",
+        test : "testChest"
     },
     {
         id: "DivHead",
@@ -406,6 +428,7 @@ const equipements = [
         imgId: "HeadImage",
         title: "Equipez vous d'armure pour subir moins de dégats",
         class: "image",
+        test : "testHead"
     },
     {
         id: "DivRing",
@@ -413,6 +436,7 @@ const equipements = [
         imgId: "RingImage",
         title: "Ici pour vous équipez de bijou",
         class: "image",
+        test : "testRing"
     },
     {
         id: "DivNeck",
@@ -420,6 +444,7 @@ const equipements = [
         imgId: "NeckImage",
         title: "Ici pour vous équipez de bijou",
         class: "image",
+        test : "testNeck"
     },
 ];
 
@@ -431,6 +456,7 @@ equipements.forEach((equipement) => {
     img.id = equipement.imgId;
     img.className = equipement.class;
     img.title = equipement.title;
+    img.setAttribute("data-testid", equipement.test)
     img.width = 100;
     img.height = 108;
     equipementContainer.appendChild(img);
@@ -451,6 +477,7 @@ const equipementDansInventaire = [
         id: "armureEnCuir",
         class: "image",
         imgSrc: "image/armureEnCuir.jpg",
+        test: "testArmureEnCuir",
         title: "Armure simple en cuir, protège relativement",
     },
     {
@@ -458,50 +485,58 @@ const equipementDansInventaire = [
         class: "image",
         imgSrc: "image/espadon.webp",
         title: "Longue épée à deux mains",
+        test: "testEspadon",
     },
     {
         id: "dague",
         class: "image",
         imgSrc: "image/dague.webp",
         title: "Dague de base",
+        test: "testDague",
     },
     {
         id: "armureEnFer",
         class: "image",
         imgSrc: "image/armureEnFer.jpg",
         title: "Armure en fer, protège bien",
+        test: "testArmureEnfer",
     },
     {
         id: "casqueEnCuir",
         class: "image",
         imgSrc: "image/casqueEnCuir.webp",
         title: "Casque en cuir, protège relativement",
+        test: "testCasqueEnCuir",
     },
     {
         id: "anneauForce",
         class: "image",
         imgSrc: "image/anneauForce.jpg",
         title: "Anneau qui vous rend plus fort",
+        test: "testAnneauForce",
     },
     {
         id: "anneauDexterite",
         class: "image",
         imgSrc: "image/anneauForce.jpg",
         title: "Anneau qui vous rend plus agile",
+        test: "testAnneauDexterite",
+        
     },
 ];
-equipementDansInventaire.forEach((equipement) => {
-    const equipementDiv = document.createElement("div");
-    equipementDiv.id = equipement.id;
-    const equipementImg = document.createElement("img");
-    equipementImg.src = equipement.imgSrc;
-    equipementImg.title = equipement.title;
-    equipementImg.className = equipement.class;
-    equipementImg.width = 100;
-    equipementImg.height = 108;
-    equipementDiv.appendChild(equipementImg);
-    equipementSpan.appendChild(equipementDiv);
-});
+// equipementDansInventaire.forEach((equipement) => {
+//     const equipementDiv = document.createElement("div");
+//     equipementDiv.id = equipement.id;
+//     const equipementImg = document.createElement("img");
+//     equipementImg.src = equipement.imgSrc;
+//     equipementImg.title = equipement.title;
+//     equipementImg.setAttribute("data-testid", equipement.test)
+//     equipementImg.className = equipement.class;
+//     equipementImg.width = 100;
+//     equipementImg.height = 108;
+//     equipementDiv.appendChild(equipementImg);
+//     equipementSpan.appendChild(equipementDiv);
+// });
 inventaireDiv.appendChild(equipementSpan);
 
 document.body.appendChild(inventaireDiv);
@@ -520,14 +555,14 @@ if (!depart) {
             class: "depart",
             testId : "testEpeeDepart",
             imgSrc: "image/epeeDepart.png",
-            title: "titleEpeeDepart",
+            title: "Epee simple || inflige des dégats selon la force et la dexterité", 
         },
         {
             id: "hacheDepart",
             class: "depart",
             testId: "testHacheDepart",
             imgSrc: "image/hacheDepart.jpg",
-            title: "titleHacheDepart",
+            title: "Hache simple || inflige des dégats selon la force",
         },
         {
             id: "arcDepart",
@@ -551,6 +586,7 @@ if (!depart) {
         const equipementImg = document.createElement("img");
         equipementImg.id = equipement.id
         equipementImg.src = equipement.imgSrc;
+        equipementImg.setAttribute("data-testid", equipement.testId)
         equipementImg.title = equipement.title;
         equipementImg.width = 100;
         equipementImg.height = 108;
@@ -619,7 +655,6 @@ const elements = {
     allPicture: document.querySelectorAll(".image"),
     inventaire: document.getElementById("inventaire"),
 };
-
 // FONCTION POUR REPERER SI CEST UNE ARME OU UN OBJET
 function whatObject(value, key, valueImage) {
     if (key === "arme") {
@@ -767,10 +802,6 @@ function takeObject(name, type, baseType) {
 elements.epeeDepart.addEventListener("click", () =>
     takeWeapon("epeeDepart", "LeftHand", "depart"),
 );
-elements.espadon.addEventListener("click", () =>
-    takeWeapon("espadon", "LeftHand"),
-);
-elements.dague.addEventListener("click", () => takeWeapon("dague", "LeftHand"));
 elements.hacheDepart.addEventListener("click", () =>
     takeWeapon("hacheDepart", "LeftHand", "depart"),
 );
@@ -780,21 +811,26 @@ elements.arcDepart.addEventListener("click", () =>
 elements.batonDepart.addEventListener("click", () =>
     takeWeapon("batonDepart", "LeftHand", "depart"),
 );
-elements.armureEnCuir.addEventListener("click", () =>
-    takeObject("armureEnCuir", "Chest", "ChestImage"),
-);
-elements.armureEnFer.addEventListener("click", () =>
-    takeObject("armureEnFer", "Chest", "ChestImage"),
-);
-elements.casqueEnCuir.addEventListener("click", () =>
-    takeObject("casqueEnCuir", "Head", "HeadImage"),
-);
-elements.anneauForce.addEventListener("click", () =>
-    takeObject("anneauForce", "Ring", "RingImage"),
-);
-elements.anneauDexterite.addEventListener("click", () =>
-    takeObject("anneauDexterite", "Ring", "RingImage"),
-);
+// elements.espadon.addEventListener("click", () =>
+//     takeWeapon("espadon", "LeftHand"),
+// );
+// elements.dague.addEventListener("click", () => takeWeapon("dague", "LeftHand"));
+
+// elements.armureEnCuir.addEventListener("click", () =>
+//     takeObject("armureEnCuir", "Chest", "ChestImage"),
+// );
+// elements.armureEnFer.addEventListener("click", () =>
+//     takeObject("armureEnFer", "Chest", "ChestImage"),
+// );
+// elements.casqueEnCuir.addEventListener("click", () =>
+//     takeObject("casqueEnCuir", "Head", "HeadImage"),
+// );
+// elements.anneauForce.addEventListener("click", () =>
+//     takeObject("anneauForce", "Ring", "RingImage"),
+// );
+// elements.anneauDexterite.addEventListener("click", () =>
+//     takeObject("anneauDexterite", "Ring", "RingImage"),
+// );
 elements.FermerInv.addEventListener("click", () => FermerInv());
 let roomIAm = "";
 let room = {
@@ -809,6 +845,7 @@ let recData = {
         message: [],
     },
 };
+let marketMemory = { start: [], }
 let backCheck = "";
 let message = [];
 async function FermerInv() {
@@ -825,6 +862,7 @@ async function FermerInv() {
         roomIAm,
         backCheck,
         message,
+        marketMemory
     };
     const res = await fetch("http://localhost:8000/all-data", {
         method: "PUT",
@@ -879,6 +917,7 @@ function replaceStat() {
             room.doorState[key] = value;
         },
     );
+    marketMemory = recData.donjonpath.marketMemory
     roomIAm = recData.donjonpath.roomIAm;
     btnCheck = recData.donjonpath.dataStat.DonneeStatPerso.btnCheck;
     depart = recData.donjonpath.dataStat.DonneeStatPerso.depart;
@@ -903,6 +942,7 @@ function VisualRender() {
             image.height = "108";
             image.id = value;
             image.title = gear[key][value].title
+            image.setAttribute('data-testid', gear[key][value].test)
             image.className = "image";
             elements.div[key].appendChild(image);
             const listeImage = [
@@ -931,6 +971,7 @@ function VisualRender() {
                 image.height = 108;
                 image.className = "image";
                 image.title = gear[key][value].title
+                image.setAttribute('data-testid', gear[key][value].test)
                 image.id = value;
                 elements.inventaire.appendChild(image);
                 image.addEventListener("click", () =>

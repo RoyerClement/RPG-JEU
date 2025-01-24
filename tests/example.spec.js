@@ -44,13 +44,18 @@ test("fermer l'inventaire puis cliquer sur la premiere porte, puis cliquer sur l
 test('arme de départ, puis l\'équiper' , async ({page }) => {
     //clic sur epee de depart, hache de depart disparait (car plus disponible)
     await page.goto("http://localhost:3000/index.html");
-    const epeeDepart = await page.getByTitle("titleEpeeDepart");
+    const epeeDepart = await page.getByTestId("testEpeeDepart");
+    await expect (page.getByTestId("testHacheDepart")).toBeVisible
     await epeeDepart.click();
-    await expect (page.getByTitle("titleHacheDepart")).not.toBeVisible
-    sleep(2000)
+    await expect (page.getByTestId("testHacheDepart")).not.toBeVisible
+    await expect (epeeDepart).toBeVisible 
     //Puis clic à nouveau epee pour l'equiper dans l'inventaire
     await epeeDepart.click();
-    await expect (page.getByTitle("titleMainGauche")).not.toBeVisible  
+    await expect (page.getByTestId("testLeftHand")).not.toBeVisible 
+    await expect (epeeDepart).toBeVisible 
+    await epeeDepart.click(); 
+    await expect (page.getByTestId("testLeftHand")).toBeVisible 
+    await expect (epeeDepart).toBeVisible 
 })
 test("bouton pour ajouter des stats", async({page}) => {
     /*on verifie ici que les boutons "+" pour ajouter les stats fonctionnent bien
@@ -137,4 +142,44 @@ test("modification HP/MP en fonction des stats", async({page}) => {
     await expect (page.getByText(/Points de vie : 60\/60/)).toBeVisible
     await btnIntelligence.click()
     await expect (page.getByText(/Points de mana : 70\/70/)).toBeVisible
+})
+test ("arme à deux mains", async ({page}) => {
+    await page.goto("localhost:3000/index.html")
+    const espadon = await page.getByTestId('testEspadon')
+    const dague = await page.getByTestId("testDague")
+    await expect (page.getByTestId("testLeftHand")).toBeVisible 
+    await expect (page.getByTestId("testRightHand")).toBeVisible 
+    await espadon.click()
+    await expect (page.getByTestId("testLeftHand")).not.toBeVisible 
+    await expect (page.getByTestId("testRightHand")).not.toBeVisible 
+    await expect (espadon).toBeVisible
+    await espadon.click()
+    await expect (page.getByTestId("testLeftHand")).toBeVisible 
+    await expect (page.getByTestId("testRightHand")).toBeVisible 
+    await expect (espadon).toBeVisible
+    await espadon.click()
+    await dague.click()
+    await expect (page.getByTestId("testRightHand")).toBeVisible 
+})
+test ("defense/armure" , async ({page}) => {
+    await page.goto("localhost:3000/index.html")
+    const armureEnCuir = await page.getByTestId("testArmureEnCuir")
+    const chest = await page.getByTestId("testChest")
+    const casqueEnCuir = await page.getByTestId("testCasqueEnCuir")
+    const head = await page.getByTestId("testCasqueEnCuir")
+    await expect (chest).toBeVisible
+    await expect (head).toBeVisible
+    await expect (armureEnCuir).toBeVisible
+    await expect (page.getByText(/Défense : 0/))
+    await armureEnCuir.click()
+    await expect (chest).not.toBeVisible
+    await expect (armureEnCuir).toBeVisible
+    await expect (head).toBeVisible
+    await expect (page.getByText(/Défense : 10/))
+    await casqueEnCuir.click()
+    await expect (chest).not.toBeVisible
+    await expect (head).not.toBeVisible
+    await expect (armureEnCuir).toBeVisible
+    await expect (casqueEnCuir).toBeVisible
+    await expect (page.getByText(/Défense : 20/))
 })

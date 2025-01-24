@@ -13,7 +13,6 @@ const buttonDoorDiv = {
     market: document.getElementById("market"),
     itemMarket: document.getElementById("itemMarket"),
 };
-
 const imDoor = {
     ImA: document.getElementById("ImA"),
     ImB: document.getElementById("ImB"),
@@ -41,10 +40,8 @@ const dialogue = {
     txtKill: `Vous attaquez et tuez un ennemi`,
     txtMarchand: `Il y a un marchand dans cette salle`,
 };
-
 let textDialogue = "";
 let message = [];
-
 const room = {
     numberDoor: {
         start: 3,
@@ -57,7 +54,16 @@ const room = {
         },
     },
 };
-const marketMemory = { start: [] };
+const marketMemory = { start: [], };
+const allItemList = [
+    "anneauForce",
+    "espadon",
+    "anneauDexterite",
+    "armureEnFer",
+    "armureEnCuir",
+    "casqueEnCuir",
+    "dague",
+];
 const itemList = [
     "anneauForce",
     "espadon",
@@ -71,30 +77,37 @@ const item = {
     anneauForce: {
         IMG: "image/anneauForce.jpg",
         cost: 100,
+        type: "Ring"
     },
     espadon: {
         IMG: "image/espadon.webp",
         cost: 200,
+        type: "LeftHand"
     },
     anneauDexterite: {
         IMG: "image/anneauForce.jpg",
         cost: 100,
+        type: "Ring"
     },
     armureEnFer: {
         IMG: "image/armureEnFer.jpg",
         cost: 200,
+        type: "Chest"
     },
     armureEnCuir: {
         IMG: " image/armureEnCuir.jpg",
         cost: 100,
+        type: "Chest"
     },
     casqueEnCuir: {
         IMG: "image/casqueEnCuir.webp",
         cost: 100,
+        type: "Head"
     },
     dague: {
         IMG: "image/dague.webp",
         cost: 100,
+        type: "LeftHand"
     },
 };
 let actualFight = [];
@@ -370,6 +383,7 @@ function delDoor(myRoom) {
         });
     } catch {}
 }
+console.log(marketMemory)
 function updateRender(myRoom, marchand) {
     delDoor();
     if (marchand === "marchand") {
@@ -549,6 +563,7 @@ let dataStat = {
         Volonte: "",
         XP: "",
     },
+    marketMemory: {start : [], }
 };
 function replaceStat() {
     Object.entries(dataStat.DonneeStatPerso.room.numberDoor).forEach(
@@ -567,6 +582,11 @@ function replaceStat() {
     }
     backCheck = dataStat.DonneeStatPerso.backCheck;
     message = dataStat.DonneeStatPerso.message;
+    Object.entries(dataStat.DonneeStatPerso.marketMemory).forEach(
+        ([key, value]) => {
+            marketMemory[key] = value;
+        },
+    );
     backCheckFn();
     boiteDialogue("recDonnee");
     updateRenderBack(roomIAm);
@@ -617,6 +637,7 @@ async function savePath() {
         dataStat,
         backCheck,
         message,
+        marketMemory,
     };
     console.log({ donjonpath });
     const res = await fetch("http://localhost:8000/all-data", {
@@ -643,9 +664,26 @@ async function getData() {
 getData();
 // .then((data) => (dataStat = data))
 // .catch((_) => (dataStat = serverResponse));
-
-function updateRenderItemMarket(itemInShop) {
-    itemInShop.forEach((value) => {
+function buyItem(item, type, myRoom) {
+    debugger
+    dataStat.DonneeStatPerso.inventaire[type].push(item)
+    const index = marketMemory[myRoom].findIndex((objet) => item === objet);
+        if (index !== -1) {
+            marketMemory[myRoom].splice(index, 1);
+        }
+    updateRenderItemMarket(myRoom)
+}
+function delItem() {
+            Object.values(allItemList).forEach((value) => { 
+                try {
+            imDoor[value] = document.getElementById(value)
+            imDoor[value].remove()} 
+            catch {}
+        })
+}
+function updateRenderItemMarket(myRoom) {
+    delItem()
+    marketMemory[myRoom].forEach((value) => {
         const ImItem = document.createElement("img");
         ImItem.src = item[value].IMG;
         ImItem.width = 100;
@@ -654,32 +692,42 @@ function updateRenderItemMarket(itemInShop) {
         buttonDoorDiv.itemMarket.appendChild(ImItem);
         imDoor[value] = document.getElementById(value);
         imDoor[value].addEventListener("click", () =>
-            console.log(value, "a été acheté", imDoor),
+            buyItem(value, item[value].type, myRoom),
         );
     });
 }
 function itemMarket(myRoom) {
-    buttonDoorDiv.itemMarket.style.display = "block";
-    if (marketMemory[myRoom] === undefined) {
-        marketMemory[myRoom] = [];
-        for (let i = 0; i < 7; i++) {
-            debugger;
-            if (room.doorState[myRoom] === "smallMarket") {
-                i += 2;
-            } else if (room.doorState[myRoom] === "mediumMarket") {
-                i += 1;
+    debugger
+    console.log(itemList)
+    if (buttonDoorDiv.itemMarket.style.display === "none") {
+        buttonDoorDiv.itemMarket.style.display = "block"
+        if (marketMemory[myRoom] === undefined) {
+            marketMemory[myRoom] = [];
+            for (let i = 0; i < 7; i++) {
+                if (room.doorState[myRoom] === "smallMarket") {
+                    i += 2;
+                } else if (room.doorState[myRoom] === "mediumMarket") {
+                    i += 1;
+                }
+                let findIndexItem = itemList[randomNumber(itemList.length) - 1];
+                while (marketMemory[myRoom].includes(findIndexItem)) {
+                    findIndexItem = itemList[randomNumber(itemList.length) - 1];
+                }
+                marketMemory[myRoom].push(findIndexItem);
+                const index = itemList.findIndex((objet) => objet === findIndexItem);
+                    if (index !== -1) {
+                itemList.splice(index, 1);
+                }
             }
-            let findIndexItem = itemList[randomNumber(itemList.length) - 1];
-            while (marketMemory[myRoom].includes(findIndexItem)) {
-                findIndexItem = itemList[randomNumber(itemList.length) - 1];
-            }
-            marketMemory[myRoom].push(findIndexItem);
+            updateRenderItemMarket(myRoom);
+        } else {
+                updateRenderItemMarket(myRoom);
         }
-        updateRenderItemMarket(marketMemory[myRoom]);
     } else {
-        updateRenderItemMarket(marketMemory[myRoom]);
+        buttonDoorDiv.itemMarket.style.display = "none"
     }
-}
+} 
+
 function updateRenderMarket(myRoom) {
     if (room.doorState[myRoom] === "smallMarket") {
         const smallMarket = document.createElement("img");
@@ -690,7 +738,7 @@ function updateRenderMarket(myRoom) {
         smallMarket.id = "smallMarket";
         buttonDoorDiv.market.appendChild(smallMarket);
         imDoor.smallMarket = document.getElementById("smallMarket");
-        imDoor.smallMarket.addEventListener("click", () => itemMarket(myRoom));
+        imDoor.smallMarket.addEventListener("click", () => itemMarket(myRoom))
     } else if (room.doorState[myRoom] === "mediumMarket") {
         const mediumMarket = document.createElement("img");
         mediumMarket.src = "image/etal.webp";
