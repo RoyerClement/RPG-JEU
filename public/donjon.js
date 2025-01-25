@@ -23,6 +23,7 @@ const imDoor = {
     ImEnn4: document.getElementById("ImEnn4"),
     ImEnn5: document.getElementById("ImEnn5"),
     btnBack: document.getElementById("back"),
+    mur: document.getElementById("mur"),
     fightDoor: document.getElementById("fightDoor"),
     allDoor: document.getElementById("porte"),
 };
@@ -109,6 +110,11 @@ const item = {
         cost: 100,
         type: "LeftHand"
     },
+    potionvie1: {
+        IMG: "image/potionVie.webp",
+        cost: 100,
+        type: "Object"
+    }
 };
 let actualFight = [];
 let actualEnnemiStatut = {};
@@ -382,8 +388,9 @@ function delDoor(myRoom) {
             imDoor[value].remove;
         });
     } catch {}
+    try {
+    } catch {}
 }
-console.log(marketMemory)
 function updateRender(myRoom, marchand) {
     delDoor();
     if (marchand === "marchand") {
@@ -462,6 +469,7 @@ function updateRender(myRoom, marchand) {
             openDoor("C", ImC, "ImOpenC", "D3", roomIAm),
         );
     }
+    darknessOpacity()
 }
 let ImToDel = [];
 function attaque(nom, type, div, ImEnn) {
@@ -502,7 +510,16 @@ function attaque(nom, type, div, ImEnn) {
         }
     }
 }
-
+function darknessOpacity() {
+    let numberEnn = 0
+    if (roomIAm === "start") {roomIAm = ""}
+    const splitRoom = roomIAm.split("");
+    numberEnn = (splitRoom.length/20)
+    document.documentElement.style.setProperty('--darkness-opacity', numberEnn);
+    const darknessOpacity = getComputedStyle(document.documentElement).getPropertyValue('--darkness-opacity');
+    console.log('Valeur actuelle de --darkness-opacity:', darknessOpacity.trim());
+    if (roomIAm ==="") {roomIAm = "start"}
+}
 function updateRenderFight(type, nomEnnemi, div, ImEnn) {
     const imEnnemi = document.createElement("img");
     imEnnemi.src = ennemi[type].IMG;
@@ -857,4 +874,5 @@ function updateRenderBack(myRoom) {
         } else {
         }
     }
+    darknessOpacity()
 }

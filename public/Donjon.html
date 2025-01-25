@@ -9,6 +9,40 @@
         />
 
         <style>
+            :root {
+                --darkness-opacity: 0.55;
+            }
+            .background-darkness {
+                position: relative;
+                width: 100%;
+                height: 100vh;
+            }
+
+            .background-darkness::before {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-image: url("image/darkness17.webp");
+                background-position: center;
+                background-repeat: no-repeat;
+                background-size: cover;
+                opacity: var(--darkness-opacity);
+                pointer-events: none;
+                z-index: 1; 
+            }
+            .position-relative {
+            position: relative;
+            }
+            .no-darkness::before {
+                display: none !important; 
+            }   
+            .no-darkness {
+                position: relative; 
+                z-index: 2;
+            }
             #UN {
                 position: absolute;
                 right: 800px;
@@ -109,7 +143,7 @@
             #mur {
                 width: 100%;
                 height: 407px;
-                background-image: url("image/mur4.jpg");
+                background-image: url("image/mur0.jpg");
                 background-position: center;
                 position: relative;
                 overflow: hidden;
@@ -133,10 +167,12 @@
                 right: 700px;
                 top: 0px;
             }
+            
         </style>
     </head>
     <body>
-        <div id="all">
+        <div id="all" class="position-relative background-darkness">
+            <div id="darkness"></div>
             <div id="mur">
                 <div id="fightDoor"></div>
                 <div id="porte">
@@ -163,7 +199,6 @@
                             src="image/porteFerme.webp"
                             id="ImC"
                             class="porteFerme"
-
                             title="C"
                         />
                     </div>
@@ -183,9 +218,13 @@
         <div id="itemMarket" style="display: none">
             <p>Voici ce que le marchand propose :</p>
         </div>
-        <button id="Inventaire" data-testid="testOpInv">Ouvrir l'inventaire</button>
-        <button id="back" style="display: none" data-testid="testBack">Revenir en arrière</button>
-        <div id="divDialogue">
+        <button id="Inventaire" class="no-darkness" data-testid="testOpInv">
+            Ouvrir l'inventaire
+        </button>
+        <button id="back" class="no-darkness" style="display: none" data-testid="testBack">
+            Revenir en arrière
+        </button>
+        <div id="divDialogue" class="no-darkness">
             <span id="boiteDialogue"></span>
         </div>
     </body>
