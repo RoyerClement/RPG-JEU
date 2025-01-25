@@ -14,27 +14,27 @@ const statPerso = {
 const arme = {
     mainGauche: {
         degats: () => 1 + 1 * statPerso.Dexterite,
-        IMG: "image/mainGauche.jpg",
+        IMG: "image/mainGauche.webp",
     },
     mainDroite: {
         degats: () => 1 + 1 * statPerso.Force,
-        IMG: "image/mainDroite.jpg",
+        IMG: "image/mainDroite.webp",
     },
     epeeDepart: {
         degats: () => 4 + (3 * statPerso.Force + 2 * statPerso.Dexterite),
-        IMG: "image/epeeDepart.png",
+        IMG: "image/epeeDepart.webp",
     },
     hacheDepart: {
         degats: () => 5 + 4 * statPerso.Force,
-        IMG: "image/hacheDepart.jpg",
+        IMG: "image/hacheDepart.webp",
     },
     arcDepart: {
         degats: () => 7 + 1 * statPerso.Force + 2 * statPerso.Dexterite,
-        IMG: "image/arcDepart.png",
+        IMG: "image/arcDepart.webp",
     },
     batonDepart: {
         degats: () => 7 + 1 * statPerso.Force + 2 * statPerso.Intelligence,
-        IMG: "image/batonDepart.avif",
+        IMG: "image/batonDepart.webp",
     },
     espadon: {
         degats: () => 13 + (2 * statPerso.Force + 2 * statPerso.Dexterite),
@@ -45,19 +45,23 @@ const arme = {
         degats: () => 3 + 3 * statPerso.Dexterite,
         IMG: "image/dague.webp",
     },
+    torche: {
+        degats: () => 10,
+        IMG: "image/torche.webp",
+    },
 };
 const gear = {
     LeftHand: {
         mainGauche: {
             degats: () => 1 + 1 * statPerso.Force,
-            IMG: "image/mainGauche.jpg",
+            IMG: "image/mainGauche.webp",
             class: "depart",
             test: "testMainGauche",
             title: "votre main gauche",
         },
         mainDroite: {
             degats: () => 1 + 1 * statPerso.Dexterite,
-            IMG: "image/mainDroite.jpg",
+            IMG: "image/mainDroite.webp",
             class: "depart",
             test: "testMainDroite",
             title :"votre main droite",
@@ -79,44 +83,51 @@ const gear = {
         },
         epeeDepart: {
             degats: () => 4 + (2 * statPerso.Force + 1 * statPerso.Dexterite),
-            IMG: "image/epeeDepart.png",
+            IMG: "image/epeeDepart.webp",
             class: "depart",
             test: "testEpeeDepart",
             title: "une épée de mauvaise qualité"
         },
         hacheDepart: {
             degats: () => 5 + 3 * statPerso.Force,
-            IMG: "image/hacheDepart.jpg",
+            IMG: "image/hacheDepart.webp",
             class: "depart",
             test: "testHacheDepart",
             title: "une hache emoussée"
         },
         arcDepart: {
             degats: () => 4 + 1 * statPerso.Force + 2 * statPerso.Dexterite,
-            IMG: "image/arcDepart.png",
+            IMG: "image/arcDepart.webp",
             class: "depart",
             test: "testArcDepart",
             title: "un arc rudimentaire"
         },
         batonDepart: {
             degats: () => 7 + 1 * statPerso.Force + 2 * statPerso.Intelligence,
-            IMG: "image/batonDepart.avif",
+            IMG: "image/batonDepart.webp",
             class: "depart",
             test: "testBatonDepart",
             title: "un baton rudimentaire"
+        },
+        torche: {
+            degats: () => 10,
+            IMG: "image/torche.webp",
+            class: "image",
+            test: "testTorche",
+            title: "une torche",
         },
     },
     RightHand: {
         mainGauche: {
             degats: () => 1 + 1 * statPerso.Force,
-            IMG: "image/mainGauche.jpg",
+            IMG: "image/mainGauche.webp",
             class: "depart",
             test: "testMainGauche",
             title: "votre main gauche",
         },
         mainDroite: {
             degats: () => 1 + 1 * statPerso.Dexterite,
-            IMG: "image/mainDroite.jpg",
+            IMG: "image/mainDroite.webp",
             class: "depart",
             test: "testMainDroite",
             title :"votre main droite",
@@ -138,43 +149,56 @@ const gear = {
         },
         epeeDepart: {
             degats: () => 4 + (2 * statPerso.Force + 1 * statPerso.Dexterite),
-            IMG: "image/epeeDepart.png",
+            IMG: "image/epeeDepart.webp",
             class: "depart",
             test: "testEpeeDepart",
             title: "une épée de mauvaise qualité"
         },
         hacheDepart: {
             degats: () => 5 + 3 * statPerso.Force,
-            IMG: "image/hacheDepart.jpg",
+            IMG: "image/hacheDepart.webp",
             class: "depart",
             test: "testHacheDepart",
             title: "une hache emoussée"
         },
         arcDepart: {
             degats: () => 4 + 1 * statPerso.Force + 2 * statPerso.Dexterite,
-            IMG: "image/arcDepart.png",
+            IMG: "image/arcDepart.webp",
             class: "depart",
             test: "testArcDepart",
             title: "un arc rudimentaire"
         },
         batonDepart: {
             degats: () => 7 + 1 * statPerso.Force + 2 * statPerso.Intelligence,
-            IMG: "image/batonDepart.avif",
+            IMG: "image/batonDepart.webp",
             class: "depart",
             test: "testBatonDepart",
             title: "un baton rudimentaire"
         },
+        torche: {
+            degats: () => 10,
+            IMG: "image/torche.webp",
+            class: "image",
+            test: "testTorche",
+            title: "une torche",
+        },
+
     },
     Chest: {
-        Chest: { def: 0, IMG: "image/Torse.jpg", test: "testChest", title:"votre torse" },
-        armureEnCuir: { def: 10, IMG: "image/armureEnCuir.jpg", test: "testArmureEnCuir", title: "une armure en cuir vous protègeant des coups" },
-        armureEnFer: { def: 20, IMG: "image/armureEnFer.jpg", test: "testArmureEnFer", title :"une armure en fer vous protègeant de biens des attaques" },
+        Chest: { 
+            def: 0, 
+            IMG: "image/Torse.webp", 
+            test: "testChest", 
+            title:"votre torse" 
+        },
+        armureEnCuir: { def: 10, IMG: "image/armureEnCuir.webp", test: "testArmureEnCuir", title: "une armure en cuir vous protègeant des coups" },
+        armureEnFer: { def: 20, IMG: "image/armureEnFer.webp", test: "testArmureEnFer", title :"une armure en fer vous protègeant de biens des attaques" },
         armureEnCuivre: 15,
         armureEnPeau: 5,
         armureEnTissu: 7,
     },
     Head: {
-        Head: { def: 0, IMG: "image/Tete.jpg", test: "testHead", title:"votre tête" },
+        Head: { def: 0, IMG: "image/Tete.webp", test: "testHead", title:"votre tête" },
         casqueEnCuir: { def: 10, IMG: "image/casqueEnCuir.webp", test: "testCasqueEnCuir", title: "un casque en cuir vous protègeant des coups" },
         casqueEnFer: 20,
         casqueEnCuivre: 15,
@@ -190,13 +214,13 @@ const gear = {
         },
         anneauForce: {
             effet: false,
-            IMG: "image/anneauForce.jpg",
+            IMG: "image/anneauForce.webp",
             test: "testAnneauForce",
             title:"anneau qui augmente votre force !"
         },
         anneauDexterite: {
             effet: false,
-            IMG: "image/anneauForce.jpg",
+            IMG: "image/anneauForce.webp",
             test: "testAnneauDexterite",
             title: "anneau qui augmentaire votre dexterite"
         },
@@ -209,6 +233,32 @@ const gear = {
             title: "emplacement pour ajouter une amulette"
         },
     },
+    Object: {
+        potionVie: {
+            HP: 50,
+            IMG: "image/potionVie.webp",
+            title: "Potion de vie",
+            nombre: 0,
+        },
+        potionMana: {
+            MP: 50,
+            IMG: "image/potionMana.webp",
+            title: "Potion de mana",
+            nombre: 0,
+        },
+        parcheminBlackHole : {
+            IMG: "image/parchemin.webp",
+            title: "Lisez ce parchemin pour apprendre le sort trou noir",
+        },
+        parcheminLumiere : {
+            IMG: "image/parchemin.webp",
+            title: "Lisez ce parchemin pour apprendre le sort lumière",
+        },
+        parcheminFlamme : {
+            IMG: "image/parchemin.webp",
+            title: "Lisez ce parchemin pour apprendre le sort trou noir",
+        },
+    }
 };
 
 const Buff = {
@@ -400,7 +450,7 @@ equipementDiv.appendChild(equipementTitle);
 const equipements = [
     {
         id: "DivLeftHand",
-        imgSrc: "image/mainGauche.jpg",
+        imgSrc: "image/mainGauche.webp",
         imgId: "mainGauche",
         title: "Arme en main gauche",
         class: "image",
@@ -408,7 +458,7 @@ const equipements = [
     },
     {
         id: "DivRightHand",
-        imgSrc: "image/mainDroite.jpg",
+        imgSrc: "image/mainDroite.webp",
         imgId: "mainDroite",
         title: "Arme en main droite",
         class: "image",
@@ -416,7 +466,7 @@ const equipements = [
     },
     {
         id: "DivChest",
-        imgSrc: "image/Torse.jpg",
+        imgSrc: "image/Torse.webp",
         imgId: "ChestImage",
         title: "Equipez vous d'armure pour subir moins de dégats",
         class: "image",
@@ -424,7 +474,7 @@ const equipements = [
     },
     {
         id: "DivHead",
-        imgSrc: "image/Tete.jpg",
+        imgSrc: "image/Tete.webp",
         imgId: "HeadImage",
         title: "Equipez vous d'armure pour subir moins de dégats",
         class: "image",
@@ -476,7 +526,7 @@ const equipementDansInventaire = [
     {
         id: "armureEnCuir",
         class: "image",
-        imgSrc: "image/armureEnCuir.jpg",
+        imgSrc: "image/armureEnCuir.webp",
         test: "testArmureEnCuir",
         title: "Armure simple en cuir, protège relativement",
     },
@@ -497,7 +547,7 @@ const equipementDansInventaire = [
     {
         id: "armureEnFer",
         class: "image",
-        imgSrc: "image/armureEnFer.jpg",
+        imgSrc: "image/armureEnFer.webp",
         title: "Armure en fer, protège bien",
         test: "testArmureEnfer",
     },
@@ -511,14 +561,14 @@ const equipementDansInventaire = [
     {
         id: "anneauForce",
         class: "image",
-        imgSrc: "image/anneauForce.jpg",
+        imgSrc: "image/anneauForce.webp",
         title: "Anneau qui vous rend plus fort",
         test: "testAnneauForce",
     },
     {
         id: "anneauDexterite",
         class: "image",
-        imgSrc: "image/anneauForce.jpg",
+        imgSrc: "image/anneauForce.webp",
         title: "Anneau qui vous rend plus agile",
         test: "testAnneauDexterite",
         
@@ -554,28 +604,28 @@ if (!depart) {
             id: "epeeDepart",
             class: "depart",
             testId : "testEpeeDepart",
-            imgSrc: "image/epeeDepart.png",
+            imgSrc: "image/epeeDepart.webp",
             title: "Epee simple || inflige des dégats selon la force et la dexterité", 
         },
         {
             id: "hacheDepart",
             class: "depart",
             testId: "testHacheDepart",
-            imgSrc: "image/hacheDepart.jpg",
+            imgSrc: "image/hacheDepart.webp",
             title: "Hache simple || inflige des dégats selon la force",
         },
         {
             id: "arcDepart",
             class: "depart",
             testId : "testArcDepart",
-            imgSrc: "image/arcDepart.png",
+            imgSrc: "image/arcDepart.webp",
             title: "Arc simple || Inflige plus de dégats avec votre force et dexterité",
         },
         {
             id: "batonDepart",
             class: "depart",
             testId : "testBatonDepart",
-            imgSrc: "image/batonDepart.avif",
+            imgSrc: "image/batonDepart.webp",
             title: "Baton simple || Inflige plus de dégats avec votre force et intelligence",
         },
     ];

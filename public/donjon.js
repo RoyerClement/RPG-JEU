@@ -64,6 +64,12 @@ const allItemList = [
     "armureEnCuir",
     "casqueEnCuir",
     "dague",
+    "potionVie",
+    "potionMana",
+    "torche",
+    "parcheminFlamme",
+    "parcheminLumiere",
+    "parcheminBlackHole",
 ];
 const itemList = [
     "anneauForce",
@@ -73,10 +79,16 @@ const itemList = [
     "armureEnCuir",
     "casqueEnCuir",
     "dague",
+    "potionVie",
+    "potionMana",
+    "torche",
+    "parcheminFlamme",
+    "parcheminLumiere",
+    "parcheminBlackHole",
 ];
 const item = {
     anneauForce: {
-        IMG: "image/anneauForce.jpg",
+        IMG: "image/anneauForce.webp",
         cost: 100,
         type: "Ring"
     },
@@ -86,17 +98,17 @@ const item = {
         type: "LeftHand"
     },
     anneauDexterite: {
-        IMG: "image/anneauForce.jpg",
+        IMG: "image/anneauForce.webp",
         cost: 100,
         type: "Ring"
     },
     armureEnFer: {
-        IMG: "image/armureEnFer.jpg",
+        IMG: "image/armureEnFer.webp",
         cost: 200,
         type: "Chest"
     },
     armureEnCuir: {
-        IMG: " image/armureEnCuir.jpg",
+        IMG: " image/armureEnCuir.webp",
         cost: 100,
         type: "Chest"
     },
@@ -110,11 +122,39 @@ const item = {
         cost: 100,
         type: "LeftHand"
     },
-    potionvie1: {
+    potionVie: {
         IMG: "image/potionVie.webp",
-        cost: 100,
+        cost: 50,
         type: "Object"
-    }
+    },
+    potionMana: {
+        IMG: "image/potionMana.webp",
+        cost: 50,
+        type: "Object"
+    },
+    torche: {
+        IMG: "image/torche.webp",
+        cost: 50,
+        type: "LeftHand"
+    },
+    parcheminFlamme: {
+        IMG: "image/parchemin.webp",
+        cost: 150,
+        id: "parcheminFlamme",
+        type: "Object"
+    },
+    parcheminLumiere: {
+        IMG: "image/parchemin.webp",
+        cost: 100,
+        id: "parcheminLumiere",
+        type: "Object"
+    },
+    parcheminBlackHole: {
+        IMG: "image/parchemin.webp",
+        cost: 300,
+        id: "parcheminBlackHole",
+        type: "Object"
+    },
 };
 let actualFight = [];
 let actualEnnemiStatut = {};
