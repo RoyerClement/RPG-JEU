@@ -1,3 +1,4 @@
+
 const statPerso = {
     Force: 0,
     Dexterite: 0,
@@ -5,12 +6,30 @@ const statPerso = {
     Volonte: 0,
     Intelligence: 0,
     Point: 10,
-    HP: 50,
-    MP: 30,
+    HP:50,
+    HPactual: 50,
+    MP: 50,
+    MPactual: 50,
     XP: 0,
     LVL: 0,
 };
-
+const ratioLvlXp = {
+    1: 10,
+    2: 30,
+    3: 60,
+    4: 100,
+    5: 150,
+    6: 200,
+    7: 250,
+    8: 300,
+    9: 400,
+    10: 500,
+    11: 650,
+    12: 800,
+    13: 1000,
+    14: 1200,
+    15: 1500,
+}
 const arme = {
     mainGauche: {
         degats: () => 1 + 1 * statPerso.Dexterite,
@@ -181,6 +200,7 @@ const gear = {
             class: "image",
             test: "testTorche",
             title: "une torche",
+            nombre: 0
         },
 
     },
@@ -235,26 +255,66 @@ const gear = {
     },
     Object: {
         potionVie: {
-            HP: 50,
-            IMG: "image/potionVie.webp",
-            title: "Potion de vie",
-            nombre: 0,
+            effect: () => {
+                if (statPerso.HPactual === statPerso.HP) { 
+                    alert('HP déjà au maximum')
+                    maxCheck = true
+                } else {
+                    statPerso.HPactual += 50 
+                    if (statPerso.HPactual > statPerso.HP) {
+                        statPerso.HPactual = statPerso.HP
+                    }
+                }
+            },
+                IMG: "image/potionVie.webp",
+                title: "Potion de vie",
+                nombre: 0,
         },
         potionMana: {
-            MP: 50,
+            effect: () => {
+                if (statPerso.MPactual === statPerso.MP) { 
+                    alert("MP déjà au maximum")
+                    maxCheck = true
+                } else {
+                    statPerso.MPactual += 50 
+                    if (statPerso.MPactual > statPerso.MP) {
+                        statPerso.MPactual = statPerso.MP
+                    }
+                }
+            },
             IMG: "image/potionMana.webp",
             title: "Potion de mana",
             nombre: 0,
         },
+        pain: {
+            effect: () => {
+                    statPerso.HPactual += 25 
+                    if (statPerso.HPactual > statPerso.HP) {
+                        statPerso.HPactual = statPerso.HP
+                    }
+                    statPerso.MPactual += 25 
+                    if (statPerso.MPactual > statPerso.MP) {
+                        statPerso.MPactual = statPerso.MP
+                    }
+            },
+            IMG: "image/pain.webp",
+            title: "Pain",
+            nombre: 0,
+        },
+    },
+    Scroll: {
         parcheminBlackHole : {
+            effect: "",
             IMG: "image/parchemin.webp",
             title: "Lisez ce parchemin pour apprendre le sort trou noir",
         },
         parcheminLumiere : {
+            effect: "",
             IMG: "image/parchemin.webp",
             title: "Lisez ce parchemin pour apprendre le sort lumière",
         },
         parcheminFlamme : {
+            effect: "",
             IMG: "image/parchemin.webp",
             title: "Lisez ce parchemin pour apprendre le sort trou noir",
         },
@@ -291,7 +351,7 @@ const stats = {
         );
     },
 };
-
+let money = 50
 const inventaire = {
     LeftHand: [],
     RightHand: [],
@@ -300,8 +360,9 @@ const inventaire = {
     Ring: [],
     Neck: [],
     Object: [],
+    Scroll: [],
 };
-
+let maxCheck = false
 function update() {
     document.getElementById("defense").textContent = `Défense : ${stats.Def}`;
     document.getElementById("degatsArmeG").textContent =
@@ -322,15 +383,27 @@ function update() {
         `Point(s) disponible(s) : ${statPerso.Point}`;
     statPerso.HP = 50 + 25 * statPerso.Vitalite + 10 * statPerso.Force;
     document.getElementById("hp").textContent =
-        `Points de vie : ${statPerso.HP}/${statPerso.HP}`;
-    statPerso.MP = 30 + 30 * statPerso.Volonte + 10 * statPerso.Intelligence;
+        `Points de vie : ${statPerso.HPactual}/${statPerso.HP}`;
+    statPerso.MP = 50 + 25 * statPerso.Volonte + 10 * statPerso.Intelligence;
     document.getElementById("mp").textContent =
-        `Points de mana : ${statPerso.MP}/${statPerso.MP}`;
+        `Points de mana : ${statPerso.MPactual}/${statPerso.MP}`;
+    document.getElementById("inventaireOr").textContent =
+        `Or : ${money}`
+    document.getElementById("experience").textContent =
+        `Expérience : ${statPerso.XP}`
+    document.getElementById("level").textContent =
+        `Niveau : ${statPerso.LVL}`
 }
 function addStat(stat) {
     if (statPerso.Point > 1) {
         statPerso.Point--;
         statPerso[stat]++;
+        if (stat === "Vitalite") {
+            statPerso.HPactual += 25
+        }
+        if (stat === "Volonte") {
+            statPerso.MPactual += 25
+        }
         update();
     } else {
         const btn = document.querySelectorAll(".btnStat");
@@ -436,6 +509,11 @@ const experienceSpan = document.createElement("span");
 experienceSpan.id = "experience";
 experienceSpan.textContent = "Expérience : 0/10";
 infoDiv.appendChild(experienceSpan);
+infoDiv.appendChild(document.createElement("br"));
+const levelSpan = document.createElement("span");
+levelSpan.id = "level";
+levelSpan.textContent = `Niveau : ${statPerso.LVL}`;
+infoDiv.appendChild(levelSpan);
 
 document.body.appendChild(infoDiv);
 //CREATION EQUIPEMENT
@@ -512,83 +590,31 @@ equipements.forEach((equipement) => {
     equipementContainer.appendChild(img);
     equipementDiv.appendChild(equipementContainer);
 });
-
 document.body.appendChild(equipementDiv);
 
 // CREATION INVENTAIRE
 const inventaireDiv = document.createElement("div");
 inventaireDiv.id = "inventaire";
+
+const divTitreInv = document.createElement('div')
+divTitreInv.id = "titreInventaire"
+
+const TitreEtOr = document.createElement('div')
+TitreEtOr.id = "titreEtOr"
+TitreEtOr.style.display="flex"
+TitreEtOr.style.gap = '310px';
+
+const inventaireOr = document.createElement("span");
+inventaireOr.id = "inventaireOr"
+inventaireOr.textContent = `Or : ${money}`;
+
 const inventaireTitle = document.createElement("span");
 inventaireTitle.textContent = "Inventaire";
-inventaireDiv.appendChild(inventaireTitle);
-const equipementSpan = document.createElement("span");
-const equipementDansInventaire = [
-    {
-        id: "armureEnCuir",
-        class: "image",
-        imgSrc: "image/armureEnCuir.webp",
-        test: "testArmureEnCuir",
-        title: "Armure simple en cuir, protège relativement",
-    },
-    {
-        id: "espadon",
-        class: "image",
-        imgSrc: "image/espadon.webp",
-        title: "Longue épée à deux mains",
-        test: "testEspadon",
-    },
-    {
-        id: "dague",
-        class: "image",
-        imgSrc: "image/dague.webp",
-        title: "Dague de base",
-        test: "testDague",
-    },
-    {
-        id: "armureEnFer",
-        class: "image",
-        imgSrc: "image/armureEnFer.webp",
-        title: "Armure en fer, protège bien",
-        test: "testArmureEnfer",
-    },
-    {
-        id: "casqueEnCuir",
-        class: "image",
-        imgSrc: "image/casqueEnCuir.webp",
-        title: "Casque en cuir, protège relativement",
-        test: "testCasqueEnCuir",
-    },
-    {
-        id: "anneauForce",
-        class: "image",
-        imgSrc: "image/anneauForce.webp",
-        title: "Anneau qui vous rend plus fort",
-        test: "testAnneauForce",
-    },
-    {
-        id: "anneauDexterite",
-        class: "image",
-        imgSrc: "image/anneauForce.webp",
-        title: "Anneau qui vous rend plus agile",
-        test: "testAnneauDexterite",
-        
-    },
-];
-// equipementDansInventaire.forEach((equipement) => {
-//     const equipementDiv = document.createElement("div");
-//     equipementDiv.id = equipement.id;
-//     const equipementImg = document.createElement("img");
-//     equipementImg.src = equipement.imgSrc;
-//     equipementImg.title = equipement.title;
-//     equipementImg.setAttribute("data-testid", equipement.test)
-//     equipementImg.className = equipement.class;
-//     equipementImg.width = 100;
-//     equipementImg.height = 108;
-//     equipementDiv.appendChild(equipementImg);
-//     equipementSpan.appendChild(equipementDiv);
-// });
-inventaireDiv.appendChild(equipementSpan);
 
+TitreEtOr.appendChild(inventaireTitle);
+TitreEtOr.appendChild(inventaireOr);
+inventaireDiv.appendChild(TitreEtOr)
+inventaireDiv.appendChild(divTitreInv);
 document.body.appendChild(inventaireDiv);
 
 //CREATION SECTION ARME DE DEPART
@@ -641,7 +667,6 @@ if (!depart) {
         equipementImg.width = 100;
         equipementImg.height = 108;
         equipementDiv.appendChild(equipementImg);
-        console.log(equipementImg)
         equipementSpan.appendChild(equipementDiv);
     });
     armeDepartDiv.appendChild(equipementSpan);
@@ -654,7 +679,6 @@ fermerButton.dataset.testid = "closeInv";
 fermerButton.textContent = "Fermer l'inventaire";
 
 document.body.appendChild(fermerButton);
-console.log(document.body.innerHTML)
 //EVENTLISTENER DES BOUTONS STATS
 document
     .getElementById("btnFor")
@@ -684,6 +708,7 @@ const elements = {
     armureEnFer: document.getElementById("armureEnFer"),
     casqueEnCuir: document.getElementById("casqueEnCuir"),
     anneauForce: document.getElementById("anneauForce"),
+
     anneauDexterite: document.getElementById("anneauDexterite"),
     mainGauche: document.getElementById("mainGauche"),
     mainDroite: document.getElementById("mainDroite"),
@@ -805,44 +830,58 @@ function suppDepart() {
     }
 }
 function takeObject(name, type, baseType) {
-    // En premier c'est pour retirer un objet de l'equipement.
-    // si l'objet n'est pas dans l'inventaire & est dans l'equipement
-    if (!inventaire[type].includes(name) && equipement[type] === name) {
-        //je la met dans l'inventaire
-        inventaire[type].push(name);
-        //et je la retire de l'equipement
-        equipement[type] = type;
-        //Si l'equipement est un bijou alors j'enleve le buff de ce bijou
-        if (type === "Ring" || type === "Neck") {
-            Debuff[name]();
-        }
-        //En deuxieme c'est pour mettre dans l'inventaire
-        // Si l'objet n'est pas dans l'inventaire, je la met dans l'inventaire
-    } else if (!inventaire[type].includes(name)) {
-        inventaire[type].push(name);
-    } // En Troisieme c'est pour equiper un objet de l'inventaire dans mon equipement
-    // Si l'objet est dans linventaire je l'equipe
-    else if (inventaire[type].includes(name)) {
+    //Utilisation objet : suppression objet et ajout de l'effet
+    if (type === "Object") {
         const index = inventaire[type].findIndex((type) => type === name);
         if (index !== -1) {
-            inventaire[type].splice(index, 1);
-            //S'il y a déjà un objet dans le slot, je le mets dans l'inventaire et j'equipe l'objet.
-            if (equipement[type] !== type) {
-                if (type === "Ring" || type === "Neck") {
-                    Debuff[equipement[type]]();
-                }
-                inventaire[type].push(equipement[type]);
-                equipement[type] = name;
-                if (type === "Ring" || type === "Neck") {
-                    Buff[name]();
-                }
+            gear[type][name].effect()
+            if (maxCheck === true) {
+                maxCheck = false
+                return
             } else {
-                equipement[type] = name;
-                if (type === "Ring" || type === "Neck") {
-                    Buff[name]();
-                }
+            inventaire[type].splice(index, 1);
             }
         }
+    } else {
+        // En premier c'est pour retirer un objet de l'equipement.
+        // si l'objet n'est pas dans l'inventaire & est dans l'equipement
+        if (!inventaire[type].includes(name) && equipement[type] === name) {
+            //je la met dans l'inventaire
+            inventaire[type].push(name);
+            //et je la retire de l'equipement
+            equipement[type] = type;
+            //Si l'equipement est un bijou alors j'enleve le buff de ce bijou
+            if (type === "Ring" || type === "Neck") {
+                Debuff[name]();
+            }
+            //En deuxieme c'est pour mettre dans l'inventaire
+            // Si l'objet n'est pas dans l'inventaire, je la met dans l'inventaire
+        } else if (!inventaire[type].includes(name)) {
+            inventaire[type].push(name);
+        } // En Troisieme c'est pour equiper un objet de l'inventaire dans mon equipement
+        // Si l'objet est dans linventaire je l'equipe
+        else if (inventaire[type].includes(name)) {
+            const index = inventaire[type].findIndex((type) => type === name);
+            if (index !== -1) {
+                inventaire[type].splice(index, 1);
+                //S'il y a déjà un objet dans le slot, je le mets dans l'inventaire et j'equipe l'objet.
+                if (equipement[type] !== type) {
+                    if (type === "Ring" || type === "Neck") {
+                        Debuff[equipement[type]]();
+                    }
+                    inventaire[type].push(equipement[type]);
+                    equipement[type] = name;
+                    if (type === "Ring" || type === "Neck") {
+                        Buff[name]();
+                    }
+                } else {
+                    equipement[type] = name;
+                    if (type === "Ring" || type === "Neck") {
+                        Buff[name]();
+                    }
+                }
+            }
+        } 
     }
     update();
     VisualRender();
@@ -861,26 +900,6 @@ elements.arcDepart.addEventListener("click", () =>
 elements.batonDepart.addEventListener("click", () =>
     takeWeapon("batonDepart", "LeftHand", "depart"),
 );
-// elements.espadon.addEventListener("click", () =>
-//     takeWeapon("espadon", "LeftHand"),
-// );
-// elements.dague.addEventListener("click", () => takeWeapon("dague", "LeftHand"));
-
-// elements.armureEnCuir.addEventListener("click", () =>
-//     takeObject("armureEnCuir", "Chest", "ChestImage"),
-// );
-// elements.armureEnFer.addEventListener("click", () =>
-//     takeObject("armureEnFer", "Chest", "ChestImage"),
-// );
-// elements.casqueEnCuir.addEventListener("click", () =>
-//     takeObject("casqueEnCuir", "Head", "HeadImage"),
-// );
-// elements.anneauForce.addEventListener("click", () =>
-//     takeObject("anneauForce", "Ring", "RingImage"),
-// );
-// elements.anneauDexterite.addEventListener("click", () =>
-//     takeObject("anneauDexterite", "Ring", "RingImage"),
-// );
 elements.FermerInv.addEventListener("click", () => FermerInv());
 let roomIAm = "";
 let room = {
@@ -895,6 +914,29 @@ let recData = {
         message: [],
     },
 };
+let itemList = [
+    "anneauForce",
+    "espadon",
+    "anneauDexterite",
+    "armureEnFer",
+    "armureEnCuir",
+    "casqueEnCuir",
+    "dague",
+    "torche",
+    //x9 potion mana
+    "potionMana",
+
+    //x9 potion de vie
+    "potionVie",
+
+    //x9 pain
+    "pain",
+    "pain",
+ 
+    "parcheminFlamme",
+    "parcheminLumiere",
+    "parcheminBlackHole",
+]
 let marketMemory = { start: [], }
 let backCheck = "";
 let message = [];
@@ -912,7 +954,8 @@ async function FermerInv() {
         roomIAm,
         backCheck,
         message,
-        marketMemory
+        marketMemory,
+        itemList,
     };
     const res = await fetch("http://localhost:8000/all-data", {
         method: "PUT",
@@ -930,7 +973,6 @@ async function getData() {
     });
     const json = await res.json();
     recData = json;
-    console.log({ recData });
     replaceStat();
     return recData;
 }
@@ -948,7 +990,7 @@ function replaceStat() {
     ).forEach(([key, value]) => {
         if (equipement[key] !== undefined) {
             equipement[key] = value;
-        }
+        }   
     });
     Object.entries(
         recData.donjonpath.dataStat.DonneeStatPerso.inventaire,
@@ -967,6 +1009,7 @@ function replaceStat() {
             room.doorState[key] = value;
         },
     );
+    itemList = recData.donjonpath.dataStat.DonneeStatPerso.itemList
     marketMemory = recData.donjonpath.marketMemory
     roomIAm = recData.donjonpath.roomIAm;
     btnCheck = recData.donjonpath.dataStat.DonneeStatPerso.btnCheck;
@@ -1008,7 +1051,6 @@ function VisualRender() {
                     whatObject(value, key, [value + "Image"]),
                 );
             } else {
-                console.log("pas de EventLister pour toi !");
             }
         }
     });
@@ -1032,3 +1074,4 @@ function VisualRender() {
     });
 }
 getData();
+update()

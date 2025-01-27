@@ -10,6 +10,13 @@ test("voir fermer l'inventaire", async ({ page }) => {
 
     // Fermer l'inventaire
     await expect(page.getByText(/Fermer l'inventaire/)).toBeVisible();
+    const closeInv = await page.getByTestId("closeInv");
+    await closeInv.click()
+    await page.waitForURL("http://localhost:3000/Donjon.html");
+    const reset = await page.getByTestId("testReset")
+    await reset.click()
+    await page.waitForURL("http://localhost:3000/index.html");
+    await sleep(2000)
 });
 
 test("fermer l'inventaire puis cliquer sur la premiere porte, puis cliquer sur la porte ouverte !", async ({ page }) => {
@@ -38,7 +45,10 @@ test("fermer l'inventaire puis cliquer sur la premiere porte, puis cliquer sur l
     await btnBack.click ();
     //NE PLUS VOIR LE BOUTON REVENIR EN ARRIERE
     await expect (page.getByText(/Revenir en arrière/)).not.toBeVisible
-    
+    const reset = await page.getByTestId("testReset")
+    await reset.click()
+    await page.waitForURL("http://localhost:3000/index.html");
+    await sleep(2000)
 });
 
 test('arme de départ, puis l\'équiper' , async ({page }) => {
@@ -56,6 +66,13 @@ test('arme de départ, puis l\'équiper' , async ({page }) => {
     await epeeDepart.click(); 
     await expect (page.getByTestId("testLeftHand")).toBeVisible 
     await expect (epeeDepart).toBeVisible 
+    const closeInv = await page.getByTestId("closeInv");
+    await closeInv.click()
+    await page.waitForURL("http://localhost:3000/Donjon.html");
+    const reset = await page.getByTestId("testReset")
+    await reset.click()
+    await page.waitForURL("http://localhost:3000/index.html");
+    await sleep(2000)
 })
 test("bouton pour ajouter des stats", async({page}) => {
     /*on verifie ici que les boutons "+" pour ajouter les stats fonctionnent bien
@@ -97,6 +114,13 @@ test("bouton pour ajouter des stats", async({page}) => {
     await expect (page.getByText(/Intelligence : 5/)).toBeVisible
     await expect (page.getByText(/Point(s) disponible(s) : 0/)).toBeVisible
     await expect (btnIntelligence).not.toBeVisible
+    const closeInv = await page.getByTestId("closeInv");
+    await closeInv.click()
+    await page.waitForURL("http://localhost:3000/Donjon.html");
+    const reset = await page.getByTestId("testReset")
+    await reset.click()
+    await page.waitForURL("http://localhost:3000/index.html");
+    await sleep(2000)
 })
 test("sauvegarde des stats entre 2 pages", async({page}) => {
     /*On verifie apres un premier passage en fermant l'inventaire et en l'ouvrant à nouveau que les stats restent les mêmes, 
@@ -127,6 +151,12 @@ test("sauvegarde des stats entre 2 pages", async({page}) => {
     await closeInv.click()
     await openInv.click()
     await expect (btnForce).not.toBeVisible
+    await closeInv.click()
+    await page.waitForURL("http://localhost:3000/Donjon.html");
+    const reset = await page.getByTestId("testReset")
+    await reset.click()
+    await page.waitForURL("http://localhost:3000/index.html");
+    await sleep(2000)
 })
 test("modification HP/MP en fonction des stats", async({page}) => {
     await page.goto("localhost:3000/index.html")
@@ -135,13 +165,20 @@ test("modification HP/MP en fonction des stats", async({page}) => {
     const btnVolonte = await page.getByTestId("testVolonte")
     const btnIntelligence = await page.getByTestId("testIntelligence")
     await btnForce.click()
-    await expect (page.getByText(/Points de vie : 60\/60/)).toBeVisible
+    await expect (page.getByText(/Points de vie : 50\/60/)).toBeVisible
     await btnVitalite.click()
-    await expect (page.getByText(/Points de vie : 85\/85/)).toBeVisible
+    await expect (page.getByText(/Points de vie : 75\/85/)).toBeVisible
     await btnVolonte.click()
-    await expect (page.getByText(/Points de vie : 60\/60/)).toBeVisible
+    await expect (page.getByText(/Points de vie : 50\/60/)).toBeVisible
     await btnIntelligence.click()
-    await expect (page.getByText(/Points de mana : 70\/70/)).toBeVisible
+    await expect (page.getByText(/Points de mana : 75\/85/)).toBeVisible
+    const closeInv = await page.getByTestId("closeInv");
+    await closeInv.click()
+    await page.waitForURL("http://localhost:3000/Donjon.html");
+    const reset = await page.getByTestId("testReset")
+    await reset.click()
+    await page.waitForURL("http://localhost:3000/index.html");
+    await sleep(2000)
 })
 test ("arme à deux mains", async ({page}) => {
     await page.goto("localhost:3000/index.html")
@@ -160,6 +197,13 @@ test ("arme à deux mains", async ({page}) => {
     await espadon.click()
     await dague.click()
     await expect (page.getByTestId("testRightHand")).toBeVisible 
+    const closeInv = await page.getByTestId("closeInv");
+    await closeInv.click()
+    await page.waitForURL("http://localhost:3000/Donjon.html");
+    const reset = await page.getByTestId("testReset")
+    await reset.click()
+    await page.waitForURL("http://localhost:3000/index.html");
+    await sleep(2000)
 })
 test ("defense/armure" , async ({page}) => {
     await page.goto("localhost:3000/index.html")
@@ -182,4 +226,11 @@ test ("defense/armure" , async ({page}) => {
     await expect (armureEnCuir).toBeVisible
     await expect (casqueEnCuir).toBeVisible
     await expect (page.getByText(/Défense : 20/))
+    const closeInv = await page.getByTestId("closeInv");
+    await closeInv.click()
+    await page.waitForURL("http://localhost:3000/Donjon.html");
+    const reset = await page.getByTestId("testReset")
+    await reset.click()
+    await page.waitForURL("http://localhost:3000/index.html");
+    await sleep(2000)
 })

@@ -26,6 +26,7 @@ const imDoor = {
     mur: document.getElementById("mur"),
     fightDoor: document.getElementById("fightDoor"),
     allDoor: document.getElementById("porte"),
+    reset: document.getElementById("reset")
 };
 const dialogue = {
     txtId: document.getElementById("boiteDialogue"),
@@ -40,6 +41,7 @@ const dialogue = {
     txtAttaque: `Vous attaquez un ennemi`,
     txtKill: `Vous attaquez et tuez un ennemi`,
     txtMarchand: `Il y a un marchand dans cette salle`,
+    txtDarkness: "Il fait trop noir pour continuer sans lumière, vous ne pouvez pas combattre ainsi"
 };
 let textDialogue = "";
 let message = [];
@@ -56,35 +58,8 @@ const room = {
     },
 };
 const marketMemory = { start: [], };
-const allItemList = [
-    "anneauForce",
-    "espadon",
-    "anneauDexterite",
-    "armureEnFer",
-    "armureEnCuir",
-    "casqueEnCuir",
-    "dague",
-    "potionVie",
-    "potionMana",
-    "torche",
-    "parcheminFlamme",
-    "parcheminLumiere",
-    "parcheminBlackHole",
-];
-const itemList = [
-    "anneauForce",
-    "espadon",
-    "anneauDexterite",
-    "armureEnFer",
-    "armureEnCuir",
-    "casqueEnCuir",
-    "dague",
-    "potionVie",
-    "potionMana",
-    "torche",
-    "parcheminFlamme",
-    "parcheminLumiere",
-    "parcheminBlackHole",
+let itemList = [
+    
 ];
 const item = {
     anneauForce: {
@@ -125,35 +100,43 @@ const item = {
     potionVie: {
         IMG: "image/potionVie.webp",
         cost: 50,
-        type: "Object"
+        type: "Object",
+        nombre : 1
     },
     potionMana: {
         IMG: "image/potionMana.webp",
         cost: 50,
+        type: "Object",
+        nombre : 1
+    },
+    pain: {
+        IMG: "image/pain.webp",
+        cost: 30,
         type: "Object"
     },
     torche: {
         IMG: "image/torche.webp",
         cost: 50,
-        type: "LeftHand"
+        type: "LeftHand",
+        nombre : 1
     },
     parcheminFlamme: {
         IMG: "image/parchemin.webp",
         cost: 150,
         id: "parcheminFlamme",
-        type: "Object"
+        type: "Scroll"
     },
     parcheminLumiere: {
         IMG: "image/parchemin.webp",
         cost: 100,
         id: "parcheminLumiere",
-        type: "Object"
+        type: "Scroll"
     },
     parcheminBlackHole: {
         IMG: "image/parchemin.webp",
         cost: 300,
         id: "parcheminBlackHole",
-        type: "Object"
+        type: "Scroll"
     },
 };
 let actualFight = [];
@@ -169,10 +152,9 @@ const ennemi = {
         DEX: 0,
         XP: 10,
         LOOT: {
-            1: "orcHache",
-            2: "orcCasque",
-            3: "orcArmure",
-            4: "potionVie",
+            orcHache : 5,
+            orcCasque: 5,
+            potionVie: 25,
             or: 50,
         },
     },
@@ -185,11 +167,11 @@ const ennemi = {
         DEX: 5,
         XP: 5,
         LOOT: {
-            1: "gobArc",
-            2: "anneauDex",
-            3: "potionMana",
-            4: "potionVie",
-            or: 20,
+            gobArc : 7,
+            anneauDex : 5,
+            potionMana : 15,
+            potionVie: 20,
+            or: 20, 
         },
     },
 };
@@ -252,7 +234,7 @@ function openDoor(door, image, idOpenDoor, imDiv, myRoom) {
     boiteDialogue("txtOpen");
     const checkFight = randomNumber("3");
     //RISQUE DE FAIRE DES COMBATS
-    if (!checkFight) {
+    if (checkFight < 3) {
         actualFight = [];
         imDoor.btnBack.style.display = "none";
         opInventaire.style.display = "none";
@@ -264,14 +246,10 @@ function openDoor(door, image, idOpenDoor, imDiv, myRoom) {
         imDoorOpen.alt = "porte ouverte";
         imDoorOpen.id = "fightDoor";
         buttonDoorDiv.fightDoor.appendChild(imDoorOpen);
-        setTimeout(() => {
-            boiteDialogue("txtFight");
-        }, 500);
+        boiteDialogue("txtFight");
         triggerFight();
     } else {
-        setTimeout(() => {
-            boiteDialogue("txtEmptyRoom");
-        }, 500);
+        boiteDialogue("txtEmptyRoom");
     }
 }
 //Compteur pour différencier les differents ennemis du meme type dans le combat.
@@ -302,89 +280,98 @@ function triggerFight() {
         divEnnemi++;
     }
 }
+let dark = false;
 //Si on clique sur la porte ouverte
 function enterDoor(door, myRoom) {
+    const darknessOpacity = getComputedStyle(document.documentElement).getPropertyValue('--darkness-opacity')
+    if (darknessOpacity === 1) {
+        debugger
+        dark = true
+        boiteDialogue("txtDarkness")
+    } else {
     // SI CLIC DEPUIS LE START
-    if (roomIAm === "start") {
-        // ON VA A LA SALLE !
-        roomIAm = door;
-        backCheck = true;
-        imDoor.btnBack.style.display = "block";
-        // SI LA SALLE EXISTE DEJA ON CHARGE LES SALLES VIA UPDATERENDERBACK()
-        if (room.numberDoor[door]) {
-            updateRenderBack(roomIAm);
-            boiteDialogue("txtEnterExplored");
-        }
-        //SI LA SALLE NEXISTE PAS ON CREE LES SALLES
-        else {
-            room.numberDoor[door] = randomNumber("3");
-            if (room.numberDoor[door] === 3) {
-                room.doorState[door] = { A: "ferme", B: "ferme", C: "ferme" };
+        if (roomIAm === "start") {
+            // ON VA A LA SALLE !
+            roomIAm = door;
+            backCheck = true;
+            imDoor.btnBack.style.display = "block";
+            // SI LA SALLE EXISTE DEJA ON CHARGE LES SALLES VIA UPDATERENDERBACK()
+            if (room.numberDoor[door]) {
+                updateRenderBack(roomIAm);
+                boiteDialogue("txtEnterExplored");
             }
-            if (room.numberDoor[door] === 2) {
-                room.doorState[door] = { A: "ferme", B: "ferme" };
-            }
-            if (room.numberDoor[door] === 1) {
-                room.doorState[door] = { A: "ferme" };
-            }
-            boiteDialogue("txtEnterInexplored");
-            updateRender(roomIAm);
-        }
-    }
-    //DEPUIS UNE AUTRE SALLE QUE LA SALLE DE DEPART
-    else {
-        // ON VA A LA SALLE
-        roomIAm = roomIAm + door;
-        //SI LA SALLE EXISTE DEJA ON CHARGE LA SALLE VIA UPDATERENDERBACK()
-        if (room.numberDoor[[myRoom] + [door]] === "marchand") {
-            updateRenderBack(roomIAm, "marchand");
-            boiteDialogue("txtMarchand");
-        } else if (room.numberDoor[[myRoom] + [door]]) {
-            updateRenderBack(roomIAm);
-            boiteDialogue("txtEnterExplored");
-        }
-        //SI LA SALLE N'EXISTE PAS ON CREE LES SALLES !
-        else {
-            //CONDITION MARCHAND
-            const marchand = randomNumber("100");
-            if (marchand > 80) {
-                let howDeep = "";
-                const splitRoom = roomIAm.split("");
-                howDeep = splitRoom.length;
-                room.numberDoor[[myRoom] + [door]] = "marchand";
-                //PETIT MARCHAND
-                if (howDeep < 4) {
-                    room.doorState[[myRoom] + [door]] = "smallMarket";
+            //SI LA SALLE NEXISTE PAS ON CREE LES SALLES
+            else {
+                room.numberDoor[door] = randomNumber("3");
+                if (room.numberDoor[door] === 3) {
+                    room.doorState[door] = { A: "ferme", B: "ferme", C: "ferme" };
                 }
-                //MOYEN MARCHAND
-                else if (howDeep < 7) {
-                    room.doorState[[myRoom] + [door]] = "mediumMarket";
+                if (room.numberDoor[door] === 2) {
+                    room.doorState[door] = { A: "ferme", B: "ferme" };
                 }
-                //GRAND MARCHAND
-                else {
-                    room.doorState[[myRoom] + [door]] = "bigMarket";
-                }
-                updateRender(roomIAm, "marchand");
-            } else {
-                room.numberDoor[[myRoom] + [door]] = randomNumber("3");
-                if (room.numberDoor[[myRoom] + [door]] === 3) {
-                    room.doorState[[myRoom] + [door]] = {
-                        A: "ferme",
-                        B: "ferme",
-                        C: "ferme",
-                    };
-                }
-                if (room.numberDoor[[myRoom] + [door]] === 2) {
-                    room.doorState[[myRoom] + [door]] = {
-                        A: "ferme",
-                        B: "ferme",
-                    };
-                }
-                if (room.numberDoor[[myRoom] + [door]] === 1) {
-                    room.doorState[[myRoom] + [door]] = { A: "ferme" };
+                if (room.numberDoor[door] === 1) {
+                    room.doorState[door] = { A: "ferme" };
                 }
                 boiteDialogue("txtEnterInexplored");
                 updateRender(roomIAm);
+            }
+        }
+        //DEPUIS UNE AUTRE SALLE QUE LA SALLE DE DEPART
+        else {
+            // ON VA A LA SALLE
+            roomIAm = roomIAm + door;
+            //SI LA SALLE EXISTE DEJA ON CHARGE LA SALLE VIA UPDATERENDERBACK()
+            if (room.numberDoor[[myRoom] + [door]] === "marchand") {
+                updateRenderBack(roomIAm, "marchand");
+                boiteDialogue("txtMarchand");
+            } else if (room.numberDoor[[myRoom] + [door]]) {
+                updateRenderBack(roomIAm);
+                boiteDialogue("txtEnterExplored");
+            }
+            //SI LA SALLE N'EXISTE PAS ON CREE LES SALLES !
+            else {
+                //CONDITION MARCHAND
+                const marchand = randomNumber("100");
+                if (marchand > 80) {
+                    let howDeep = "";
+                    const splitRoom = roomIAm.split("");
+                    howDeep = splitRoom.length;
+                    room.numberDoor[[myRoom] + [door]] = "marchand";
+                    //PETIT MARCHAND
+                    if (howDeep < 4) {
+                        room.doorState[[myRoom] + [door]] = "smallMarket";
+                    }
+                    //MOYEN MARCHAND
+                    else if (howDeep < 7) {
+                        room.doorState[[myRoom] + [door]] = "mediumMarket";
+                    }
+                    //GRAND MARCHAND
+                    else {
+                        room.doorState[[myRoom] + [door]] = "bigMarket";
+                    }
+                    updateRender(roomIAm, "marchand");
+                    boiteDialogue("txtMarchand");
+                } else {
+                    room.numberDoor[[myRoom] + [door]] = randomNumber("3");
+                    if (room.numberDoor[[myRoom] + [door]] === 3) {
+                        room.doorState[[myRoom] + [door]] = {
+                            A: "ferme",
+                            B: "ferme",
+                            C: "ferme",
+                        };
+                    }
+                    if (room.numberDoor[[myRoom] + [door]] === 2) {
+                        room.doorState[[myRoom] + [door]] = {
+                            A: "ferme",
+                            B: "ferme",
+                        };
+                    }
+                    if (room.numberDoor[[myRoom] + [door]] === 1) {
+                        room.doorState[[myRoom] + [door]] = { A: "ferme" };
+                    }
+                    boiteDialogue("txtEnterInexplored");
+                    updateRender(roomIAm);
+                }
             }
         }
     }
@@ -522,7 +509,7 @@ function attaque(nom, type, div, ImEnn) {
     } else {
         console.log(actualEnnemiStatut);
         dataStat.DonneeStatPerso.statPerso.XP += actualEnnemiStatut[nom].XP;
-        delete actualEnnemiStatut[nom];
+        delete actualEnnemiStatut[nom]
         imDoor[ImEnn].remove();
         const imEnnemi = document.createElement("img");
         imEnnemi.src = ennemi[type].IMGmort;
@@ -532,23 +519,30 @@ function attaque(nom, type, div, ImEnn) {
         imEnnemi.id = ImEnn;
         buttonDoorDiv[div].appendChild(imEnnemi);
         ImToDel.push(ImEnn);
-
+        console.log(ImToDel)
         buttonDoorDiv[div].removeEventListener("click", attaque);
         boiteDialogue("txtKill");
         if (Object.keys(actualEnnemiStatut).length === 0) {
-            boiteDialogue("txtVictory");
-            setTimeout(function endFight() {
-                while (ImToDel.length > 0) {
-                    imDoor[ImToDel[0]].remove();
-                    ImToDel[0].shift();
+            boiteDialogue("txtVictory")
+            setTimeout(() => {
+                for(let i = 1; i < 5; i++) {
+                    try {
+                        const imageDel = document.getElementById("ImEnn"+i)
+                        imageDel.remove();
+                    }
+                    catch{}
                 }
                 imDoor.btnBack.style.display = "block";
                 opInventaire.style.display = "block";
                 imDoor.allDoor.style.display = "block";
                 imDoor.fightDoor.remove();
-            }, 1000);
+                loot()
+            },1500)
         }
     }
+}
+function loot () {
+    
 }
 function darknessOpacity() {
     let numberEnn = 0
@@ -557,7 +551,6 @@ function darknessOpacity() {
     numberEnn = (splitRoom.length/20)
     document.documentElement.style.setProperty('--darkness-opacity', numberEnn);
     const darknessOpacity = getComputedStyle(document.documentElement).getPropertyValue('--darkness-opacity');
-    console.log('Valeur actuelle de --darkness-opacity:', darknessOpacity.trim());
     if (roomIAm ==="") {roomIAm = "start"}
 }
 function updateRenderFight(type, nomEnnemi, div, ImEnn) {
@@ -606,7 +599,9 @@ let dataStat = {
         Neck: [],
         Object: [],
         Ring: [],
-        arme: [],
+        LeftHand: [],
+        Scroll: [],
+        Or : 0
     },
     statPerso: {
         Dexterite: "",
@@ -639,6 +634,7 @@ function replaceStat() {
     }
     backCheck = dataStat.DonneeStatPerso.backCheck;
     message = dataStat.DonneeStatPerso.message;
+    itemList = dataStat.DonneeStatPerso.itemList
     Object.entries(dataStat.DonneeStatPerso.marketMemory).forEach(
         ([key, value]) => {
             marketMemory[key] = value;
@@ -648,42 +644,66 @@ function replaceStat() {
     boiteDialogue("recDonnee");
     updateRenderBack(roomIAm);
 }
-const serverResponse = {
-    DonneeStatPerso: {
-        mainGauche: 5,
-        mainDroite: 22,
-        def: 30,
-        equipement: {
-            LeftHand: "hacheDepart",
-            RightHand: "arcDepart",
-            Chest: "armureEnFer",
-            Head: "casqueEnCuir",
-            Ring: "anneauDexterite",
-            Neck: "Neck",
+imDoor.reset.addEventListener("click", () => fnReset())
+async function fnReset() {
+    const donjonpath = {
+        reset
+    };
+    const res = await fetch("http://localhost:8000/all-data", {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
         },
-        inventaire: {
-            arme: ["batonDepart", "epeeDepart"],
-            Chest: ["armureEnCuir"],
-            Head: [],
-            Ring: ["anneauForce"],
-            Neck: [],
-            Object: [],
-        },
-        statPerso: {
-            Force: 0,
-            Dexterite: 5,
-            Vitalite: 0,
-            Volonte: 0,
-            Intelligence: 0,
-            Point: 10,
-            HP: 50,
-            MP: 30,
-            XP: 0,
-            LVL: 0,
-        },
-    },
-};
-
+        body: JSON.stringify({ donjonpath }),
+    });
+    const json = await res.json();
+    window.location.href = "index.html";
+}
+const reset = {
+        itemList : [
+            "anneauForce",
+            "espadon",
+            "anneauDexterite",
+            "armureEnFer",
+            "armureEnCuir",
+            "casqueEnCuir",
+            "dague",
+            "torche",
+            //x9 potion mana
+            "potionMana",
+            "potionMana",
+            "potionMana",
+            "potionMana",
+            "potionMana",
+            "potionMana",
+            "potionMana",
+            "potionMana",
+            "potionMana",
+            //x9 potion de vie
+            "potionVie",
+            "potionVie",
+            "potionVie",
+            "potionVie",
+            "potionVie",
+            "potionVie",
+            "potionVie",
+            "potionVie",
+            "potionVie",
+            //x9 pain
+            "pain",
+            "pain",
+            "pain",
+            "pain",
+            "pain",
+            "pain",
+            "pain",
+            "pain",
+            "pain",
+            "parcheminFlamme",
+            "parcheminLumiere",
+            "parcheminBlackHole",
+        ],
+    }
 const opInventaire = document.getElementById("Inventaire");
 opInventaire.addEventListener("click", () => savePath());
 
@@ -695,8 +715,8 @@ async function savePath() {
         backCheck,
         message,
         marketMemory,
+        itemList,
     };
-    console.log({ donjonpath });
     const res = await fetch("http://localhost:8000/all-data", {
         method: "PUT",
         headers: {
@@ -714,48 +734,52 @@ async function getData() {
     });
     const json = await res.json();
     dataStat = json;
-    console.log({ dataStat });
     replaceStat();
     return dataStat;
 }
 getData();
 // .then((data) => (dataStat = data))
 // .catch((_) => (dataStat = serverResponse));
-function buyItem(item, type, myRoom) {
-    debugger
-    dataStat.DonneeStatPerso.inventaire[type].push(item)
-    const index = marketMemory[myRoom].findIndex((objet) => item === objet);
+function buyItem(rawValue, type, myRoom, idItem) {
+    delItem()   
+    dataStat.DonneeStatPerso.inventaire[type].push(rawValue)
+    const index = marketMemory[myRoom].findIndex((objet) => idItem === objet);
         if (index !== -1) {
             marketMemory[myRoom].splice(index, 1);
         }
     updateRenderItemMarket(myRoom)
 }
 function delItem() {
-            Object.values(allItemList).forEach((value) => { 
+    Object.entries(marketMemory).forEach(([key, values]) => {
+            Object.values(values).forEach((value) => { 
                 try {
             imDoor[value] = document.getElementById(value)
             imDoor[value].remove()} 
             catch {}
         })
+    })
 }
+let compteurObjet = 0
 function updateRenderItemMarket(myRoom) {
-    delItem()
     marketMemory[myRoom].forEach((value) => {
+        if (value !== undefined) {
         const ImItem = document.createElement("img");
-        ImItem.src = item[value].IMG;
+        const rawValue = value.replace(/\s*[0-9]+\s*/g, '')
+        ImItem.src = item[rawValue].IMG;
         ImItem.width = 100;
         ImItem.height = 108;
-        ImItem.id = value;
-        buttonDoorDiv.itemMarket.appendChild(ImItem);
-        imDoor[value] = document.getElementById(value);
-        imDoor[value].addEventListener("click", () =>
-            buyItem(value, item[value].type, myRoom),
-        );
+            ImItem.id = value
+            buttonDoorDiv.itemMarket.appendChild(ImItem);
+            imDoor[value] = document.getElementById(value);
+            imDoor[value].addEventListener("click", () =>
+                buyItem(rawValue, item[rawValue].type, myRoom, value),
+            );
+        }  
     });
+    
 }
 function itemMarket(myRoom) {
-    debugger
-    console.log(itemList)
+    delItem()
     if (buttonDoorDiv.itemMarket.style.display === "none") {
         buttonDoorDiv.itemMarket.style.display = "block"
         if (itemList !== "") {
@@ -768,17 +792,22 @@ function itemMarket(myRoom) {
                         i += 1;
                     }
                     let findIndexItem = itemList[randomNumber(itemList.length) - 1];
-                    while (marketMemory[myRoom].includes(findIndexItem)) {
-                        if (findIndexItem === undefined) {
-                            break
-                        }
-                        findIndexItem = itemList[randomNumber(itemList.length) - 1];
-
+                    if (findIndexItem === undefined) {
+                        break
                     }
-                    marketMemory[myRoom].push(findIndexItem);
-                    const index = itemList.findIndex((objet) => objet === findIndexItem);
+                    if (item[findIndexItem].type !== "Object") {
+                        while (marketMemory[myRoom].includes(findIndexItem)) {
+                            findIndexItem = itemList[randomNumber(itemList.length) - 1];
+                        }
+                        marketMemory[myRoom].push(findIndexItem);
+                        const index = itemList.findIndex((objet) => objet === findIndexItem);
                         if (index !== -1) {
-                    itemList.splice(index, 1);
+                            itemList.splice(index, 1);
+                        }
+                    }
+                    else {
+                        compteurObjet++
+                        marketMemory[myRoom].push(findIndexItem+compteurObjet);
                     }
                 }
                 updateRenderItemMarket(myRoom);
