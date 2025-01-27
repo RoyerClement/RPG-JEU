@@ -148,7 +148,7 @@ const ennemi = {
         IMGmort: "image/orcMort.webp",
         ATQ: 20,
         DEF: 10,
-        HP: 200,
+        HP: 10,
         DEX: 0,
         XP: 10,
         LOOT: {
@@ -163,7 +163,7 @@ const ennemi = {
         IMGmort: "image/gobelinMort.webp",
         ATQ: 10,
         DEF: 3,
-        HP: 50,
+        HP: 10,
         DEX: 5,
         XP: 5,
         LOOT: {
@@ -338,11 +338,11 @@ function enterDoor(door, myRoom) {
                     howDeep = splitRoom.length;
                     room.numberDoor[[myRoom] + [door]] = "marchand";
                     //PETIT MARCHAND
-                    if (howDeep < 4) {
+                    if (howDeep < 7) {
                         room.doorState[[myRoom] + [door]] = "smallMarket";
-                    }
+                    }   
                     //MOYEN MARCHAND
-                    else if (howDeep < 7) {
+                    else if (howDeep < 14) {
                         room.doorState[[myRoom] + [door]] = "mediumMarket";
                     }
                     //GRAND MARCHAND
@@ -501,6 +501,16 @@ function updateRender(myRoom, marchand) {
 let ImToDel = [];
 function attaque(nom, type, div, ImEnn) {
     console.log(actualEnnemiStatut);
+    const attaque = document.createElement("img")
+        attaque.id = "attaque"
+        attaque.src = "image/attaque.webp"
+        attaque.width = "400";
+        attaque.height = "208";
+        buttonDoorDiv[div].appendChild(attaque)
+    setTimeout(() => {
+        const delAttaque = document.getElementById("attaque")
+        delAttaque.remove()
+    },1500)
     actualEnnemiStatut[nom].HP -=
         dataStat.DonneeStatPerso.mainGauche +
         dataStat.DonneeStatPerso.mainDroite;
@@ -509,6 +519,7 @@ function attaque(nom, type, div, ImEnn) {
     } else {
         console.log(actualEnnemiStatut);
         dataStat.DonneeStatPerso.statPerso.XP += actualEnnemiStatut[nom].XP;
+        dataStat.DonneeStatPerso.money += actualEnnemiStatut[nom].LOOT.or
         delete actualEnnemiStatut[nom]
         imDoor[ImEnn].remove();
         const imEnnemi = document.createElement("img");
@@ -525,10 +536,11 @@ function attaque(nom, type, div, ImEnn) {
         if (Object.keys(actualEnnemiStatut).length === 0) {
             boiteDialogue("txtVictory")
             setTimeout(() => {
-                for(let i = 1; i < 5; i++) {
+                for(let i = 0; i < 6; i++) {
                     try {
                         const imageDel = document.getElementById("ImEnn"+i)
                         imageDel.remove();
+                        ImToDel.shift()
                     }
                     catch{}
                 }
@@ -536,12 +548,15 @@ function attaque(nom, type, div, ImEnn) {
                 opInventaire.style.display = "block";
                 imDoor.allDoor.style.display = "block";
                 imDoor.fightDoor.remove();
-                loot()
             },1500)
         }
     }
 }
 function loot () {
+    const rawEnnemi = ImToDel.forEach((value)=>{value.replace(/\s*[0-9]+\s*/g, '')})
+    rawEnnemi.forEach((value) => { money += ennemi[value].LOOT.or
+
+    })
     
 }
 function darknessOpacity() {
@@ -549,8 +564,7 @@ function darknessOpacity() {
     if (roomIAm === "start") {roomIAm = ""}
     const splitRoom = roomIAm.split("");
     numberEnn = (splitRoom.length/20)
-    document.documentElement.style.setProperty('--darkness-opacity', numberEnn);
-    const darknessOpacity = getComputedStyle(document.documentElement).getPropertyValue('--darkness-opacity');
+    document.documentElement.style.setProperty('--darkness-opacity', numberEnn)
     if (roomIAm ==="") {roomIAm = "start"}
 }
 function updateRenderFight(type, nomEnnemi, div, ImEnn) {
@@ -635,6 +649,7 @@ function replaceStat() {
     backCheck = dataStat.DonneeStatPerso.backCheck;
     message = dataStat.DonneeStatPerso.message;
     itemList = dataStat.DonneeStatPerso.itemList
+    money = dataStat.DonneeStatPerso.money
     Object.entries(dataStat.DonneeStatPerso.marketMemory).forEach(
         ([key, value]) => {
             marketMemory[key] = value;
@@ -707,6 +722,8 @@ const reset = {
 const opInventaire = document.getElementById("Inventaire");
 opInventaire.addEventListener("click", () => savePath());
 
+let money = 0
+
 async function savePath() {
     const donjonpath = {
         room,
@@ -716,6 +733,7 @@ async function savePath() {
         message,
         marketMemory,
         itemList,
+        money
     };
     const res = await fetch("http://localhost:8000/all-data", {
         method: "PUT",

@@ -956,6 +956,7 @@ async function FermerInv() {
         message,
         marketMemory,
         itemList,
+        money
     };
     const res = await fetch("http://localhost:8000/all-data", {
         method: "PUT",
@@ -1016,6 +1017,7 @@ function replaceStat() {
     depart = recData.donjonpath.dataStat.DonneeStatPerso.depart;
     backCheck = recData.donjonpath.backCheck;
     message = recData.donjonpath.message;
+    money = recData.donjonpath.dataStat.DonneeStatPerso.money
     suppDepart();
     btnStat();
     update();
