@@ -202,19 +202,17 @@ const ennemi = {
 };
 
 function boiteDialogue(type, objet) {
-    if (type !== "recDonnee") {
-        message.unshift(dialogue[type]);
-
-        if (message.length > 4) {
+    if (objet !== undefined) {
+        message.unshift(dialogue[type] + objet);
+    } else {
+        message.unshift(dialogue[type])
+    }
+        if (message.length > 6) {
             message.pop();
         }
 
         let textDialogue = message.join("<br>");
         dialogue.txtId.innerHTML = textDialogue;
-    } else {
-        let textDialogue = message.join("<br>");
-        dialogue.txtId.innerHTML = textDialogue;
-    }
 }
 
 const randomNumber = (max) => Math.floor(Math.random() * max) + 1;
@@ -549,8 +547,12 @@ function attaque(nom, nomGen, div, ImEnn) {
             if (value >= chance) {
                 const whatType = item[key].type
                 debugger
-                dataStat.DonneeStatPerso.inventaire[whatType].push(key)
-                boiteDialogue("txtLoot", key)
+                if(whatType !== "Object" && dataStat.DonneeStatPerso.inventaire[whatType].includes(key)) {
+                    dataStat.DonneeStatPerso.money += 20
+                } else {
+                    dataStat.DonneeStatPerso.inventaire[whatType].push(key)
+                    boiteDialogue("txtLoot", key)
+                }
             } else {
                 console.log("pas de chance")
             }
