@@ -665,7 +665,7 @@ divTitreInv.id = "titreInventaire"
 const TitreEtOr = document.createElement('div')
 TitreEtOr.id = "titreEtOr"
 TitreEtOr.style.display="flex"
-TitreEtOr.style.gap = '310px';
+TitreEtOr.style.gap = '300px';
 
 const inventaireOr = document.createElement("span");
 inventaireOr.id = "inventaireOr"

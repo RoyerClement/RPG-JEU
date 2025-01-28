@@ -1,3 +1,4 @@
+//DECLARATION DES VARIABLES
 let roomIAm = "start";
 const fightBeforeBoss = 10;
 const buttonDoorDiv = {
@@ -38,10 +39,10 @@ const dialogue = {
     txtFight: `Des ennemis surgissent de la porte !`,
     txtEmptyRoom: "La salle ouverte est vide",
     txtVictory: "Vous avez remporté le combat",
-    txtAttaque: `Vous attaquez un ennemi`,
-    txtKill: `Vous attaquez et tuez un ennemi`,
+    txtAttaque: `Vous attaquez `,
+    txtKill: `Vous tuez `,
     txtMarchand: `Il y a un marchand dans cette salle`,
-    txtLoot: `Qqchose tombe du monstre... Vous ramassez :`,
+    txtLoot: `Qqchose tombe du monstre... Vous ramassez `,
     txtDarkness: "Il fait trop noir pour continuer sans lumière, vous ne pouvez pas combattre ainsi"
 };
 let textDialogue = "";
@@ -64,100 +65,118 @@ let itemList = [
 ];
 const item = {
     anneauForce: {
+        nom: "un anneau de force",
         IMG: "image/anneauForce.webp",
         cost: 100,
         type: "Ring"
     },
     espadon: {
+        nom: "un espadon à deux mains",
         IMG: "image/espadon.webp",
         cost: 200,
         type: "LeftHand"
     },
     anneauDexterite: {
+        nom: "un anneau de dextérité",
         IMG: "image/anneauForce.webp",
         cost: 100,
         type: "Ring"
     },
     armureEnFer: {
+        nom: "une armure en fer",
         IMG: "image/armureEnFer.webp",
         cost: 200,
         type: "Chest"
     },
     armureEnCuir: {
+        nom: "une armure en cuir",
         IMG: " image/armureEnCuir.webp",
         cost: 100,
         type: "Chest"
     },
     casqueEnCuir: {
+        nom: "un casque en cuir",
         IMG: "image/casqueEnCuir.webp",
         cost: 100,
         type: "Head"
     },
     dague: {
+        nom: "une dague",
         IMG: "image/dague.webp",
         cost: 100,
         type: "LeftHand"
     },
     potionVie: {
+        nom: "une potion de vie",
         IMG: "image/potionVie.webp",
         cost: 50,
         type: "Object",
         nombre : 1
     },
     potionMana: {
+        nom: "une potion de mana",
         IMG: "image/potionMana.webp",
         cost: 50,
         type: "Object",
         nombre : 1
     },
     pain: {
+        nom: "un pain",
         IMG: "image/pain.webp",
         cost: 30,
         type: "Object"
     },
     torche: {
+        nom: "une torche",
         IMG: "image/torche.webp",
         cost: 50,
         type: "LeftHand",
         nombre : 1
     },
     parcheminFlamme: {
+        nom: "un parchemin mystérieux",
         IMG: "image/parchemin.webp",
         cost: 150,
         id: "parcheminFlamme",
         type: "Scroll"
     },
     parcheminLumiere: {
+        nom: "un parchemin mystérieux",
         IMG: "image/parchemin.webp",
         cost: 100,
         id: "parcheminLumiere",
         type: "Scroll"
     },
     parcheminBlackHole: {
+        nom: "un parchemin mystérieux",
         IMG: "image/parchemin.webp",
         cost: 300,
         id: "parcheminBlackHole",
         type: "Scroll"
     },
     orcEpee: {
+        nom: "une épée d'orc",
         IMG: "image/orcEpee.webp",
         cost: 150,
         id: "orcEpee",
         type: "LeftHand",
     },
     orcHache : {
+        nom: "une hache d'orc",
         IMG: "image/orcHache.webp",
         cost: 150,
         id: "orcHache",
         type: "LeftHand",
     },
     orcCasque: {
+        nom: "un casque d'orc",
         IMG: "image/orcCasque.webp",
         cost: 100,
         id: "orcCasque",
         type: "Head"
     },
     gobArc: {
+        nom: "un arc de gobelin",
         IMG: "image/gobArc.webp",
         cost : 150,
         id: "gobArc",
@@ -169,9 +188,11 @@ let actualEnnemiStatut = {};
 const ennemiList = ["orc", "gobelin"];
 const ennemi = {
     orc: {
+        txt: "un orc",
         IMG: "image/orc.webp",
         IMGmort: "image/orcMort.webp",
         ATQ: 20,
+        CRIT: 40,
         DEF: 10,
         HP: 10,
         DEX: 0,
@@ -184,9 +205,11 @@ const ennemi = {
         or: 50,
     },
     gobelin: {
+        txt: "un gobelin",
         IMG: "image/gobelin.webp",
         IMGmort: "image/gobelinMort.webp",
         ATQ: 10,
+        CRIT: 30,
         DEF: 3,
         HP: 10,
         DEX: 5,
@@ -203,14 +226,13 @@ const ennemi = {
 
 function boiteDialogue(type, objet) {
     if (objet !== undefined) {
-        message.unshift(dialogue[type] + objet);
+        message.push(dialogue[type] + objet);
     } else {
-        message.unshift(dialogue[type])
+        message.push(dialogue[type])
     }
         if (message.length > 6) {
-            message.pop();
-        }
-
+            message.shift();
+        }     
         let textDialogue = message.join("<br>");
         dialogue.txtId.innerHTML = textDialogue;
 }
@@ -521,8 +543,21 @@ function updateRender(myRoom, marchand) {
     darknessOpacity()
 }
 let ImToDel = [];
+
+function genererChiffre(base, variation) {
+    let randomVariation = (Math.random() * (2 * variation)) - variation;
+    let resultat = base + randomVariation;
+    return Math.round(resultat);
+}
+function bloquerInteractions(duree) {
+    const overlay = document.getElementById('overlay');
+    overlay.style.display = 'block';
+    setTimeout(() => {
+        overlay.style.display = 'none'; 
+    }, duree);
+}
 function attaque(nom, nomGen, div, ImEnn) {
-    console.log(actualEnnemiStatut);
+    bloquerInteractions(1000)
     const attaque = document.createElement("img")
         attaque.id = "attaque"
         attaque.src = "image/attaque.webp"
@@ -532,26 +567,25 @@ function attaque(nom, nomGen, div, ImEnn) {
     setTimeout(() => {
         const delAttaque = document.getElementById("attaque")
         delAttaque.remove()
-    },1500)
-    actualEnnemiStatut[nom].HP -=
-        dataStat.DonneeStatPerso.mainGauche +
-        dataStat.DonneeStatPerso.mainDroite;
+    },1000)
+    const randomAttaque = genererChiffre(dataStat.DonneeStatPerso.mainGauche +
+        dataStat.DonneeStatPerso.mainDroite, 10)
+    actualEnnemiStatut[nom].HP -= randomAttaque
     if (actualEnnemiStatut[nom].HP > 0) {
-        boiteDialogue("txtAttaque");
+        boiteDialogue("txtAttaque", ennemi[nomGen].txt);
     } else {
-        console.log(actualEnnemiStatut);
+        boiteDialogue("txtKill", ennemi[nomGen].txt);
         dataStat.DonneeStatPerso.statPerso.XP += actualEnnemiStatut[nom].XP;
         dataStat.DonneeStatPerso.money += actualEnnemiStatut[nom].or
         Object.entries(ennemi[nomGen].LOOT).forEach(([key,value]) => {
             const chance = randomNumber(100)
             if (value >= chance) {
                 const whatType = item[key].type
-                debugger
                 if(whatType !== "Object" && dataStat.DonneeStatPerso.inventaire[whatType].includes(key)) {
                     dataStat.DonneeStatPerso.money += 20
                 } else {
                     dataStat.DonneeStatPerso.inventaire[whatType].push(key)
-                    boiteDialogue("txtLoot", key)
+                    boiteDialogue("txtLoot", item[key].nom)
                 }
             } else {
                 console.log("pas de chance")
@@ -567,9 +601,7 @@ function attaque(nom, nomGen, div, ImEnn) {
         imEnnemi.id = ImEnn;
         buttonDoorDiv[div].appendChild(imEnnemi);
         ImToDel.push(ImEnn);
-        console.log(ImToDel)
         buttonDoorDiv[div].removeEventListener("click", attaque);
-        boiteDialogue("txtKill");
         if (Object.keys(actualEnnemiStatut).length === 0) {
             boiteDialogue("txtVictory")
             setTimeout(() => {
@@ -585,16 +617,25 @@ function attaque(nom, nomGen, div, ImEnn) {
                 opInventaire.style.display = "block";
                 imDoor.allDoor.style.display = "block";
                 imDoor.fightDoor.remove();
-            },1500)
+            },1000)
         }
-    }
-}
-function loot () {
-    const rawEnnemi = ImToDel.forEach((value)=>{value.replace(/\s*[0-9]+\s*/g, '')})
-    rawEnnemi.forEach((value) => { money += ennemi[value].LOOT.or
-    
-    })
-    
+        else {
+            Object.keys(actualEnnemiStatut).forEach((key) => {
+                setTimeout(() => {
+                const CRT = randomNumber(100)
+                if (CRT > 90) {
+                    const rand = genererChiffre(actualEnnemiStatut[key].CRIT, 10)
+                    dataStat.DonneeStatPerso.statPerso.HPactual -= rand
+                    console.log(dataStat.DonneeStatPerso.statPerso.HPactual)
+                } else {
+                    const rand = genererChiffre(actualEnnemiStatut[key].ATQ,5)
+                    dataStat.DonneeStatPerso.statPerso.HPactual -= rand
+                    console.log(dataStat.DonneeStatPerso.statPerso.HPactual)
+                }},700)
+            })
+        }
+    }  
+    update()
 }
 function darknessOpacity() {
     let numberEnn = 0
@@ -655,16 +696,19 @@ let dataStat = {
         Or : 0
     },
     statPerso: {
-        Dexterite: "",
-        Force: "",
-        HP: "",
-        Intelligence: "",
-        LVL: "",
-        MP: "",
-        Point: "",
-        Vitalite: "",
-        Volonte: "",
-        XP: "",
+        Dexterite: 0,
+        Force: 0,
+        HP: 50,
+        HPactual: 50,
+        Intelligence: 0,
+        LVL: 0,
+        MP: 50,
+        MPactual: 50,
+        Point: 0,
+        Vitalite: 0,
+        Volonte: 0,
+        XP: 0,
+
     },
     marketMemory: {start : [], }
 };
@@ -695,6 +739,7 @@ function replaceStat() {
     backCheckFn();
     boiteDialogue("recDonnee");
     updateRenderBack(roomIAm);
+    update()
 }
 imDoor.reset.addEventListener("click", () => fnReset())
 async function fnReset() {
@@ -999,4 +1044,71 @@ function updateRenderBack(myRoom) {
         }
     }
     darknessOpacity()
+}
+const infoDiv = document.createElement("div");
+infoDiv.id = "info";
+
+const hpSpan = document.createElement("span");
+hpSpan.id = "hp";
+hpSpan.textContent = `Points de vie : ${dataStat.statPerso.HPactual}/${dataStat.statPerso.HP}`;
+infoDiv.appendChild(hpSpan);
+infoDiv.appendChild(document.createElement("br"));
+
+const mpSpan = document.createElement("span");
+mpSpan.id = "mp";
+mpSpan.textContent = `Points de mana : ${dataStat.statPerso.MPactual}/${dataStat.statPerso.MP}`;
+infoDiv.appendChild(mpSpan);
+infoDiv.appendChild(document.createElement("br"));
+
+infoDiv.appendChild(document.createElement("br"));
+
+const damageTitle = document.createElement("p");
+damageTitle.textContent = "Dégâts";
+infoDiv.appendChild(damageTitle);
+
+const degatsArmeG = document.createElement("span");
+degatsArmeG.id = "degatsArmeG";
+degatsArmeG.textContent = "Arme gauche : 1";
+infoDiv.appendChild(degatsArmeG);
+infoDiv.appendChild(document.createElement("br"));
+
+const degatsArmeD = document.createElement("span");
+degatsArmeD.id = "degatsArmeD";
+degatsArmeD.textContent = "Arme droite : 1";
+infoDiv.appendChild(degatsArmeD);
+infoDiv.appendChild(document.createElement("br"));
+
+const defenseSpan = document.createElement("span");
+defenseSpan.id = "defense";
+defenseSpan.textContent = "Défense : 0";
+infoDiv.appendChild(defenseSpan);
+infoDiv.appendChild(document.createElement("br"));
+
+infoDiv.appendChild(document.createElement("br"));
+
+const experienceSpan = document.createElement("span");
+experienceSpan.id = "experience";
+experienceSpan.textContent = "Expérience : 0/10";
+infoDiv.appendChild(experienceSpan);
+infoDiv.appendChild(document.createElement("br"));
+const levelSpan = document.createElement("span");
+levelSpan.id = "level";
+levelSpan.textContent = `Niveau : 0`;
+infoDiv.appendChild(levelSpan);
+
+document.body.appendChild(infoDiv);
+function update() {
+    document.getElementById("defense").textContent = `Défense : ${dataStat.DonneeStatPerso.def}`;
+    document.getElementById("degatsArmeG").textContent =
+        `Arme gauche : ${dataStat.DonneeStatPerso.mainDroite}`;
+    document.getElementById("degatsArmeD").textContent =
+        `Arme droite : ${dataStat.DonneeStatPerso.mainGauche}`; 
+    document.getElementById("hp").textContent =
+        `Points de vie : ${dataStat.DonneeStatPerso.statPerso.HPactual}/${dataStat.DonneeStatPerso.statPerso.HP}`;
+    document.getElementById("mp").textContent =
+        `Points de mana : ${dataStat.DonneeStatPerso.statPerso.MPactual}/${dataStat.DonneeStatPerso.statPerso.MP}`;
+    document.getElementById("experience").textContent =
+        `Expérience : ${dataStat.DonneeStatPerso.statPerso.XP}`
+    document.getElementById("level").textContent =
+        `Niveau : ${dataStat.DonneeStatPerso.statPerso.LVL}`
 }
