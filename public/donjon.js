@@ -41,6 +41,7 @@ const dialogue = {
     txtAttaque: `Vous attaquez un ennemi`,
     txtKill: `Vous attaquez et tuez un ennemi`,
     txtMarchand: `Il y a un marchand dans cette salle`,
+    txtLoot: `Qqchose tombe du monstre... Vous ramassez :`,
     txtDarkness: "Il fait trop noir pour continuer sans lumière, vous ne pouvez pas combattre ainsi"
 };
 let textDialogue = "";
@@ -138,6 +139,30 @@ const item = {
         id: "parcheminBlackHole",
         type: "Scroll"
     },
+    orcEpee: {
+        IMG: "image/orcEpee.webp",
+        cost: 150,
+        id: "orcEpee",
+        type: "LeftHand",
+    },
+    orcHache : {
+        IMG: "image/orcHache.webp",
+        cost: 150,
+        id: "orcHache",
+        type: "LeftHand",
+    },
+    orcCasque: {
+        IMG: "image/orcCasque.webp",
+        cost: 100,
+        id: "orcCasque",
+        type: "Head"
+    },
+    gobArc: {
+        IMG: "image/gobArc.webp",
+        cost : 150,
+        id: "gobArc",
+        type: "LeftHand",
+    }
 };
 let actualFight = [];
 let actualEnnemiStatut = {};
@@ -152,11 +177,11 @@ const ennemi = {
         DEX: 0,
         XP: 10,
         LOOT: {
-            orcHache : 5,
+            orcEpee : 5,
             orcCasque: 5,
             potionVie: 25,
-            or: 50,
         },
+        or: 50,
     },
     gobelin: {
         IMG: "image/gobelin.webp",
@@ -168,15 +193,15 @@ const ennemi = {
         XP: 5,
         LOOT: {
             gobArc : 7,
-            anneauDex : 5,
+            anneauDexterite : 5,
             potionMana : 15,
             potionVie: 20,
-            or: 20, 
         },
+        or: 20, 
     },
 };
 
-function boiteDialogue(type) {
+function boiteDialogue(type, objet) {
     if (type !== "recDonnee") {
         message.unshift(dialogue[type]);
 
@@ -285,7 +310,6 @@ let dark = false;
 function enterDoor(door, myRoom) {
     const darknessOpacity = getComputedStyle(document.documentElement).getPropertyValue('--darkness-opacity')
     if (darknessOpacity === 1) {
-        debugger
         dark = true
         boiteDialogue("txtDarkness")
     } else {
@@ -499,7 +523,7 @@ function updateRender(myRoom, marchand) {
     darknessOpacity()
 }
 let ImToDel = [];
-function attaque(nom, type, div, ImEnn) {
+function attaque(nom, nomGen, div, ImEnn) {
     console.log(actualEnnemiStatut);
     const attaque = document.createElement("img")
         attaque.id = "attaque"
@@ -519,11 +543,22 @@ function attaque(nom, type, div, ImEnn) {
     } else {
         console.log(actualEnnemiStatut);
         dataStat.DonneeStatPerso.statPerso.XP += actualEnnemiStatut[nom].XP;
-        dataStat.DonneeStatPerso.money += actualEnnemiStatut[nom].LOOT.or
+        dataStat.DonneeStatPerso.money += actualEnnemiStatut[nom].or
+        Object.entries(ennemi[nomGen].LOOT).forEach(([key,value]) => {
+            const chance = randomNumber(100)
+            if (value >= chance) {
+                const whatType = item[key].type
+                debugger
+                dataStat.DonneeStatPerso.inventaire[whatType].push(key)
+                boiteDialogue("txtLoot", key)
+            } else {
+                console.log("pas de chance")
+            }
+        })
         delete actualEnnemiStatut[nom]
         imDoor[ImEnn].remove();
         const imEnnemi = document.createElement("img");
-        imEnnemi.src = ennemi[type].IMGmort;
+        imEnnemi.src = ennemi[nomGen].IMGmort;
         imEnnemi.width = "300";
         imEnnemi.height = "300";
         imEnnemi.alt = "Ennemi féroce !";
@@ -555,7 +590,7 @@ function attaque(nom, type, div, ImEnn) {
 function loot () {
     const rawEnnemi = ImToDel.forEach((value)=>{value.replace(/\s*[0-9]+\s*/g, '')})
     rawEnnemi.forEach((value) => { money += ennemi[value].LOOT.or
-
+    
     })
     
 }

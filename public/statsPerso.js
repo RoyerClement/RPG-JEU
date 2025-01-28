@@ -68,6 +68,27 @@ const arme = {
         degats: () => 10,
         IMG: "image/torche.webp",
     },
+    orcHache: {
+        degats: () => 15 + (statPerso.Force * 3),
+        IMG: "image/orcHache.webp",
+        class: "image",
+        test: "testOrcHache",
+        title: "Une Hache fraichement trouvé sur un cadavre d'orc"
+    },
+    gobArc: {
+        degats: () => 10 + 3 * statPerso.Dexterite,
+        IMG: "image/gobArc.webp",
+        class: "image",
+        test: "testGobArc",
+        title: "Un arc qui nécessite une bonne dextérité !"
+    },
+    orcEpee: {
+        degats: () => 15 + 2 * statPerso.Force + 1 * statPerso.Dexterite,
+        IMG: "image/orcEpee.webp",
+        class: "image",
+        test: "testOrcEpee",
+        title: "Une épée recouverte de sang et de rouille"
+    },
 };
 const gear = {
     LeftHand: {
@@ -134,6 +155,27 @@ const gear = {
             class: "image",
             test: "testTorche",
             title: "une torche",
+        },
+        orcHache: {
+            degats: () => 15 + (statPerso.Force * 3),
+            IMG: "image/orcHache.webp",
+            class: "image",
+            test: "testOrcHache",
+            title: "Une Hache fraichement trouvé sur un cadavre d'orc"
+        },
+        gobArc: {
+            degats: () => 10 + 3 * statPerso.Dexterite,
+            IMG: "image/gobArc.webp",
+            class: "image",
+            test: "testGobArc",
+            title: "Un arc qui nécessite une bonne dextérité !"
+        },
+        orcEpee: {
+            degats: () => 15 + 2 * statPerso.Force + 1 * statPerso.Dexterite,
+            IMG: "image/orcEpee.webp",
+            class: "image",
+            test: "testOrcEpee",
+            title: "Une épée recouverte de sang et de rouille"
         },
     },
     RightHand: {
@@ -202,7 +244,27 @@ const gear = {
             title: "une torche",
             nombre: 0
         },
-
+        orcHache: {
+            degats: () => 15 + (statPerso.Force * 3),
+            IMG: "image/orcHache.webp",
+            class: "image",
+            test: "testOrcHache",
+            title: "Une Hache fraichement trouvé sur un cadavre d'orc"
+        },
+        gobArc: {
+            degats: () => 10 + 3 * statPerso.Dexterite,
+            IMG: "image/gobArc.webp",
+            class: "image",
+            test: "testGobArc",
+            title: "Un arc qui nécessite une bonne dextérité !"
+        },
+        orcEpee: {
+            degats: () => 15 + 2 * statPerso.Force + 1 * statPerso.Dexterite,
+            IMG: "image/orcEpee.webp",
+            class: "image",
+            test: "testOrcEpee",
+            title: "Une épée recouverte de sang et de rouille"
+        },
     },
     Chest: {
         Chest: { 
@@ -224,6 +286,7 @@ const gear = {
         casqueEnCuivre: 15,
         casqueEnPeau: 5,
         casqueEnTissu: 7,
+        orcCasque: {def : 7, IMG: "image/orcCasque.webp", test:"testOrcCasque", title:"Un casque qui ne sent pas bon"}
     },
     Ring: {
         Ring: {
