@@ -191,6 +191,8 @@ const ennemi = {
         txt: "un orc",
         IMG: "image/orc.webp",
         IMGmort: "image/orcMort.webp",
+        IMGATQ: "image/orcATQ1.webp",
+        ImID: "",
         ATQ: 20,
         CRIT: 40,
         DEF: 10,
@@ -208,6 +210,8 @@ const ennemi = {
         txt: "un gobelin",
         IMG: "image/gobelin.webp",
         IMGmort: "image/gobelinMort.webp",
+        IMGATQ: "image/gobelin.webp",
+        ImID: "",
         ATQ: 10,
         CRIT: 30,
         DEF: 3,
@@ -318,7 +322,6 @@ function triggerFight() {
         const nomEnnemi = `${findIndexEnnemi}${compteur[findIndexEnnemi]}`;
         actualEnnemiStatut[nomEnnemi] = { ...ennemi[findIndexEnnemi] };
         compteur[findIndexEnnemi]++;
-        console.log(actualEnnemiStatut);
         const where = "divEnn" + divEnnemi;
         const ImEnn = "ImEnn" + divEnnemi;
         updateRenderFight(findIndexEnnemi, nomEnnemi, where, ImEnn);
@@ -567,7 +570,7 @@ function attaque(nom, nomGen, div, ImEnn) {
     setTimeout(() => {
         const delAttaque = document.getElementById("attaque")
         delAttaque.remove()
-    },1000)
+    
     const randomAttaque = genererChiffre(dataStat.DonneeStatPerso.mainGauche +
         dataStat.DonneeStatPerso.mainDroite, 10)
     actualEnnemiStatut[nom].HP -= randomAttaque
@@ -588,10 +591,11 @@ function attaque(nom, nomGen, div, ImEnn) {
                     boiteDialogue("txtLoot", item[key].nom)
                 }
             } else {
-                console.log("pas de chance")
             }
         })
+        console.log("avant",actualEnnemiStatut)
         delete actualEnnemiStatut[nom]
+        console.log("apres",actualEnnemiStatut)
         imDoor[ImEnn].remove();
         const imEnnemi = document.createElement("img");
         imEnnemi.src = ennemi[nomGen].IMGmort;
@@ -602,6 +606,7 @@ function attaque(nom, nomGen, div, ImEnn) {
         buttonDoorDiv[div].appendChild(imEnnemi);
         ImToDel.push(ImEnn);
         buttonDoorDiv[div].removeEventListener("click", attaque);
+    }
         if (Object.keys(actualEnnemiStatut).length === 0) {
             boiteDialogue("txtVictory")
             setTimeout(() => {
@@ -620,22 +625,38 @@ function attaque(nom, nomGen, div, ImEnn) {
             },1000)
         }
         else {
-            Object.keys(actualEnnemiStatut).forEach((key) => {
+            console.log("avant retaliation",actualEnnemiStatut)
+            const keys = Object.keys(actualEnnemiStatut);
+            keys.forEach((key, index) => {
+                setTimeout(() => {
+                console.log("retaliation",actualEnnemiStatut)
+                const OldImg = document.getElementById(actualEnnemiStatut[key].ImID)
+                OldImg.style.display="none"
+                const imAttaque = document.createElement("img")
+                const nomGenerique = key.replace(/\s*[0-9]+\s*/g, '')
+                imAttaque.src = ennemi[nomGenerique].IMGATQ
+                imAttaque.style.zIndex="5"
+                imAttaque.style.width="400px"
+                imAttaque.style.height="400px"
+                buttonDoorDiv.divEnn3.appendChild(imAttaque)
                 setTimeout(() => {
                 const CRT = randomNumber(100)
                 if (CRT > 90) {
                     const rand = genererChiffre(actualEnnemiStatut[key].CRIT, 10)
                     dataStat.DonneeStatPerso.statPerso.HPactual -= rand
-                    console.log(dataStat.DonneeStatPerso.statPerso.HPactual)
+                    update()
                 } else {
                     const rand = genererChiffre(actualEnnemiStatut[key].ATQ,5)
                     dataStat.DonneeStatPerso.statPerso.HPactual -= rand
-                    console.log(dataStat.DonneeStatPerso.statPerso.HPactual)
-                }},700)
-            })
+                    update()
+                }
+                OldImg.style.display="block"
+                imAttaque.remove()
+                },700)
+            },index * 1200)
+        })
         }
-    }  
-    update()
+    },1000)  
 }
 function darknessOpacity() {
     let numberEnn = 0
@@ -652,6 +673,7 @@ function updateRenderFight(type, nomEnnemi, div, ImEnn) {
     imEnnemi.height = "300";
     imEnnemi.alt = "Ennemi féroce !";
     imEnnemi.id = ImEnn;
+    actualEnnemiStatut[nomEnnemi].ImID = ImEnn
     buttonDoorDiv[div].appendChild(imEnnemi);
     imDoor[ImEnn] = document.getElementById(ImEnn);
     imDoor[ImEnn].addEventListener("click", () =>
@@ -915,7 +937,6 @@ function itemMarket(myRoom) {
                     updateRenderItemMarket(myRoom);
             }
         } else {
-            console.log("le marchand n'a rien à proposer")
         }
     } else {
         buttonDoorDiv.itemMarket.style.display = "none"
