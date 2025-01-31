@@ -10,6 +10,11 @@ const buttonDoorDiv = {
     divEnn3: document.getElementById("third"),
     divEnn4: document.getElementById("fourth"),
     divEnn5: document.getElementById("fifth"),
+    divEnn1degats : document.getElementById("divEnn1degats"),
+    divEnn2degats : document.getElementById("divEnn2degats"),
+    divEnn3degats : document.getElementById("divEnn3degats"),
+    divEnn4degats : document.getElementById("divEnn4degats"),
+    divEnn5degats : document.getElementById("divEnn5degats"),
     fightDoor: document.getElementById("fightDoor"),
     market: document.getElementById("market"),
     itemMarket: document.getElementById("itemMarket"),
@@ -35,7 +40,10 @@ const imDoor = {
     btnAttaque : document.getElementById("btnAttaque"),
     btnSpell : document.getElementById("btnSpell"),
     btnSkill : document.getElementById("btnSkill"),
-    sortFeu: document.getElementById("btnFeu")
+    sortFeu: document.getElementById("btnFeu"),
+    sortFoudre: document.getElementById("btnFoudre"),
+    sortArcane: document.getElementById("btnArcane"),
+    sortBlast: document.getElementById("btnBlast"),
 };
 const dialogue = {
     txtId: document.getElementById("boiteDialogue"),
@@ -194,11 +202,11 @@ const item = {
         id: "parcheminLumiere",
         type: "Scroll"
     },
-    parcheminBlackHole: {
+    sortFoudre: {
         nom: "un parchemin mystérieux",
         IMG: "image/parchemin.webp",
         cost: 300,
-        id: "parcheminBlackHole",
+        id: "sortFoudre",
         type: "Scroll"
     },
     orcEpee: {
@@ -240,6 +248,7 @@ const ennemi = {
         IMGmort: "image/orcMort.webp",
         IMGATQ: "image/orcATQ1.webp",
         ImID: "",
+        div:"",
         ATQ: 20,
         CRIT: 40,
         DEF: 10,
@@ -259,6 +268,7 @@ const ennemi = {
         IMGmort: "image/gobelinMort.webp",
         IMGATQ: "image/gobelin.webp",
         ImID: "",
+        div:"",
         ATQ: 10,
         CRIT: 30,
         DEF: 3,
@@ -349,7 +359,7 @@ function openDoor(door, image, idOpenDoor, imDiv, myRoom) {
     boiteDialogue("txtOpen");
     const checkFight = randomNumber("3");
     //RISQUE DE FAIRE DES COMBATS
-    if (!checkFight) {
+    if (checkFight) {
         actualFight = [];
         imDoor.btnBack.style.display = "none";
         opInventaire.style.display = "none";
@@ -658,14 +668,52 @@ let spells = {
     sortFeu : {
         effect: () => 10 + (dataStat.DonneeStatPerso.statPerso.Intelligence * 10),
         manaCost: 20,
+        variation: 5,
+        target:"solo",
+        repetition:1,
         state:true,
         nom: "sortFeu",
         IMG: "image/sortFeu.webp",
+        width: "300"
+    },
+    sortFoudre : {
+        effect: () => 5 + (dataStat.DonneeStatPerso.statPerso.Intelligence * 3),
+        manaCost: 20,
+        variation: 30,
+        target: "random",
+        repetition: 3,
+        state:true,
+        nom: "sortFoudre",
+        IMG: "image/sortFoudre7.gif",
+        width: "1300"
+    },
+    sortArcane : {
+        effect: () => 5 + (dataStat.DonneeStatPerso.statPerso.Intelligence * 3),
+        manaCost: 20,
+        variation: 15,
+        target: "all",
+        repetition: 1,
+        state:true,
+        nom: "sortArcane",
+        IMG: "image/sortArcane.webp",   
+        width: "1600" 
+    },
+    sortBlast : {
+        effect: () => 5 + (dataStat.DonneeStatPerso.statPerso.Intelligence * 3),
+        manaCost: 20,
+        variation: 5,
+        target: "all",
+        repetition: 1,
+        state:true,
+        nom: "sortArcane",
+        IMG: "image/sortBlast.webp",   
+        width: "500" 
     }
 }
 let skillInUse = ""
 let spellInUse = ""
 function whatAttaque(type, name) {
+    if(!isAttacking){
     if (type === "attack") {
         attack = true
         spellInUse=""
@@ -686,44 +734,84 @@ function whatAttaque(type, name) {
         buttonDoorDiv.allSpell.style.display="block"
         document.body.style.cursor = "default"  
         showSpells()
-    }
+    }} else return
 }
 function spell (nom, nomGen, div,ImEnn) {
     if (!spellInUse) {return}
     if (spells[spellInUse].state) {
         if (isAttacking) return; 
     else {
-    isAttacking = true; }
+    isAttacking = true; 
+    const keys = Object.keys(actualEnnemiStatut);
+    lastAttackDelay = (keys.length - 1) * 1300 + 800;
+    document.body.style.cursor ="default"
+    buttonDoorDiv.allSpell.style.display="none"
     const spell = document.createElement("img")
     spell.id = "spell"
-    spell.src = "image/"+[spellInUse]+".webp"
-    spell.width = "300";
+    spell.src = spells[spellInUse].IMG
+    spell.width = spells[spellInUse].width;
     spell.height = "308";
     buttonDoorDiv[div].appendChild(spell)
+    const SPELLDMG = spells[spellInUse].effect()
+    if (spells[spellInUse].target === "solo"){
+        const RANDOM = genererChiffre(SPELLDMG, spells[spellInUse].variation)
+        actualEnnemiStatut[nom].HP -= RANDOM
+        let spanDegats = document.createElement("p")
+            spanDegats.id = "spanDegats"
+            spanDegats.textContent = "-"+RANDOM
+        buttonDoorDiv[[div]+"degats"].appendChild(spanDegats)
+    }   
+    else if (spells[spellInUse].target === "random") {
+        for(let i = 0; i < spells[spellInUse].repetition; i++) {
+        const ennemiID = Object.keys(actualEnnemiStatut)
+        const randomKey = ennemiID[Math.floor(Math.random() * ennemiID.length)]     
+        const RANDOM = genererChiffre(SPELLDMG, spells[spellInUse].variation)
+        actualEnnemiStatut[randomKey].HP -= RANDOM
+        let spanDegats = document.createElement("p")
+            spanDegats.id = "spanDegats"
+            spanDegats.textContent = "-"+RANDOM+" "
+        buttonDoorDiv[[actualEnnemiStatut[randomKey].div]+"degats"].appendChild(spanDegats)   
+        }
+    } 
+    else if (spells[spellInUse].target === "all") {
+        const ennemiID = Object.keys(actualEnnemiStatut)
+        ennemiID.forEach((value) => {
+            const RANDOM = genererChiffre(SPELLDMG, spells[spellInUse].variation)
+            actualEnnemiStatut[value].HP -= RANDOM
+            let spanDegats = document.createElement("p")
+                spanDegats.id = "spanDegats"
+                spanDegats.textContent = "-"+RANDOM+" "
+            buttonDoorDiv[[actualEnnemiStatut[value].div]+"degats"].appendChild(spanDegats)  
+        })
+    }
+    dataStat.DonneeStatPerso.statPerso.MPactual -= spells[spellInUse].manaCost
     setTimeout(() => {
         const delSpell = document.getElementById("spell")
         delSpell.remove() 
-        debugger
-    actualEnnemiStatut[nom].HP -= spells[spellInUse].effect()
-    dataStat.DonneeStatPerso.statPerso.MPactual -= spells[spellInUse].manaCost
+        const spanDegats = document.querySelectorAll("p")
+        spanDegats.forEach(span => {
+            span.remove()});
     update()
-    if (actualEnnemiStatut[nom].HP > 0) {
-        boiteDialogue("txtSpell", ennemi[nomGen].txt);
+    const ennemiID = Object.keys(actualEnnemiStatut)  
+    ennemiID.forEach((value) => {
+        if(actualEnnemiStatut[value].HP <= 0) { 
+            const ennemiGen = value.replace(/\s*[0-9]+\s*/g, '')
+            const findDiv = actualEnnemiStatut[value].div
+            const findImEnn = actualEnnemiStatut[value].ImID
+            loot(value, ennemiGen, findDiv, findImEnn)
+            setTimeout(() => {
+                spellInUse=""
+                isAttacking = false
+            }, lastAttackDelay + 100);}
+            else {
+                setTimeout(() => {
+                    spellInUse=""
+                    isAttacking = false
+                }, lastAttackDelay + 100);  
+            }
+        })
         vicOrRetaliation()
-        setTimeout(() => {
-            document.body.style.cursor ="default"
-            spellInUse=""
-            isAttacking = false;
-        }, lastAttackDelay + 100);
-    } else {
-        loot(nom, nomGen, div, ImEnn)
-        vicOrRetaliation()
-        setTimeout(() => {
-            document.body.style.cursor ="default"
-            spellInUse=""
-            isAttacking = false;
-        }, lastAttackDelay + 100);
-    }},1000)} 
+    },1000)}} 
     else  return 
 }
 function skill(nom, nomGen, div,ImEnn) {
@@ -767,6 +855,8 @@ function attaque(nom, nomGen, div, ImEnn) {
     if (attack) {
         if (isAttacking) return; 
     else {
+        const keys = Object.keys(actualEnnemiStatut);
+        lastAttackDelay = (keys.length - 1) * 1300 + 800;
     isAttacking = true; }
     const attaque = document.createElement("img")
         attaque.id = "attaque"
@@ -774,14 +864,22 @@ function attaque(nom, nomGen, div, ImEnn) {
         attaque.width = "400";
         attaque.height = "208";
         buttonDoorDiv[div].appendChild(attaque)
+        let randomAttaque = genererChiffre(dataStat.DonneeStatPerso.mainGauche +
+            dataStat.DonneeStatPerso.mainDroite, 10)
+            while (randomAttaque < 0) {
+                randomAttaque++
+            }
+        let spanDegats = document.createElement("span")
+        spanDegats.id = "spanDegats"
+        spanDegats.textContent = "-"+randomAttaque
+        buttonDoorDiv[[div]+"degats"].appendChild(spanDegats)
     setTimeout(() => {
         const delAttaque = document.getElementById("attaque")
         delAttaque.remove()
-    const randomAttaque = genererChiffre(dataStat.DonneeStatPerso.mainGauche +
-        dataStat.DonneeStatPerso.mainDroite, 10)
     actualEnnemiStatut[nom].HP -= randomAttaque
     if (actualEnnemiStatut[nom].HP > 0) {
         boiteDialogue("txtAttaque", ennemi[nomGen].txt);
+        spanDegats.remove()
         vicOrRetaliation()
         setTimeout(() => {
             document.body.style.cursor ="default"
@@ -789,6 +887,7 @@ function attaque(nom, nomGen, div, ImEnn) {
             isAttacking = false;
         }, lastAttackDelay + 100);
     } else {
+        spanDegats.remove()
         loot(nom, nomGen, div, ImEnn)
         vicOrRetaliation()
         setTimeout(() => {
@@ -815,8 +914,13 @@ function vicOrRetaliation() {
             imDoor.allDoor.style.display = "block";
             buttonDoorDiv.panneauAttaque.style.display = "none";
             imDoor.fightDoor.remove();
+            Object.keys(compteur).forEach((key) => {
+                compteur[key] = 1
+            })
             update()
+            isAttacking = false;
         },1000)
+        
     }
     else {
         const keys = Object.keys(actualEnnemiStatut);
@@ -861,8 +965,8 @@ function vicOrRetaliation() {
                     imAttaque.remove()
                     spanDegats.remove()
                     },800)
-                }
-                ,index * 1300) 
+                },index * 1300) 
+                
             })
         }
     }
@@ -920,6 +1024,7 @@ function updateRenderFight(type, nomEnnemi, div, ImEnn) {
     imEnnemi.alt = "Ennemi féroce !";
     imEnnemi.id = ImEnn;
     actualEnnemiStatut[nomEnnemi].ImID = ImEnn
+    actualEnnemiStatut[nomEnnemi].div = div
     buttonDoorDiv[div].appendChild(imEnnemi);
     imDoor[ImEnn] = document.getElementById(ImEnn);
     imDoor[ImEnn].addEventListener("click", () =>
@@ -963,8 +1068,24 @@ imDoor.btnAttaque.addEventListener("click", () => whatAttaque("attack"))
 imDoor.btnSpell.addEventListener("click", () => whatAttaque("spell"))
 imDoor.btnSkill.addEventListener("click", () => whatAttaque("skill"))
 imDoor.sortFeu.addEventListener("click",() =>{ 
+    if(!isAttacking){
     spellInUse = "sortFeu"
-    document.body.style.cursor = "url('image/cursorMGC.png'), auto"
+    document.body.style.cursor = "url('image/cursorMGC.png'), auto"} else return
+})
+imDoor.sortFoudre.addEventListener("click",() =>{ 
+    if(!isAttacking){
+    spellInUse = "sortFoudre"
+    document.body.style.cursor = "url('image/cursorMGC.png'), auto"} else return
+})
+imDoor.sortArcane.addEventListener("click",() =>{ 
+    if(!isAttacking){
+    spellInUse = "sortArcane"
+    document.body.style.cursor = "url('image/cursorMGC.png'), auto"} else return
+})
+imDoor.sortBlast.addEventListener("click",() =>{ 
+    if(!isAttacking){
+    spellInUse = "sortBlast"
+    document.body.style.cursor = "url('image/cursorMGC.png'), auto"} else return
 })
 
 function replaceStat() {
@@ -1053,7 +1174,7 @@ const reset = {
             "pain",
             "sortFeu",
             "parcheminLumiere",
-            "parcheminBlackHole",
+            "sortFoudre",
         ],
     }
 const opInventaire = document.getElementById("Inventaire");
@@ -1149,7 +1270,7 @@ function itemMarket(myRoom) {
                     let findIndexItem = itemList[randomNumber(itemList.length) - 1];
                     if (findIndexItem === undefined) {
                         break
-                    }debugger
+                    }
                     if (item[findIndexItem].type !== "Object") {
                         
                         while (marketMemory[myRoom].includes(findIndexItem)) {
@@ -1305,22 +1426,26 @@ infoDiv.id = "info";
 
 const hpSpan = document.createElement("span");
 hpSpan.id = "hp";
+hpSpan.style.color = "#860d0d"
 hpSpan.textContent = `Points de vie : ${dataStat.statPerso.HPactual}/${dataStat.statPerso.HP}`;
 infoDiv.appendChild(hpSpan);
 infoDiv.appendChild(document.createElement("br"));
 
 const mpSpan = document.createElement("span");
 mpSpan.id = "mp";
+mpSpan.style.color = "#4444af"
 mpSpan.textContent = `Points de mana : ${dataStat.statPerso.MPactual}/${dataStat.statPerso.MP}`;
 infoDiv.appendChild(mpSpan);
 infoDiv.appendChild(document.createElement("br"));
 
 infoDiv.appendChild(document.createElement("br"));
 
-const damageTitle = document.createElement("p");
+const damageTitle = document.createElement("span");
 damageTitle.textContent = "Dégâts";
+damageTitle.style.color = "#6a511f"
 infoDiv.appendChild(damageTitle);
-
+infoDiv.appendChild(document.createElement("br"));
+infoDiv.appendChild(document.createElement("br"));
 const degatsArmeG = document.createElement("span");
 degatsArmeG.id = "degatsArmeG";
 degatsArmeG.textContent = "Arme gauche : 1";

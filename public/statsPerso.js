@@ -397,18 +397,28 @@ const gear = {
         },
     },
     Scroll: {
-        parcheminBlackHole : {
+        sortFoudre : {
+            effect: () => {statPerso.spells.push("sortFoudre")},
+            IMG: "image/parchemin.webp",
+            title: "Lisez ce parchemin pour apprendre un sort",
+        },
+        sortLumiere : {
             effect: "",
             IMG: "image/parchemin.webp",
             title: "Lisez ce parchemin pour apprendre un sort",
         },
-        parcheminLumiere : {
-            effect: "",
+        sortFeu : {
+            effect: () => {statPerso.spells.push("sortFeu")},
             IMG: "image/parchemin.webp",
             title: "Lisez ce parchemin pour apprendre un sort",
         },
-        feu : {
-            effect: () => {statPerso.spells.push("feu")},
+        sortArcane : {
+            effect: () => {statPerso.spells.push("sortArcane")},
+            IMG: "image/parchemin.webp",
+            title: "Lisez ce parchemin pour apprendre un sort",
+        },
+        sortBlast : {
+            effect: () => {statPerso.spells.push("sortBlast")},
             IMG: "image/parchemin.webp",
             title: "Lisez ce parchemin pour apprendre un sort",
         },
@@ -454,7 +464,7 @@ const inventaire = {
     Ring: [],
     Neck: [],
     Object: [],
-    Scroll: ["feu"],
+    Scroll: ["sortFeu", "sortFoudre", "sortArcane", "sortBlast"],
 };
 let maxCheck = false
 function update() {
@@ -1038,8 +1048,10 @@ let itemList = [
     "pain",
  
     "sortFeu",
-    "parcheminLumiere",
-    "parcheminBlackHole",
+    "sortLumiere",
+    "sortFoudre",
+    "sortBlast",
+    "sortArcane",
 ]
 let marketMemory = { start: [], }
 let backCheck = "";

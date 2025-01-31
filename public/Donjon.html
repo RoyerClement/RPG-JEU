@@ -60,6 +60,11 @@
             #first img {
                 position: absolute;
             }
+            #divEnn1degats {
+                position: absolute;
+                top:150px;
+                left: 100px;
+            }
             #second {
                 position: absolute;
                 left: 250px;
@@ -67,6 +72,11 @@
             }
             #second img {
                 position: absolute;
+            }
+            #divEnn2degats {
+                position: absolute;
+                top:150px;
+                left: 350px;
             }
             #third {
                 position: absolute;
@@ -76,6 +86,11 @@
             #third img {
                 position: absolute;
             }
+            #divEnn3degats {
+                position: absolute;
+                top:150px;
+                left: 600px;
+            }
             #fourth {
                 position: absolute;
                 left: 750px;
@@ -83,6 +98,11 @@
             }
             #fourth img {
                 position: absolute;
+            }
+            #divEnn4degats {
+                position: absolute;
+                top:150px;
+                left: 850px;
             }
             #fifth {
                 position: absolute;
@@ -92,7 +112,18 @@
             #fifth img {
                 position: absolute;
             }
-            
+            #divEnn5degats {
+                position: absolute;
+                top:150px;
+                left: 1100px;
+            }
+            .degatsIdo{
+                font-family: "MedievalSharp", serif;
+                font-weight: 800;
+                font-style:oblique;
+                font-size: 28px;
+                color: #860d0d;
+            }
             #divDialogue {
                 font-family: "MedievalSharp", serif;
                 font-weight: 400;
@@ -201,6 +232,16 @@
                 font-style: normal;
                 font-size: 24px;
                 color: #706c2e;
+                }
+            .spell { 
+                border: 3px solid #465188;
+                background-color: #241b52;
+                padding: 3px;
+                margin: 3px;
+                font-family: "MedievalSharp", serif;
+                font-weight: 400;
+                font-style: normal;
+                font-size: 20px;
             }
             #btnAttaque {
                 position:absolute;
@@ -256,6 +297,7 @@
                 font-style: normal;
                 border: 5px solid #4d372a;
                 background-color: #886146;
+                color:#331d1d
             }
 
             #ennemiDegats {
@@ -272,6 +314,15 @@
             #btnFeu {
                 color: #860d0d;
             }
+            #btnFoudre {
+                color: #4444af;
+            }
+            #btnBlast {
+                color: #6a511f;
+            }
+            #btnArcane {
+                color: #2bc1c8;
+            }
             #allSpell {
                 border: 1px solid #ccc;
                 padding: 10px;
@@ -280,7 +331,7 @@
                 width: 350px;
                 height: 140px;
                 top: 110px;
-                border: 5px solid #302a4d;
+                border: 5px solid #ecd81e;
                 background-color: #465188;
             }
             #allSkill {
@@ -314,7 +365,10 @@
                 <button id="btnSkill" class="panneauATQ">Compétences</button><br>
                 <button id ="btnSpell" class="panneauATQ">Sorts</button>
                 <div id ="allSpell" style="display: none;">
-                    <button id ="btnFeu" class="panneauATQ" style="display: none;">Flammes</button>
+                    <button id ="btnFeu" class="spell" style="display: none;">Flamme</button>
+                    <button id ="btnFoudre" class="spell" style="display: none;">Foudre</button>
+                    <button id ="btnBlast" class="spell" style="display: none;">Blast</button>
+                    <button id ="btnArcane" class="spell" style="display: none;">Arcane</button>
                 </div>
                 <div id ="allSkill" style="display: none;">
                     <button id ="btnAttaqueAll" class="panneauATQ" style="display: none;">attaque horizontale</button>
@@ -361,6 +415,11 @@
                 <div id="third"></div>
                 <div id="fourth"></div>
                 <div id="fifth"></div>
+                <div id ="divEnn1degats" class ="degatsIdo"></div>
+                <div id ="divEnn2degats" class ="degatsIdo"></div>
+                <div id ="divEnn3degats" class ="degatsIdo"></div>
+                <div id ="divEnn4degats" class ="degatsIdo"></div>
+                <div id ="divEnn5degats" class ="degatsIdo"></div>
                 <div id ="ennemiDegats"></div>
             </div>
         </div>
