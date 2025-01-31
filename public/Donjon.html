@@ -173,6 +173,49 @@
                 font-size: 24px;
                 color: #706c2e;
             }
+            #panneauAttaque {
+                position: absolute;
+                right: 399px;
+                bottom: 110px;
+                float: right;
+                z-index: 5;
+                width: 400px;
+                height: 300px;
+                border: 5px solid #4d372a;
+                background-color: #563620;
+                padding: 5px;
+                margin: 5px;
+                font-family: "MedievalSharp", serif;
+                font-weight: 400;
+                font-style: normal;
+                font-size: 24px;
+                color: #706c2e;
+            }
+            .panneauATQ { 
+                border: 5px solid #34251c;
+                background-color: #886146;
+                padding: 5px;
+                margin: 5px;
+                font-family: "MedievalSharp", serif;
+                font-weight: 400;
+                font-style: normal;
+                font-size: 24px;
+                color: #706c2e;
+            }
+            #btnAttaque {
+                position:absolute;
+                left: 140px;
+            }
+            #btnSkill {
+                position: absolute;
+                top : 60px;
+                left:15px;  
+            }
+            #btnSpell {
+                position: absolute;
+                top : 60px;
+                right:15px;  
+            }
             #mur {
                 width: 100%;
                 height: 407px;
@@ -214,6 +257,43 @@
                 border: 5px solid #4d372a;
                 background-color: #886146;
             }
+
+            #ennemiDegats {
+                position:absolute;
+                top: 150px;
+                left: 800px;
+                right: 1000px;
+                font-family: "MedievalSharp", serif;
+                font-weight: 800;
+                font-style:oblique;
+                font-size: 28px;
+                color: #860d0d;
+            }
+            #btnFeu {
+                color: #860d0d;
+            }
+            #allSpell {
+                border: 1px solid #ccc;
+                padding: 10px;
+                margin: 10px;
+                position: absolute;
+                width: 350px;
+                height: 140px;
+                top: 110px;
+                border: 5px solid #302a4d;
+                background-color: #465188;
+            }
+            #allSkill {
+                border: 1px solid #ccc;
+                padding: 10px;
+                margin: 10px;
+                position: absolute;
+                width: 350px;
+                height: 140px;
+                top: 110px;
+                border: 5px solid #612520;
+                background-color: #893927;
+            }
         </style>
     </head>
     <body>
@@ -224,10 +304,22 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(255, 255, 255, 0.0); /* semi-transparent */
-            z-index: 9999;">
+            pointer-events: none;
+            background: rgba(255, 0, 0, 0.5); 
+            z-index: 9999;">    
         </div>
         <div id="all" class="position-relative background-darkness">
+            <div id ="panneauAttaque" style="display: none;">
+                <button id="btnAttaque" class="panneauATQ">Attaque</button><br>
+                <button id="btnSkill" class="panneauATQ">Compétences</button><br>
+                <button id ="btnSpell" class="panneauATQ">Sorts</button>
+                <div id ="allSpell" style="display: none;">
+                    <button id ="btnFeu" class="panneauATQ" style="display: none;">Flammes</button>
+                </div>
+                <div id ="allSkill" style="display: none;">
+                    <button id ="btnAttaqueAll" class="panneauATQ" style="display: none;">attaque horizontale</button>
+                </div>
+            </div>
             <div id="darkness"></div>
             <div id="mur">
                 <div id="fightDoor"></div>
@@ -269,6 +361,7 @@
                 <div id="third"></div>
                 <div id="fourth"></div>
                 <div id="fifth"></div>
+                <div id ="ennemiDegats"></div>
             </div>
         </div>
         <div id="itemMarket" style="display: none">

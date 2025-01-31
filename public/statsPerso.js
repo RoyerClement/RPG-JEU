@@ -1,4 +1,3 @@
-
 const statPerso = {
     Force: 0,
     Dexterite: 0,
@@ -12,7 +11,9 @@ const statPerso = {
     MPactual: 50,
     XP: 0,
     LVL: 0,
+    spells: []
 };
+console.log("apres statperso", statPerso.spells)
 const ratioLvlXp = {
     1: 10,
     2: 30,
@@ -30,6 +31,36 @@ const ratioLvlXp = {
     14: 1200,
     15: 1500,
 }
+let skills = {
+    allATQ : {
+        effect : () => {
+            Object.entries(actualEnnemiStatut).forEach((key, value) => 
+            value.forEach((cle, valeur) => {
+                if(cle === "HP") {
+                    const randomAttaque = genererChiffre(dataStat.DonneeStatPerso.mainGauche +
+                    dataStat.DonneeStatPerso.mainDroite, 10)
+                    valeur -= randomAttaque
+                }
+            }))
+            dataStat.DonneeStatPerso.statPerso.MPactual -= 20
+        },
+        state: false,
+        IMG: "image/allATQ.webp"
+    },
+    doubleATQ: {
+        effect : () => { 
+            genererChiffre((dataStat.DonneeStatPerso.mainGauche +
+            dataStat.DonneeStatPerso.mainDroite)*2, 10)
+            dataStat.DonneeStatPerso.statPerso.MPactual -= 10
+        },
+        state: false,
+        IMG : "image/doubleATQ.webp"
+    },
+    steal : {
+        effect : "on va voir"
+    }
+}
+
 const arme = {
     mainGauche: {
         degats: () => 1 + 1 * statPerso.Dexterite,
@@ -369,21 +400,21 @@ const gear = {
         parcheminBlackHole : {
             effect: "",
             IMG: "image/parchemin.webp",
-            title: "Lisez ce parchemin pour apprendre le sort trou noir",
+            title: "Lisez ce parchemin pour apprendre un sort",
         },
         parcheminLumiere : {
             effect: "",
             IMG: "image/parchemin.webp",
-            title: "Lisez ce parchemin pour apprendre le sort lumière",
+            title: "Lisez ce parchemin pour apprendre un sort",
         },
-        parcheminFlamme : {
-            effect: "",
+        feu : {
+            effect: () => {statPerso.spells.push("feu")},
             IMG: "image/parchemin.webp",
-            title: "Lisez ce parchemin pour apprendre le sort trou noir",
+            title: "Lisez ce parchemin pour apprendre un sort",
         },
     }
 };
-
+console.log("apres scroll", statPerso.spells)
 const Buff = {
     anneauForce: () => (statPerso.Force += 5),
     anneauDexterite: () => (statPerso.Dexterite += 5),
@@ -423,7 +454,7 @@ const inventaire = {
     Ring: [],
     Neck: [],
     Object: [],
-    Scroll: [],
+    Scroll: ["feu"],
 };
 let maxCheck = false
 function update() {
@@ -904,7 +935,17 @@ function takeObject(name, type, baseType) {
             } else {
             inventaire[type].splice(index, 1);
             }
-        }
+        } 
+    } else if (type === "Scroll") {
+        debugger
+        const index = inventaire[type].findIndex((type) => type === name);
+        if (index !== -1) {
+            
+            console.log("avant takeObject" , statPerso)
+            gear[type][name].effect()
+            inventaire[type].splice(index, 1);
+            console.log(statPerso)
+        } 
     } else {
         // En premier c'est pour retirer un objet de l'equipement.
         // si l'objet n'est pas dans l'inventaire & est dans l'equipement
@@ -996,7 +1037,7 @@ let itemList = [
     "pain",
     "pain",
  
-    "parcheminFlamme",
+    "sortFeu",
     "parcheminLumiere",
     "parcheminBlackHole",
 ]
@@ -1019,7 +1060,7 @@ async function FermerInv() {
         message,
         marketMemory,
         itemList,
-        money
+        money,
     };
     const res = await fetch("http://localhost:8000/all-data", {
         method: "PUT",
@@ -1073,6 +1114,7 @@ function replaceStat() {
             room.doorState[key] = value;
         },
     );
+    skills = recData.donjonpath.dataStat.DonneeStatPerso.skills
     itemList = recData.donjonpath.dataStat.DonneeStatPerso.itemList
     marketMemory = recData.donjonpath.marketMemory
     roomIAm = recData.donjonpath.roomIAm;
@@ -1094,7 +1136,7 @@ function VisualRender() {
     delAllGearImage();
     Object.entries(equipement).forEach(([key, value]) => {
         if (equipement[key] !== undefined) {
-            const image = document.createElement("img");
+            const image = document.createElement("img");    
             image.src = gear[key][value].IMG;
             image.width = "100";
             image.height = "108";
