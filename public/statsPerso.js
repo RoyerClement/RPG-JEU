@@ -10,27 +10,10 @@ const statPerso = {
     MP: 50,
     MPactual: 50,
     XP: 0,
-    LVL: 0,
+    LVL: 1,
     spells: []
 };
-console.log("apres statperso", statPerso.spells)
-const ratioLvlXp = {
-    1: 10,
-    2: 30,
-    3: 60,
-    4: 100,
-    5: 150,
-    6: 200,
-    7: 250,
-    8: 300,
-    9: 400,
-    10: 500,
-    11: 650,
-    12: 800,
-    13: 1000,
-    14: 1200,
-    15: 1500,
-}
+
 let skills = {
     allATQ : {
         effect : () => {
@@ -457,7 +440,7 @@ const stats = {
 };
 let money = 50
 const inventaire = {
-    LeftHand: [],
+    LeftHand: ["torche"],
     RightHand: [],
     Chest: [],
     Head: [],
@@ -947,7 +930,6 @@ function takeObject(name, type, baseType) {
             }
         } 
     } else if (type === "Scroll") {
-        debugger
         const index = inventaire[type].findIndex((type) => type === name);
         if (index !== -1) {
             
@@ -1193,4 +1175,5 @@ function VisualRender() {
     });
 }
 getData();
+VisualRender()
 update()

@@ -9,7 +9,26 @@
         />
 
         <style>
-            :root {
+            #flashlight {
+                position: fixed;
+                width: 1000%; /* Largeur du cercle lumineux */
+                height: 1000%; 
+                bottom: 0;
+                transform: translate(-50%, -50%);
+                pointer-events: none;
+                background: radial-gradient(circle, rgba(0, 0, 0, 0.1) 100px, rgba(0, 0, 0, 1) 250px);
+                z-index: 2; /* Doit être au-dessus de l'obscurité */
+            }
+            #overlay {
+                position: fixed;
+                width: 100%; /* Largeur du cercle lumineux */
+                height: 100%; 
+                bottom: 0;
+                pointer-events: none;
+                background: rgba(0, 0, 0, 0);
+                z-index: 1; /* Doit être au-dessus de l'obscurité */
+            }
+            /* :root {
                 --darkness-opacity: 0.55;
             }
             .background-darkness {
@@ -35,7 +54,7 @@
             }
             .position-relative {
             position: relative;
-            }
+            } */
             .no-darkness::before {
                 display: none !important; 
             }   
@@ -348,16 +367,16 @@
         </style>
     </head>
     <body>
+        <div id="flashlight" style="display:none"></div>
         <div id="overlay" style="
-            display: none;
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             pointer-events: none;
-            background: rgba(255, 0, 0, 0.5); 
-            z-index: 9999;">    
+            background: rgb(0, 0, 0, 0); 
+            z-index: 2;">    
         </div>
         <div id="all" class="position-relative background-darkness">
             <div id ="panneauAttaque" style="display: none;">
@@ -365,13 +384,14 @@
                 <button id="btnSkill" class="panneauATQ">Compétences</button><br>
                 <button id ="btnSpell" class="panneauATQ">Sorts</button>
                 <div id ="allSpell" style="display: none;">
-                    <button id ="btnFeu" class="spell" style="display: none;">Flamme</button>
-                    <button id ="btnFoudre" class="spell" style="display: none;">Foudre</button>
-                    <button id ="btnBlast" class="spell" style="display: none;">Blast</button>
-                    <button id ="btnArcane" class="spell" style="display: none;">Arcane</button>
+                    <button id ="btnFeu" class="spell" style="display: none; border:2px solid #860d0d">Flamme</button>
+                    <button id ="btnFoudre" class="spell" style="display: none;border:2px solid #2765b8"">Foudre</button>
+                    <button id ="btnBlast" class="spell" style="display: none;border:2px solid #b47f0c"">Blast</button>
+                    <button id ="btnArcane" class="spell" style="display: none;border:2px solid #29c1c7"">Arcane</button>
                 </div>
                 <div id ="allSkill" style="display: none;">
-                    <button id ="btnAttaqueAll" class="panneauATQ" style="display: none;">attaque horizontale</button>
+                    <button id ="btnAttaqueAll" class="panneauATQ">Attaque horizontale</button>
+                    <button id ="btnATQdouble" class="panneauATQ">Double attaque</button>
                 </div>
             </div>
             <div id="darkness"></div>

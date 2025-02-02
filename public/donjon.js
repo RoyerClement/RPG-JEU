@@ -44,6 +44,8 @@ const imDoor = {
     sortFoudre: document.getElementById("btnFoudre"),
     sortArcane: document.getElementById("btnArcane"),
     sortBlast: document.getElementById("btnBlast"),
+    skillAll: document.getElementById("btnAttaqueAll"),
+    skillDouble: document.getElementById("btnATQdouble"),
 };
 const dialogue = {
     txtId: document.getElementById("boiteDialogue"),
@@ -86,9 +88,9 @@ let dataStat = {
     equipement: {
         Chest: "Chest",
         Head: "Head",
-        LeftHand: "",
+        LeftHand: "mainGauche",
         Neck: "Neck",
-        RightHand: "",
+        RightHand: "mainDroite",
         Ring: "Ring",
     },
     inventaire: {
@@ -107,7 +109,7 @@ let dataStat = {
         HP: 50,
         HPactual: 50,
         Intelligence: 0,
-        LVL: 0,
+        LVL: 1,
         MP: 50,
         MPactual: 50,
         Point: 0,
@@ -116,8 +118,106 @@ let dataStat = {
         XP: 0,
         spells: []
     },
-    marketMemory: {start : [], }
+    marketMemory: {start : [], },
+    btnCheck: ""
 };
+const ratioLvlXp = {
+    1: 10,
+    2: 30,
+    3: 60,
+    4: 100,
+    5: 150,
+    6: 200,
+    7: 250,
+    8: 300,
+    9: 400,
+    10: 500,
+    11: 650,
+    12: 800,
+    13: 1000,
+    14: 1200,
+    15: 1500,
+}
+let nombreDegatsTemporaire = ""
+let isAttacking = false
+let lastAttackDelay = 0
+let attack = false
+let skillInUse = ""
+let spellInUse = "" 
+let skills = {
+    skillAll : {
+        effect: () => dataStat.DonneeStatPerso.mainGauche+dataStat.DonneeStatPerso.mainDroite,
+        manaCost: 5,
+        variation: 5,
+        target:"all",
+        repetition:1,
+        state:true,
+        nom: "sortFeu",
+        IMG: "image/SLASH2.gif",
+        width: "1500"
+        
+    },
+    skillDouble: {
+        effect: () => (dataStat.DonneeStatPerso.mainGauche+dataStat.DonneeStatPerso.mainDroite)*2,
+        manaCost: 5,
+        variation: 5,
+        target:"solo",
+        repetition:1,
+        state:true,
+        nom: "sortFeu",
+        IMG: "image/slash.webp",
+        width: "300"
+    },
+    steal : {
+        effect : "on va voir"
+    }
+}
+let spells = {
+    sortFeu : {
+        effect: () => 10 + (dataStat.DonneeStatPerso.statPerso.Intelligence * 10),
+        manaCost: 20,
+        variation: 5,
+        target:"solo",
+        repetition:1,
+        state:true,
+        nom: "sortFeu",
+        IMG: "image/sortFeu.webp",
+        width: "300"
+    },
+    sortFoudre : {
+        effect: () => 5 + (dataStat.DonneeStatPerso.statPerso.Intelligence * 3),
+        manaCost: 20,
+        variation: 30,
+        target: "random",
+        repetition: 3,
+        state:true,
+        nom: "sortFoudre",
+        IMG: "image/sortFoudre7.gif",
+        width: "1300"
+    },
+    sortArcane : {
+        effect: () => 400 + (dataStat.DonneeStatPerso.statPerso.Intelligence * 3),
+        manaCost: 1,
+        variation: 15,
+        target: "all",
+        repetition: 1,
+        state:true,
+        nom: "sortArcane",
+        IMG: "image/sortArcane.webp",   
+        width: "1600" 
+    },
+    sortBlast : {
+        effect: () => 5 + (dataStat.DonneeStatPerso.statPerso.Intelligence * 3),
+        manaCost: 20,
+        variation: 5,
+        target: "all",
+        repetition: 1,
+        state:true,
+        nom: "sortArcane",
+        IMG: "image/sortBlast.webp",   
+        width: "500" 
+    }
+}
 const item = {
     anneauForce: {
         nom: "un anneau de force",
@@ -195,11 +295,11 @@ const item = {
         id: "sortFeu",
         type: "Scroll"
     },
-    parcheminLumiere: {
+    sortLumiere: {
         nom: "un parchemin mystérieux",
         IMG: "image/parchemin.webp",
         cost: 100,
-        id: "parcheminLumiere",
+        id: "sortLumiere",
         type: "Scroll"
     },
     sortFoudre: {
@@ -207,6 +307,20 @@ const item = {
         IMG: "image/parchemin.webp",
         cost: 300,
         id: "sortFoudre",
+        type: "Scroll"
+    },
+    sortBlast: {
+        nom: "un parchemin mystérieux",
+        IMG: "image/parchemin.webp",
+        cost: 300,
+        id: "sortBlast",
+        type: "Scroll"
+    },
+    sortArcane: {
+        nom: "un parchemin mystérieux",
+        IMG: "image/parchemin.webp",
+        cost: 300,
+        id: "sortArcane",
         type: "Scroll"
     },
     orcEpee: {
@@ -359,7 +473,7 @@ function openDoor(door, image, idOpenDoor, imDiv, myRoom) {
     boiteDialogue("txtOpen");
     const checkFight = randomNumber("3");
     //RISQUE DE FAIRE DES COMBATS
-    if (checkFight) {
+    if (!checkFight) {
         actualFight = [];
         imDoor.btnBack.style.display = "none";
         opInventaire.style.display = "none";
@@ -408,7 +522,7 @@ function triggerFight() {
 let dark = false;
 //Si on clique sur la porte ouverte
 function enterDoor(door, myRoom) {
-    const darknessOpacity = getComputedStyle(document.documentElement).getPropertyValue('--darkness-opacity')
+
     if (darknessOpacity === 1) {
         dark = true
         boiteDialogue("txtDarkness")
@@ -623,95 +737,39 @@ function updateRender(myRoom, marchand) {
     darknessOpacity()
 }
 let ImToDel = [];
-
+let end = false
+function gameOver() {
+    if (dataStat.DonneeStatPerso.statPerso.HPactual <= 0) {
+        const op = document.getElementById("all");
+        const dial = document.getElementById('divDialogue')
+        buttonDoorDiv.panneauAttaque.style.display ="none"
+        dial.style.display="none"
+        for (let i = 0; i <= 10; i++) { 
+            setTimeout(() => {
+                let opacity = i / 10; 
+                console.log(opacity);
+                op.style.setProperty('--darkness-opacity', opacity);
+            }, i * 100); 
+        }
+    
+        const gameOver = document.createElement("span");
+        gameOver.textContent = "GAME OVER";
+        gameOver.style.color = "red";
+        gameOver.style.zIndex = "9999";
+        gameOver.style.fontSize = "120px";
+        gameOver.style.position="absolute"
+        gameOver.style.left ="450px"
+        gameOver.style.top ="250px"
+        document.body.appendChild(gameOver);
+        end = true
+    }
+}
 function genererChiffre(base, variation) {
     let randomVariation = (Math.random() * (2 * variation)) - variation;
     let resultat = base + randomVariation;
     return Math.round(resultat);
 }
 
-let nombreDegatsTemporaire = ""
-let isAttacking = false
-let lastAttackDelay = 0
-let attack = false
-
-let skills = {
-    allATQ : {
-        effect : () => {
-            Object.entries(actualEnnemiStatut).forEach((key, value) => 
-            value.forEach((cle, valeur) => {
-                if(cle === "HP") {
-                    const randomAttaque = genererChiffre(dataStat.DonneeStatPerso.mainGauche +
-                    dataStat.DonneeStatPerso.mainDroite, 10)
-                    valeur -= randomAttaque
-                }
-            }))
-            dataStat.DonneeStatPerso.statPerso.MPactual -= 20
-        },
-        state: false,
-        IMG: "image/allATQ.webp"
-    },
-    doubleATQ: {
-        effect : () => { 
-            genererChiffre((dataStat.DonneeStatPerso.mainGauche +
-            dataStat.DonneeStatPerso.mainDroite)*2, 10)
-            dataStat.DonneeStatPerso.statPerso.MPactual -= 10
-        },
-        state: false,
-        IMG : "image/doubleATQ.webp"
-    },
-    steal : {
-        effect : "on va voir"
-    }
-}
-let spells = {
-    sortFeu : {
-        effect: () => 10 + (dataStat.DonneeStatPerso.statPerso.Intelligence * 10),
-        manaCost: 20,
-        variation: 5,
-        target:"solo",
-        repetition:1,
-        state:true,
-        nom: "sortFeu",
-        IMG: "image/sortFeu.webp",
-        width: "300"
-    },
-    sortFoudre : {
-        effect: () => 5 + (dataStat.DonneeStatPerso.statPerso.Intelligence * 3),
-        manaCost: 20,
-        variation: 30,
-        target: "random",
-        repetition: 3,
-        state:true,
-        nom: "sortFoudre",
-        IMG: "image/sortFoudre7.gif",
-        width: "1300"
-    },
-    sortArcane : {
-        effect: () => 5 + (dataStat.DonneeStatPerso.statPerso.Intelligence * 3),
-        manaCost: 20,
-        variation: 15,
-        target: "all",
-        repetition: 1,
-        state:true,
-        nom: "sortArcane",
-        IMG: "image/sortArcane.webp",   
-        width: "1600" 
-    },
-    sortBlast : {
-        effect: () => 5 + (dataStat.DonneeStatPerso.statPerso.Intelligence * 3),
-        manaCost: 20,
-        variation: 5,
-        target: "all",
-        repetition: 1,
-        state:true,
-        nom: "sortArcane",
-        IMG: "image/sortBlast.webp",   
-        width: "500" 
-    }
-}
-let skillInUse = ""
-let spellInUse = ""
 function whatAttaque(type, name) {
     if(!isAttacking){
     if (type === "attack") {
@@ -741,6 +799,9 @@ function spell (nom, nomGen, div,ImEnn) {
     if (spells[spellInUse].state) {
         if (isAttacking) return; 
     else {
+        if (dataStat.DonneeStatPerso.statPerso.MPactual < spells[spellInUse].manaCost) {
+            alert("mana insuffisant pour lancer ", spells[spellInUse].nom)
+        } else {
     isAttacking = true; 
     const keys = Object.keys(actualEnnemiStatut);
     lastAttackDelay = (keys.length - 1) * 1300 + 800;
@@ -751,7 +812,7 @@ function spell (nom, nomGen, div,ImEnn) {
     spell.src = spells[spellInUse].IMG
     spell.width = spells[spellInUse].width;
     spell.height = "308";
-    buttonDoorDiv[div].appendChild(spell)
+    spell.zIndex="99"
     const SPELLDMG = spells[spellInUse].effect()
     if (spells[spellInUse].target === "solo"){
         const RANDOM = genererChiffre(SPELLDMG, spells[spellInUse].variation)
@@ -759,6 +820,7 @@ function spell (nom, nomGen, div,ImEnn) {
         let spanDegats = document.createElement("p")
             spanDegats.id = "spanDegats"
             spanDegats.textContent = "-"+RANDOM
+        buttonDoorDiv[div].appendChild(spell)
         buttonDoorDiv[[div]+"degats"].appendChild(spanDegats)
     }   
     else if (spells[spellInUse].target === "random") {
@@ -770,6 +832,7 @@ function spell (nom, nomGen, div,ImEnn) {
         let spanDegats = document.createElement("p")
             spanDegats.id = "spanDegats"
             spanDegats.textContent = "-"+RANDOM+" "
+            buttonDoorDiv.divEnn1.appendChild(spell)
         buttonDoorDiv[[actualEnnemiStatut[randomKey].div]+"degats"].appendChild(spanDegats)   
         }
     } 
@@ -781,6 +844,7 @@ function spell (nom, nomGen, div,ImEnn) {
             let spanDegats = document.createElement("p")
                 spanDegats.id = "spanDegats"
                 spanDegats.textContent = "-"+RANDOM+" "
+                buttonDoorDiv.divEnn1.appendChild(spell)
             buttonDoorDiv[[actualEnnemiStatut[value].div]+"degats"].appendChild(spanDegats)  
         })
     }
@@ -791,7 +855,6 @@ function spell (nom, nomGen, div,ImEnn) {
         const spanDegats = document.querySelectorAll("p")
         spanDegats.forEach(span => {
             span.remove()});
-    update()
     const ennemiID = Object.keys(actualEnnemiStatut)  
     ennemiID.forEach((value) => {
         if(actualEnnemiStatut[value].HP <= 0) { 
@@ -811,44 +874,90 @@ function spell (nom, nomGen, div,ImEnn) {
             }
         })
         vicOrRetaliation()
-    },1000)}} 
+    },1000)}}} 
     else  return 
 }
-function skill(nom, nomGen, div,ImEnn) {
+function skill (nom, nomGen, div,ImEnn) {
     if (!skillInUse) {return}
-    if (skills[skillname].state) {
+    if (skills[skillInUse].state) {
         if (isAttacking) return; 
     else {
-    isAttacking = true; }
+        if (dataStat.DonneeStatPerso.statPerso.MPactual < skills[skillInUse].manaCost) {
+            alert("mana insuffisant pour lancer ", skills[skillInUse].nom)
+        } else {
+    isAttacking = true; 
+    const keys = Object.keys(actualEnnemiStatut);
+    lastAttackDelay = (keys.length - 1) * 1300 + 800;
+    document.body.style.cursor ="default"
+    buttonDoorDiv.allSpell.style.display="none"
     const skill = document.createElement("img")
     skill.id = "skill"
-    skill.src = "image/"+[skillname]+".webp"
-    skill.width = "400";
-    skill.height = "208";
-    buttonDoorDiv[div].appendChild(skill)
+    skill.src = skills[skillInUse].IMG
+    skill.width = skills[skillInUse].width;
+    skill.height = "308";
+    skill.zIndex="99"
+    const SKILLDMG = skills[skillInUse].effect()
+    if (skills[skillInUse].target === "solo"){
+        const RANDOM = genererChiffre(SKILLDMG, skills[skillInUse].variation)
+        actualEnnemiStatut[nom].HP -= RANDOM
+        let spanDegats = document.createElement("p")
+            spanDegats.id = "spanDegats"
+            spanDegats.textContent = "-"+RANDOM
+        buttonDoorDiv[div].appendChild(skill)
+        buttonDoorDiv[[div]+"degats"].appendChild(spanDegats)
+    }   
+    else if (skills[skillInUse].target === "random") {
+        for(let i = 0; i < skills[skillInUse].repetition; i++) {
+        const ennemiID = Object.keys(actualEnnemiStatut)
+        const randomKey = ennemiID[Math.floor(Math.random() * ennemiID.length)]     
+        const RANDOM = genererChiffre(SKILLDMG, skills[skillInUse].variation)
+        actualEnnemiStatut[randomKey].HP -= RANDOM
+        let spanDegats = document.createElement("p")
+            spanDegats.id = "spanDegats"
+            spanDegats.textContent = "-"+RANDOM+" "
+            buttonDoorDiv.divEnn1.appendChild(skill)
+        buttonDoorDiv[[actualEnnemiStatut[randomKey].div]+"degats"].appendChild(spanDegats)   
+        }
+    } 
+    else if (skills[skillInUse].target === "all") {
+        const ennemiID = Object.keys(actualEnnemiStatut)
+        ennemiID.forEach((value) => {
+            const RANDOM = genererChiffre(SKILLDMG, skills[skillInUse].variation)
+            actualEnnemiStatut[value].HP -= RANDOM
+            let spanDegats = document.createElement("p")
+                spanDegats.id = "spanDegats"
+                spanDegats.textContent = "-"+RANDOM+" "
+                buttonDoorDiv.divEnn1.appendChild(skill)
+            buttonDoorDiv[[actualEnnemiStatut[value].div]+"degats"].appendChild(spanDegats)  
+        })
+    }
+    dataStat.DonneeStatPerso.statPerso.MPactual -= skills[skillInUse].manaCost
     setTimeout(() => {
-        const delAttaque = document.getElementById("skill")
-        delAttaque.remove()
-        const randomAttaque = genererChiffre(dataStat.DonneeStatPerso.mainGauche +
-        dataStat.DonneeStatPerso.mainDroite, 10)
-    actualEnnemiStatut[nom].HP -= randomAttaque
-    if (actualEnnemiStatut[nom].HP > 0) {
-        boiteDialogue("txtSkill", ennemi[nomGen].txt);
+        const delSpell = document.getElementById("skill")
+        delSpell.remove() 
+        const spanDegats = document.querySelectorAll("p")
+        spanDegats.forEach(span => {
+            span.remove()});
+    const ennemiID = Object.keys(actualEnnemiStatut)  
+    ennemiID.forEach((value) => {
+        if(actualEnnemiStatut[value].HP <= 0) { 
+            const ennemiGen = value.replace(/\s*[0-9]+\s*/g, '')
+            const findDiv = actualEnnemiStatut[value].div
+            const findImEnn = actualEnnemiStatut[value].ImID
+            loot(value, ennemiGen, findDiv, findImEnn)
+            setTimeout(() => {
+                skillInUse=""
+                isAttacking = false
+            }, lastAttackDelay + 100);}
+            else {
+                setTimeout(() => {
+                    skillInUse=""
+                    isAttacking = false
+                }, lastAttackDelay + 100);  
+            }
+        })
         vicOrRetaliation()
-        setTimeout(() => {
-            document.body.style.cursor ="default"
-            skillInUse = ""
-            isAttacking = false;
-        }, lastAttackDelay + 100);
-    } else {
-        loot(nom, nomGen, div, ImEnn)
-        vicOrRetaliation()
-        setTimeout(() => {
-            document.body.style.cursor ="default"
-            skillInUse = ""
-            isAttacking = false;
-        }, lastAttackDelay + 100);
-    }},1000)} 
+    },1000)}}} 
     else  return 
 }
 function attaque(nom, nomGen, div, ImEnn) {
@@ -873,8 +982,16 @@ function attaque(nom, nomGen, div, ImEnn) {
         spanDegats.id = "spanDegats"
         spanDegats.textContent = "-"+randomAttaque
         buttonDoorDiv[[div]+"degats"].appendChild(spanDegats)
+    setTimeout(()=> {
+        const blood = document.createElement("img")
+        blood.src = "image/BLOOD.gif"
+        blood.id = "blood"
+        buttonDoorDiv[div].appendChild(blood)
+    }, 100)
     setTimeout(() => {
         const delAttaque = document.getElementById("attaque")
+        const blood = document.getElementById("blood")
+        blood.remove()
         delAttaque.remove()
     actualEnnemiStatut[nom].HP -= randomAttaque
     if (actualEnnemiStatut[nom].HP > 0) {
@@ -917,8 +1034,10 @@ function vicOrRetaliation() {
             Object.keys(compteur).forEach((key) => {
                 compteur[key] = 1
             })
+            
             update()
             isAttacking = false;
+            tooltip.style.visibility = "hidden"
         },1000)
         
     }
@@ -927,17 +1046,18 @@ function vicOrRetaliation() {
         lastAttackDelay = (keys.length - 1) * 1300 + 800;
         keys.forEach((key, index) => {
             setTimeout(() => {  
+                if (end) {return}
                 const CRT = randomNumber(100)
             if (CRT > 90) {
                 const rand = genererChiffre(actualEnnemiStatut[key].CRIT, 10)
                 nombreDegatsTemporaire ="Coup critique ! ! ! !"+"-"+ rand +" "+  "dégats"
                 dataStat.DonneeStatPerso.statPerso.HPactual -= rand
-                update()
+                
             } else {
                 const rand = genererChiffre(actualEnnemiStatut[key].ATQ,5)
                 nombreDegatsTemporaire = "-" + rand + " " + "dégats"
                 dataStat.DonneeStatPerso.statPerso.HPactual -= rand
-                update()
+            
             }
                 const OldImg = document.getElementById(actualEnnemiStatut[key].ImID)
                 OldImg.style.display="none"
@@ -964,6 +1084,9 @@ function vicOrRetaliation() {
                     OldImg.style.display="block"
                     imAttaque.remove()
                     spanDegats.remove()
+                    update()
+                    if (end) {return} else {
+                    gameOver()}
                     },800)
                 },index * 1300) 
                 
@@ -1008,14 +1131,64 @@ function loot(nom, nomGen, div, ImEnn) {
         ImToDel.push(ImEnn);
         buttonDoorDiv[div].removeEventListener("click", attaque);
 }
+//LUMIERE ET OBSCURITE 
+let torche = false
+const flashlight = document.getElementById("flashlight")
+const overlay = document.getElementById("overlay")
 function darknessOpacity() {
-    let numberEnn = 0
-    if (roomIAm === "start") {roomIAm = ""}
-    const splitRoom = roomIAm.split("");
-    numberEnn = (splitRoom.length/20)
-    document.documentElement.style.setProperty('--darkness-opacity', numberEnn)
-    if (roomIAm ==="") {roomIAm = "start"}
+    if (roomIAm === "start") {roomIAm = ""} 
+    else {
+        const splitRoom = roomIAm.split("");
+        let numberEnn = (splitRoom.length/20)
+        if (dataStat.DonneeStatPerso.equipement.LeftHand === "torche" || 
+            dataStat.DonneeStatPerso.equipement.RightHand === "torche"){
+                overlay.style.display="none"
+                flashlight.style.display="block"
+                flashlight.style.background = `radial-gradient(circle, rgba(255, 181, 22, 0.1) 400px, rgba(0, 0, 0, ${numberEnn}) 650px)`
+                torche = true
+                // animateFlashlight()
+        }
+        else {
+            flashlight.style.display="none"
+            overlay.style.display="block"
+            overlay.style.background = ` rgba(0, 0, 0, ${numberEnn})`
+            torche = false
+        }
+    }
+    if (roomIAm ==="") {
+        roomIAm = "start"
+    }  
 }
+
+// function animateFlashlight() {
+//     if (!torche) return;
+//     const splitRoom = roomIAm.split("")
+//     let numberEnn = splitRoom.length / 20;
+//     const random = genererChiffre(650, 15);
+//     const random2 = genererChiffre(400, 15)
+//     flashlight.style.background = `radial-gradient(circle, rgba(255, 208, 22, 0.1) ${random2}px, rgba(0, 0, 0, ${numberEnn}) ${random}px)`
+//     requestAnimationFrame(animateFlashlight);
+// }
+
+function updateFlashlight() {
+        if (torche){
+            const splitRoom = roomIAm.split("");
+            let numberEnn = (splitRoom.length/20)
+            const random = genererChiffre(650, 15)
+            const random2 = genererChiffre(400, 15)
+            flashlight.style.background = `radial-gradient(circle, rgba(255, 216, 22, 0.1) ${random2}px, rgba(0, 0, 0, ${numberEnn}) ${random}px)`
+      } else {return}
+    }
+
+const interval = setInterval(updateFlashlight, 100)
+   
+document.addEventListener("mousemove", (e) => {
+    if (torche){
+    const flashlight = document.getElementById("flashlight");
+    flashlight.style.left = `${e.clientX}px`;
+    flashlight.style.top = `${e.clientY}px`;}
+    else {return}
+});
 function updateRenderFight(type, nomEnnemi, div, ImEnn) {
     const imEnnemi = document.createElement("img");
     imEnnemi.src = ennemi[type].IMG;
@@ -1063,6 +1236,7 @@ imDoor.ImC.addEventListener("click", () =>
 );
 //revenir en arriere
 imDoor.btnBack.addEventListener("click", () => back(roomIAm));
+
 //attaque
 imDoor.btnAttaque.addEventListener("click", () => whatAttaque("attack"))
 imDoor.btnSpell.addEventListener("click", () => whatAttaque("spell"))
@@ -1087,7 +1261,16 @@ imDoor.sortBlast.addEventListener("click",() =>{
     spellInUse = "sortBlast"
     document.body.style.cursor = "url('image/cursorMGC.png'), auto"} else return
 })
-
+imDoor.skillDouble.addEventListener("click",() =>{ 
+    if(!isAttacking){
+    skillInUse = "skillDouble"
+    document.body.style.cursor = "url('image/cursorMGC.png'), auto"} else return
+})
+imDoor.skillAll.addEventListener("click",() =>{ 
+    if(!isAttacking){
+    skillInUse = "skillAll"
+    document.body.style.cursor = "url('image/cursorMGC.png'), auto"} else return
+})
 function replaceStat() {
     Object.entries(dataStat.DonneeStatPerso.room.numberDoor).forEach(
         ([key, value]) => {
@@ -1173,8 +1356,9 @@ const reset = {
             "pain",
             "pain",
             "sortFeu",
-            "parcheminLumiere",
+            "sortArcane",
             "sortFoudre",
+            "sortBlast",
         ],
     }
 const opInventaire = document.getElementById("Inventaire");
@@ -1272,7 +1456,6 @@ function itemMarket(myRoom) {
                         break
                     }
                     if (item[findIndexItem].type !== "Object") {
-                        
                         while (marketMemory[myRoom].includes(findIndexItem)) {
                             findIndexItem = itemList[randomNumber(itemList.length) - 1];
                         }
@@ -1475,9 +1658,16 @@ const levelSpan = document.createElement("span");
 levelSpan.id = "level";
 levelSpan.textContent = `Niveau : 0`;
 infoDiv.appendChild(levelSpan);
+infoDiv.appendChild(document.createElement("br"));
+const pointsSpan = document.createElement("span");
+pointsSpan.id = "point";
+pointsSpan.textContent = "Point(s) disponible(s) : 10";
+infoDiv.appendChild(pointsSpan);
 
 document.body.appendChild(infoDiv);
+
 function update() {
+    
     document.getElementById("defense").textContent = `Défense : ${dataStat.DonneeStatPerso.def}`;
     document.getElementById("degatsArmeG").textContent =
         `Arme gauche : ${dataStat.DonneeStatPerso.mainDroite}`;
@@ -1491,6 +1681,18 @@ function update() {
         `Expérience : ${dataStat.DonneeStatPerso.statPerso.XP}`
     document.getElementById("level").textContent =
         `Niveau : ${dataStat.DonneeStatPerso.statPerso.LVL}`
+        
+        if (dataStat.DonneeStatPerso.statPerso.XP >= ratioLvlXp[dataStat.DonneeStatPerso.statPerso.LVL]) {
+            
+            dataStat.DonneeStatPerso.statPerso.XP -= ratioLvlXp[dataStat.DonneeStatPerso.statPerso.LVL]
+            dataStat.DonneeStatPerso.statPerso.Point++
+            dataStat.DonneeStatPerso.statPerso.LVL++
+            dataStat.DonneeStatPerso.btnCheck = false
+            update()
+        }
+    document.getElementById("point").textContent =
+        `Point(s) disponible(s) : ${dataStat.DonneeStatPerso.statPerso.Point}`;
+        gameOver()
 }
 function showSpells() {
 Object.values(dataStat.DonneeStatPerso.statPerso.spells).forEach((value) => {
