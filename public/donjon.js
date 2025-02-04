@@ -169,6 +169,8 @@ let skills = {
         state:true,
         nom: "sortFeu",
         IMG: "image/SLASH2.gif",
+        nombreRune: 3,
+        tempsRune: 800,  
         width: "1500"
         
     },
@@ -181,6 +183,8 @@ let skills = {
         state:true,
         nom: "sortFeu",
         IMG: "image/slash.webp",
+        nombreRune: 3,
+        tempsRune: 600,  
         width: "300"
     },
     steal : {
@@ -197,6 +201,8 @@ let spells = {
         state:true,
         nom: "sortFeu",
         IMG: "image/sortFeu.webp",
+        nombreRune: 5,
+        tempsRune: 900,  
         width: "300"
     },
     sortFoudre : {
@@ -208,6 +214,8 @@ let spells = {
         state:true,
         nom: "sortFoudre",
         IMG: "image/sortFoudre7.gif",
+        nombreRune: 5,
+        tempsRune: 750,  
         width: "1300"
     },
     sortArcane : {
@@ -218,7 +226,9 @@ let spells = {
         repetition: 1,
         state:true,
         nom: "sortArcane",
-        IMG: "image/sortArcane.webp",   
+        IMG: "image/sortArcane.webp",
+        nombreRune: 3,
+        tempsRune: 600,   
         width: "1600" 
     },
     sortBlast : {
@@ -229,7 +239,9 @@ let spells = {
         repetition: 1,
         state:true,
         nom: "sortArcane",
-        IMG: "image/sortBlast.webp",   
+        IMG: "image/sortBlast.webp",  
+        nombreRune: 1,
+        tempsRune: 1200,   
         width: "500" 
     }
 }
@@ -791,7 +803,8 @@ function addCrit (runeId) {
     console.log(runeCrit)
     runeSkill.remove()
 }
-function QTErune() {
+function QTErune(temps) {
+    console.log(temps)
     const op = document.getElementById("all");
         const dial = document.getElementById('divDialogue')
         buttonDoorDiv.panneauAttaque.style.display ="none"
@@ -810,14 +823,15 @@ function QTErune() {
             spanConcentration.textContent = "Concentration"
             spanConcentration.id = "spanConcentration"
             tableauRune.style.display ="block"
-            tableauRune.style.position="absolute"
-            tableauRune.style.left = "550px"
+            tableauRune.style.position="absolute    "
+
             tableauRune.appendChild(spanConcentration)
         }, 1000)
     let runeTempo = Object.keys(runes)
     setTimeout(() => {
         const spanConcentration = document.getElementById('spanConcentration')
         spanConcentration.remove()
+        
     for(let i = 0; i < 3; i++) {
         setTimeout(() => {
         const top = randomNumber(220)
@@ -829,15 +843,18 @@ function QTErune() {
             rune.style.top = top+"px"
             rune.style.left = left+"px";
             rune.id = "rune"+randomKey
+            rune.width = 40*(1+dataStat.DonneeStatPerso.statPerso.Dexterite/30)
+            rune.height = 50*(1+dataStat.DonneeStatPerso.statPerso.Dexterite/30)
             runeTempo.splice(randomKey, 1)
             rune.addEventListener("click", ()=> addCrit([rune.id]))
             buttonDoorDiv.tableauRune.appendChild(rune)
             
         setTimeout(() => {
+            
             const delRune = document.getElementById("rune"+randomKey)
             try{
             delRune.remove()} catch{}
-        } , 700*(1 +(dataStat.DonneeStatPerso.statPerso.Concentration/10)))}, (800 *(1 +(dataStat.DonneeStatPerso.statPerso.Concentration/10))) * i)
+        } , temps*(1 +(dataStat.DonneeStatPerso.statPerso.Concentration/30)))}, ((temps+100) *(1 +(dataStat.DonneeStatPerso.statPerso.Concentration/30))) * i)
         runeTempo = Object.keys(runes)
     }}, 1500)
     setTimeout(()=> {
@@ -845,7 +862,7 @@ function QTErune() {
     dial.style.display="block"
     tableauRune.style.display="none"
         op.style.setProperty('--darkness-opacity', 0)
-    }, 2500+(1500*(1 +(dataStat.DonneeStatPerso.statPerso.Concentration/10))))
+    }, 2800+(((temps*2)+100)*(1 +(dataStat.DonneeStatPerso.statPerso.Concentration/30))))
 }
 function whatAttaque(type, name) {
     if(!isAttacking){
@@ -881,7 +898,7 @@ function spell (nom, nomGen, div,ImEnn) {
         } else {
             isAttacking = true; 
     //CC SYSYTEM ESSAI facon QTE
-    QTErune()
+    QTErune(spells[spellInUse].tempsRune)
     //QTE END
     setTimeout(()=> {
     const keys = Object.keys(actualEnnemiStatut);
@@ -895,21 +912,30 @@ function spell (nom, nomGen, div,ImEnn) {
     spell.height = "308";
     spell.zIndex="99"
     let SPELLDMG = spells[spellInUse].effect()
-        
-    if (runeCrit === 3) {
-        SPELLDMG = SPELLDMG * 3    
+    if (runeCrit === 3) {  
         let spanCrit = document.createElement('p')
         spanCrit.id = "spanCrit"
         spanCrit.textContent = "Exécution parfaite ! "
         buttonDoorDiv[[div]+"degats"].appendChild(spanCrit)
     }
+    else if (runeCrit === 0) {
+        let spanCrit = document.createElement('p')
+        spanCrit.id = "spanCrit"
+        spanCrit.textContent = "Raté ! "
+        buttonDoorDiv[[div]+"degats"].appendChild(spanCrit)
+    }
+    SPELLDMG = SPELLDMG * runeCrit
+
     if (spells[spellInUse].target === "solo"){
-        const RANDOM = genererChiffre(SPELLDMG, spells[spellInUse].variation)
+        let RANDOM = genererChiffre(SPELLDMG, spells[spellInUse].variation)
+        if (RANDOM < 0) {
+            RANDOM = 0
+        } 
         actualEnnemiStatut[nom].HP -= RANDOM
+        
         let spanDegats = document.createElement("p")
             spanDegats.id = "spanDegats"
             spanDegats.textContent = "-"+RANDOM
-
         buttonDoorDiv[div].appendChild(spell)
         buttonDoorDiv[[div]+"degats"].appendChild(spanDegats)
     }   
@@ -917,7 +943,10 @@ function spell (nom, nomGen, div,ImEnn) {
         for(let i = 0; i < spells[spellInUse].repetition; i++) {
         const ennemiID = Object.keys(actualEnnemiStatut)
         const randomKey = ennemiID[Math.floor(Math.random() * ennemiID.length)]     
-        const RANDOM = genererChiffre(SPELLDMG, spells[spellInUse].variation)
+        let RANDOM = genererChiffre(SPELLDMG, spells[spellInUse].variation)
+        if (RANDOM < 0) {
+            RANDOM = 0
+        } 
         actualEnnemiStatut[randomKey].HP -= RANDOM
         let spanDegats = document.createElement("p")
             spanDegats.id = "spanDegats"
@@ -929,7 +958,10 @@ function spell (nom, nomGen, div,ImEnn) {
     else if (spells[spellInUse].target === "all") {
         const ennemiID = Object.keys(actualEnnemiStatut)
         ennemiID.forEach((value) => {
-            const RANDOM = genererChiffre(SPELLDMG, spells[spellInUse].variation)
+            let RANDOM = genererChiffre(SPELLDMG, spells[spellInUse].variation)
+            if (RANDOM < 0) {
+                RANDOM = 0
+            } 
             actualEnnemiStatut[value].HP -= RANDOM
             let spanDegats = document.createElement("p")
                 spanDegats.id = "spanDegats"
@@ -939,7 +971,7 @@ function spell (nom, nomGen, div,ImEnn) {
         })
     }
     dataStat.DonneeStatPerso.statPerso.MPactual -= spells[spellInUse].manaCost
-}, 3300+(1500*(1+dataStat.DonneeStatPerso.statPerso.Concentration/10)))    
+}, 3300+((spells[spellInUse].tempsRune*2)*(1+dataStat.DonneeStatPerso.statPerso.Concentration/30)))    
     setTimeout(() => {
         const delSpell = document.getElementById("spell")
         delSpell.remove() 
@@ -965,7 +997,7 @@ function spell (nom, nomGen, div,ImEnn) {
             }
         })
         vicOrRetaliation()
-    },5300+(1500*(1+dataStat.DonneeStatPerso.statPerso.Concentration/10)))}}} 
+    },5300+(spells[spellInUse].tempsRune*(1+dataStat.DonneeStatPerso.statPerso.Concentration/30)))}}} 
     else  return 
 }
 function skill (nom, nomGen, div,ImEnn) {
@@ -978,7 +1010,7 @@ function skill (nom, nomGen, div,ImEnn) {
         } else {
             isAttacking = true; 
     //CC SYSYTEM ESSAI facon QTE
-    QTErune()
+    QTErune(skills[skillInUse].tempsRune)
     //QTE END
     setTimeout(()=> {
     const keys = Object.keys(actualEnnemiStatut);
@@ -993,20 +1025,29 @@ function skill (nom, nomGen, div,ImEnn) {
     skill.zIndex="99"
     let SKILLDMG = skills[skillInUse].effect()
         
-    if (runeCrit === 3) {
-        SKILLDMG = SKILLDMG * 3    
+    if (runeCrit === 3) {  
         let spanCrit = document.createElement('p')
         spanCrit.id = "spanCrit"
         spanCrit.textContent = "Exécution parfaite ! "
         buttonDoorDiv[[div]+"degats"].appendChild(spanCrit)
     }
+    else if (runeCrit === 0) {
+        let spanCrit = document.createElement('p')
+        spanCrit.id = "spanCrit"
+        spanCrit.textContent = "Raté ! "
+        buttonDoorDiv[[div]+"degats"].appendChild(spanCrit)
+    }
+    SKILLDMG = SKILLDMG * runeCrit
+    let RANDOM = genererChiffre(SKILLDMG, skills[skillInUse].variation)
+    if (RANDOM < 0) {
+        RANDOM = 0
+    } 
     if (skills[skillInUse].target === "solo"){
-        const RANDOM = genererChiffre(SKILLDMG, skills[skillInUse].variation)
+        
         actualEnnemiStatut[nom].HP -= RANDOM
         let spanDegats = document.createElement("p")
             spanDegats.id = "spanDegats"
             spanDegats.textContent = "-"+RANDOM
-
         buttonDoorDiv[div].appendChild(skill)
         buttonDoorDiv[[div]+"degats"].appendChild(spanDegats)
     }   
@@ -1014,7 +1055,6 @@ function skill (nom, nomGen, div,ImEnn) {
         for(let i = 0; i < skills[skillInUse].repetition; i++) {
         const ennemiID = Object.keys(actualEnnemiStatut)
         const randomKey = ennemiID[Math.floor(Math.random() * ennemiID.length)]     
-        const RANDOM = genererChiffre(SKILLDMG, skills[skillInUse].variation)
         actualEnnemiStatut[randomKey].HP -= RANDOM
         let spanDegats = document.createElement("p")
             spanDegats.id = "spanDegats"
@@ -1026,7 +1066,6 @@ function skill (nom, nomGen, div,ImEnn) {
     else if (skills[skillInUse].target === "all") {
         const ennemiID = Object.keys(actualEnnemiStatut)
         ennemiID.forEach((value) => {
-            const RANDOM = genererChiffre(SKILLDMG, skills[skillInUse].variation)
             actualEnnemiStatut[value].HP -= RANDOM
             let spanDegats = document.createElement("p")
                 spanDegats.id = "spanDegats"
@@ -1036,7 +1075,7 @@ function skill (nom, nomGen, div,ImEnn) {
         })
     }
     dataStat.DonneeStatPerso.statPerso.MPactual -= skills[skillInUse].manaCost
-}, 3300+(1500*(1+dataStat.DonneeStatPerso.statPerso.Concentration/10)))    
+}, 3300+((skills[skillInUse].tempsRune*2)*(1+dataStat.DonneeStatPerso.statPerso.Concentration/30)))    
     setTimeout(() => {
         const delSpell = document.getElementById("skill")
         delSpell.remove() 
@@ -1062,7 +1101,7 @@ function skill (nom, nomGen, div,ImEnn) {
             }
         })
         vicOrRetaliation()
-    },5300+(1500*(1+dataStat.DonneeStatPerso.statPerso.Concentration/10)))}}} 
+    },5300+((skills[skillInUse].tempsRune*2)*(1+dataStat.DonneeStatPerso.statPerso.Concentration/30)))}}} 
     else  return 
 }
 function attaque(nom, nomGen, div, ImEnn) {
@@ -1150,8 +1189,7 @@ function vicOrRetaliation() {
         const keys = Object.keys(actualEnnemiStatut);
         lastAttackDelay = (keys.length - 1) * 1300 + 800;
         keys.forEach((key, index) => {
-            setTimeout(() => {  
-                runeCrit = 0
+            setTimeout(() => { 
                 if (end) {return}
                 const CRT = randomNumber(100)
             if (CRT > 90) {
@@ -1201,6 +1239,7 @@ function vicOrRetaliation() {
                 
             })
         }
+        runeCrit = 0
     }
 function loot(nom, nomGen, div, ImEnn) {
     boiteDialogue("txtKill", ennemi[nomGen].txt);
