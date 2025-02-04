@@ -22,6 +22,8 @@ const buttonDoorDiv = {
     panneauAttaque : document.getElementById("panneauAttaque"),
     allSkill: document.getElementById("allSkill"),
     allSpell: document.getElementById("allSpell"),
+    tableauRune: document.getElementById('tableauRune'),
+    all: document.getElementById("all")
 };
 const imDoor = {
     ImA: document.getElementById("ImA"),
@@ -47,6 +49,18 @@ const imDoor = {
     skillAll: document.getElementById("btnAttaqueAll"),
     skillDouble: document.getElementById("btnATQdouble"),
 };
+const runes = {
+    1 : "image/rune1.webp",
+    2 : "image/rune2.webp",
+    3 : "image/rune3.webp",
+    4 : "image/rune4.webp",
+    5 : "image/rune5.webp",
+    6 : "image/rune6.webp",
+    7 : "image/rune7.webp",
+    8 : "image/rune8.webp",
+    9 : "image/rune9.webp",
+    10 : "image/rune10.webp",
+}
 const dialogue = {
     txtId: document.getElementById("boiteDialogue"),
     verif: "ceci est une verification",
@@ -108,6 +122,7 @@ let dataStat = {
         Force: 0,
         HP: 50,
         HPactual: 50,
+        Concentration: 0,
         Intelligence: 0,
         LVL: 1,
         MP: 50,
@@ -473,7 +488,7 @@ function openDoor(door, image, idOpenDoor, imDiv, myRoom) {
     boiteDialogue("txtOpen");
     const checkFight = randomNumber("3");
     //RISQUE DE FAIRE DES COMBATS
-    if (!checkFight) {
+    if (checkFight) {
         actualFight = [];
         imDoor.btnBack.style.display = "none";
         opInventaire.style.display = "none";
@@ -769,7 +784,69 @@ function genererChiffre(base, variation) {
     let resultat = base + randomVariation;
     return Math.round(resultat);
 }
-
+let runeCrit = 0
+function addCrit (runeId) {
+    const runeSkill = document.getElementById(runeId)
+    runeCrit++
+    console.log(runeCrit)
+    runeSkill.remove()
+}
+function QTErune() {
+    const op = document.getElementById("all");
+        const dial = document.getElementById('divDialogue')
+        buttonDoorDiv.panneauAttaque.style.display ="none"
+        dial.style.display="none"
+        const tableauRune = document.getElementById("tableauRune")
+        
+        for (let i = 0; i <= 10; i++) { 
+            setTimeout(() => {
+                let opacity = i / 10; 
+                console.log(opacity);
+                op.style.setProperty('--darkness-opacity', opacity);
+            }, i * 100); 
+        }
+        setTimeout(() => {
+            const spanConcentration = document.createElement("p")
+            spanConcentration.textContent = "Concentration"
+            spanConcentration.id = "spanConcentration"
+            tableauRune.style.display ="block"
+            tableauRune.style.position="absolute"
+            tableauRune.style.left = "550px"
+            tableauRune.appendChild(spanConcentration)
+        }, 1000)
+    let runeTempo = Object.keys(runes)
+    setTimeout(() => {
+        const spanConcentration = document.getElementById('spanConcentration')
+        spanConcentration.remove()
+    for(let i = 0; i < 3; i++) {
+        setTimeout(() => {
+        const top = randomNumber(220)
+        const left = randomNumber(660)
+        const rune = document.createElement("img")
+        let randomKey = Math.floor(Math.random()*10)+1
+            rune.src = runes[randomKey]
+            rune.style.position = "absolute"
+            rune.style.top = top+"px"
+            rune.style.left = left+"px";
+            rune.id = "rune"+randomKey
+            runeTempo.splice(randomKey, 1)
+            rune.addEventListener("click", ()=> addCrit([rune.id]))
+            buttonDoorDiv.tableauRune.appendChild(rune)
+            
+        setTimeout(() => {
+            const delRune = document.getElementById("rune"+randomKey)
+            try{
+            delRune.remove()} catch{}
+        } , 700*(1 +(dataStat.DonneeStatPerso.statPerso.Concentration/10)))}, (800 *(1 +(dataStat.DonneeStatPerso.statPerso.Concentration/10))) * i)
+        runeTempo = Object.keys(runes)
+    }}, 1500)
+    setTimeout(()=> {
+    buttonDoorDiv.panneauAttaque.style.display ="block"
+    dial.style.display="block"
+    tableauRune.style.display="none"
+        op.style.setProperty('--darkness-opacity', 0)
+    }, 2500+(1500*(1 +(dataStat.DonneeStatPerso.statPerso.Concentration/10))))
+}
 function whatAttaque(type, name) {
     if(!isAttacking){
     if (type === "attack") {
@@ -802,7 +879,11 @@ function spell (nom, nomGen, div,ImEnn) {
         if (dataStat.DonneeStatPerso.statPerso.MPactual < spells[spellInUse].manaCost) {
             alert("mana insuffisant pour lancer ", spells[spellInUse].nom)
         } else {
-    isAttacking = true; 
+            isAttacking = true; 
+    //CC SYSYTEM ESSAI facon QTE
+    QTErune()
+    //QTE END
+    setTimeout(()=> {
     const keys = Object.keys(actualEnnemiStatut);
     lastAttackDelay = (keys.length - 1) * 1300 + 800;
     document.body.style.cursor ="default"
@@ -813,13 +894,22 @@ function spell (nom, nomGen, div,ImEnn) {
     spell.width = spells[spellInUse].width;
     spell.height = "308";
     spell.zIndex="99"
-    const SPELLDMG = spells[spellInUse].effect()
+    let SPELLDMG = spells[spellInUse].effect()
+        
+    if (runeCrit === 3) {
+        SPELLDMG = SPELLDMG * 3    
+        let spanCrit = document.createElement('p')
+        spanCrit.id = "spanCrit"
+        spanCrit.textContent = "Exécution parfaite ! "
+        buttonDoorDiv[[div]+"degats"].appendChild(spanCrit)
+    }
     if (spells[spellInUse].target === "solo"){
         const RANDOM = genererChiffre(SPELLDMG, spells[spellInUse].variation)
         actualEnnemiStatut[nom].HP -= RANDOM
         let spanDegats = document.createElement("p")
             spanDegats.id = "spanDegats"
             spanDegats.textContent = "-"+RANDOM
+
         buttonDoorDiv[div].appendChild(spell)
         buttonDoorDiv[[div]+"degats"].appendChild(spanDegats)
     }   
@@ -849,6 +939,7 @@ function spell (nom, nomGen, div,ImEnn) {
         })
     }
     dataStat.DonneeStatPerso.statPerso.MPactual -= spells[spellInUse].manaCost
+}, 3300+(1500*(1+dataStat.DonneeStatPerso.statPerso.Concentration/10)))    
     setTimeout(() => {
         const delSpell = document.getElementById("spell")
         delSpell.remove() 
@@ -874,7 +965,7 @@ function spell (nom, nomGen, div,ImEnn) {
             }
         })
         vicOrRetaliation()
-    },1000)}}} 
+    },5300+(1500*(1+dataStat.DonneeStatPerso.statPerso.Concentration/10)))}}} 
     else  return 
 }
 function skill (nom, nomGen, div,ImEnn) {
@@ -885,7 +976,11 @@ function skill (nom, nomGen, div,ImEnn) {
         if (dataStat.DonneeStatPerso.statPerso.MPactual < skills[skillInUse].manaCost) {
             alert("mana insuffisant pour lancer ", skills[skillInUse].nom)
         } else {
-    isAttacking = true; 
+            isAttacking = true; 
+    //CC SYSYTEM ESSAI facon QTE
+    QTErune()
+    //QTE END
+    setTimeout(()=> {
     const keys = Object.keys(actualEnnemiStatut);
     lastAttackDelay = (keys.length - 1) * 1300 + 800;
     document.body.style.cursor ="default"
@@ -896,13 +991,22 @@ function skill (nom, nomGen, div,ImEnn) {
     skill.width = skills[skillInUse].width;
     skill.height = "308";
     skill.zIndex="99"
-    const SKILLDMG = skills[skillInUse].effect()
+    let SKILLDMG = skills[skillInUse].effect()
+        
+    if (runeCrit === 3) {
+        SKILLDMG = SKILLDMG * 3    
+        let spanCrit = document.createElement('p')
+        spanCrit.id = "spanCrit"
+        spanCrit.textContent = "Exécution parfaite ! "
+        buttonDoorDiv[[div]+"degats"].appendChild(spanCrit)
+    }
     if (skills[skillInUse].target === "solo"){
         const RANDOM = genererChiffre(SKILLDMG, skills[skillInUse].variation)
         actualEnnemiStatut[nom].HP -= RANDOM
         let spanDegats = document.createElement("p")
             spanDegats.id = "spanDegats"
             spanDegats.textContent = "-"+RANDOM
+
         buttonDoorDiv[div].appendChild(skill)
         buttonDoorDiv[[div]+"degats"].appendChild(spanDegats)
     }   
@@ -932,6 +1036,7 @@ function skill (nom, nomGen, div,ImEnn) {
         })
     }
     dataStat.DonneeStatPerso.statPerso.MPactual -= skills[skillInUse].manaCost
+}, 3300+(1500*(1+dataStat.DonneeStatPerso.statPerso.Concentration/10)))    
     setTimeout(() => {
         const delSpell = document.getElementById("skill")
         delSpell.remove() 
@@ -957,7 +1062,7 @@ function skill (nom, nomGen, div,ImEnn) {
             }
         })
         vicOrRetaliation()
-    },1000)}}} 
+    },5300+(1500*(1+dataStat.DonneeStatPerso.statPerso.Concentration/10)))}}} 
     else  return 
 }
 function attaque(nom, nomGen, div, ImEnn) {
@@ -1046,17 +1151,20 @@ function vicOrRetaliation() {
         lastAttackDelay = (keys.length - 1) * 1300 + 800;
         keys.forEach((key, index) => {
             setTimeout(() => {  
+                runeCrit = 0
                 if (end) {return}
                 const CRT = randomNumber(100)
             if (CRT > 90) {
                 const rand = genererChiffre(actualEnnemiStatut[key].CRIT, 10)
-                nombreDegatsTemporaire ="Coup critique ! ! ! !"+"-"+ rand +" "+  "dégats"
-                dataStat.DonneeStatPerso.statPerso.HPactual -= rand
+                const randDef = Math.round(rand - (rand * (dataStat.DonneeStatPerso.def / 100)))
+                nombreDegatsTemporaire ="Coup critique ! ! ! !"+"-"+ randDef +" "+  "dégats"
+                dataStat.DonneeStatPerso.statPerso.HPactual -= randDef
                 
             } else {
                 const rand = genererChiffre(actualEnnemiStatut[key].ATQ,5)
-                nombreDegatsTemporaire = "-" + rand + " " + "dégats"
-                dataStat.DonneeStatPerso.statPerso.HPactual -= rand
+                const randDef = Math.round(rand - (rand * (dataStat.DonneeStatPerso.def / 100)))
+                nombreDegatsTemporaire = "-" + randDef + " " + "dégats"
+                dataStat.DonneeStatPerso.statPerso.HPactual -= randDef
             
             }
                 const OldImg = document.getElementById(actualEnnemiStatut[key].ImID)
@@ -1089,6 +1197,7 @@ function vicOrRetaliation() {
                     gameOver()}
                     },800)
                 },index * 1300) 
+            
                 
             })
         }
@@ -1264,12 +1373,12 @@ imDoor.sortBlast.addEventListener("click",() =>{
 imDoor.skillDouble.addEventListener("click",() =>{ 
     if(!isAttacking){
     skillInUse = "skillDouble"
-    document.body.style.cursor = "url('image/cursorMGC.png'), auto"} else return
+    document.body.style.cursor = "url('image/cursorSKL.webp'), auto"} else return
 })
 imDoor.skillAll.addEventListener("click",() =>{ 
     if(!isAttacking){
     skillInUse = "skillAll"
-    document.body.style.cursor = "url('image/cursorMGC.png'), auto"} else return
+    document.body.style.cursor = "url('image/cursorSKL.webp'), auto"} else return
 })
 function replaceStat() {
     Object.entries(dataStat.DonneeStatPerso.room.numberDoor).forEach(

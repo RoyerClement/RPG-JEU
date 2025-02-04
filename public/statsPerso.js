@@ -3,6 +3,7 @@ const statPerso = {
     Dexterite: 0,
     Vitalite: 0,
     Volonte: 0,
+    Concentration: 0,
     Intelligence: 0,
     Point: 10,
     HP:50,
@@ -287,14 +288,28 @@ const gear = {
             test: "testChest", 
             title:"votre torse" 
         },
-        armureEnCuir: { def: 10, IMG: "image/armureEnCuir.webp", test: "testArmureEnCuir", title: "une armure en cuir vous protègeant des coups" },
-        armureEnFer: { def: 20, IMG: "image/armureEnFer.webp", test: "testArmureEnFer", title :"une armure en fer vous protègeant de biens des attaques" },
+        armureEnCuir: { 
+            def: 10, 
+            IMG: "image/armureEnCuir.webp", 
+            test: "testArmureEnCuir", 
+            title: "une armure en cuir vous protègeant des coups" 
+        },
+        armureEnFer: { 
+            def: 90, IMG: "image/armureEnFer.webp", 
+            test: "testArmureEnFer", 
+            title :"une armure en fer vous protègeant de biens des attaques" 
+        },
         armureEnCuivre: 15,
         armureEnPeau: 5,
         armureEnTissu: 7,
     },
     Head: {
-        Head: { def: 0, IMG: "image/Tete.webp", test: "testHead", title:"votre tête" },
+        Head: { 
+            def: 0, 
+            IMG: "image/Tete.webp", 
+            test: "testHead", 
+            title:"votre tête" 
+        },
         casqueEnCuir: { def: 10, IMG: "image/casqueEnCuir.webp", test: "testCasqueEnCuir", title: "un casque en cuir vous protègeant des coups" },
         casqueEnFer: 20,
         casqueEnCuivre: 15,
@@ -440,10 +455,10 @@ const stats = {
 };
 let money = 50
 const inventaire = {
-    LeftHand: ["torche"],
+    LeftHand: ["torche", "torche", "torche"],
     RightHand: [],
-    Chest: [],
-    Head: [],
+    Chest: ["armureEnFer"],
+    Head: ["casqueEnCuir"],
     Ring: [],
     Neck: [],
     Object: [],
@@ -462,6 +477,8 @@ function update() {
         `Dextérité : ${statPerso.Dexterite}`;
     document.getElementById("statVit").textContent =
         `Vitalité : ${statPerso.Vitalite}`;
+    document.getElementById("statConc").textContent =
+        `Lucidité : ${statPerso.Concentration}`;
     document.getElementById("statVol").textContent =
         `Volonté : ${statPerso.Volonte}`;
     document.getElementById("statInt").textContent =
@@ -482,7 +499,7 @@ function update() {
         `Niveau : ${statPerso.LVL}`
 }
 function addStat(stat) {
-    if (statPerso.Point > 1) {
+    if (statPerso.Point >= 1) {
         statPerso.Point--;
         statPerso[stat]++;
         if (stat === "Vitalite") {
@@ -492,16 +509,14 @@ function addStat(stat) {
             statPerso.MPactual += 25
         }
         update();
-    } else {
-        const btn = document.querySelectorAll(".btnStat");
-        btn.forEach((element) => {
-            element.style.display = "none";
-            btnCheck = true;
-        });
-        statPerso.Point--;
-        statPerso[stat]++;
-        update();
-    }
+        if (statPerso.Point === 0) {
+            const btn = document.querySelectorAll(".btnStat");
+            btn.forEach((element) => {
+                element.style.display = "none";
+                btnCheck = true;
+            });
+        }
+    } 
 }
 // CHECK SI AJOUT DES BOUTONS + DES STATS
 let btnCheck = false;
@@ -523,6 +538,7 @@ const statsHTML = [
     { id: "statDex", label: "Dextérité", buttonId: "btnDex+", buttonTestId:"testDexterite" },
     { id: "statVit", label: "Vitalité", buttonId: "btnVit+", buttonTestId:"testVitalite" },
     { id: "statVol", label: "Volonté", buttonId: "btnVol+", buttonTestId:"testVolonte" },
+    { id: "statConc", label: "Lucidité", buttonId: "btnConc+", buttonTestId:"testConcentration" },
     { id: "statInt", label: "Intelligence", buttonId: "btnInt+", buttonTestId:"testIntelligence" },
 ];
 
@@ -779,6 +795,9 @@ document
 document
     .getElementById("btnVol+")
     .addEventListener("click", () => addStat("Volonte"));
+document
+    .getElementById("btnConc+")
+    .addEventListener("click", () => addStat("Concentration"));
 document
     .getElementById("btnInt+")
     .addEventListener("click", () => addStat("Intelligence"));
