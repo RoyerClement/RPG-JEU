@@ -23,6 +23,7 @@ const buttonDoorDiv = {
     allSkill: document.getElementById("allSkill"),
     allSpell: document.getElementById("allSpell"),
     tableauRune: document.getElementById('tableauRune'),
+    tableauRuneDone: document.getElementById("tableauRuneDone"),
     all: document.getElementById("all")
 };
 const imDoor = {
@@ -170,6 +171,7 @@ let skills = {
         nom: "sortFeu",
         IMG: "image/SLASH2.gif",
         nombreRune: 3,
+        runeMultiple: 0.5,
         tempsRune: 800,  
         width: "1500"
         
@@ -184,6 +186,7 @@ let skills = {
         nom: "sortFeu",
         IMG: "image/slash.webp",
         nombreRune: 3,
+        runeMultiple: 0.5,
         tempsRune: 600,  
         width: "300"
     },
@@ -201,12 +204,13 @@ let spells = {
         state:true,
         nom: "sortFeu",
         IMG: "image/sortFeu.webp",
-        nombreRune: 5,
+        nombreRune: 3,
+        runeMultiple: 0.5,
         tempsRune: 900,  
         width: "300"
     },
     sortFoudre : {
-        effect: () => 5 + (dataStat.DonneeStatPerso.statPerso.Intelligence * 3),
+        effect: () => 40 + (dataStat.DonneeStatPerso.statPerso.Intelligence * 3),
         manaCost: 20,
         variation: 30,
         target: "random",
@@ -214,7 +218,8 @@ let spells = {
         state:true,
         nom: "sortFoudre",
         IMG: "image/sortFoudre7.gif",
-        nombreRune: 5,
+        nombreRune: 3,
+        runeMultiple: 0.5,
         tempsRune: 750,  
         width: "1300"
     },
@@ -223,11 +228,12 @@ let spells = {
         manaCost: 1,
         variation: 15,
         target: "all",
-        repetition: 1,
+        repetition: 3,
         state:true,
         nom: "sortArcane",
         IMG: "image/sortArcane.webp",
         nombreRune: 3,
+        runeMultiple: 0.5,
         tempsRune: 600,   
         width: "1600" 
     },
@@ -240,8 +246,9 @@ let spells = {
         state:true,
         nom: "sortArcane",
         IMG: "image/sortBlast.webp",  
-        nombreRune: 1,
-        tempsRune: 1200,   
+        runeMultiple: 0.5,
+        nombreRune: 5,
+        tempsRune: 3000,   
         width: "500" 
     }
 }
@@ -381,7 +388,7 @@ const item = {
 };
 let actualFight = [];
 let actualEnnemiStatut = {};
-const ennemiList = ["orc", "gobelin"];
+const ennemiList = ["orc", "gobelin","serpent","champi","troll","ogre","skeleton","mageSkeleton",];
 const ennemi = {
     orc: {
         txt: "un orc",
@@ -390,18 +397,21 @@ const ennemi = {
         IMGATQ: "image/orcATQ1.webp",
         ImID: "",
         div:"",
+        width: 300,
+        height:300,
         ATQ: 20,
         CRIT: 40,
         DEF: 10,
-        HP: 300,
+        HP: 10,
         DEX: 0,
         XP: 10,
         LOOT: {
-            orcEpee : 99,
-            orcCasque: 95,
+            orcEpee : 9,
+            orcCasque: 5,
             potionVie: 25,
         },
         or: 50,
+        LVL: 5
     },
     gobelin: {
         txt: "un gobelin",
@@ -410,19 +420,190 @@ const ennemi = {
         IMGATQ: "image/gobelin.webp",
         ImID: "",
         div:"",
+        width: 300,
+        height:250,
         ATQ: 10,
         CRIT: 30,
         DEF: 3,
-        HP: 50,
+        HP: 10,
         DEX: 5,
         XP: 5,
         LOOT: {
-            gobArc : 97,
-            anneauDexterite : 95,
+            gobArc : 7,
+            anneauDexterite : 5,
             potionMana : 15,
             potionVie: 20,
         },
         or: 20, 
+        LVL: 1
+    },
+    skeleton: {
+        txt: "un squelette",
+        IMG: "image/skeleton.webp",
+        IMGmort: "image/skeletonMort.webp",
+        IMGATQ: "image/skeletonATQ.webp",
+        ImID: "",
+        div:"",
+        width: 250,
+        height:300,
+        ATQ: 10,
+        CRIT: 30,
+        DEF: 3,
+        HP: 10,
+        DEX: 5,
+        XP: 5,
+        LOOT: {
+            gobArc : 7,
+            anneauDexterite : 5,
+            potionMana : 15,
+            potionVie: 20,
+        },
+        or: 20, 
+        LVL: 3
+    },
+    troll: {
+        txt: "un troll",
+        IMG: "image/troll.webp",
+        IMGmort: "image/trollMort.webp",
+        IMGATQ: "image/trollATQ.webp",
+        ImID: "",
+        div:"",
+        width: 300,
+        height:400,
+        ATQ: 10,
+        CRIT: 30,
+        DEF: 3,
+        HP: 10,
+        DEX: 5,
+        XP: 5,
+        LOOT: {
+            gobArc : 7,
+            anneauDexterite : 5,
+            potionMana : 15,
+            potionVie: 20,
+        },
+        or: 20, 
+        LVL: 10
+    },
+    ogre: {
+        txt: "un ogre",
+        IMG: "image/ogre.webp",
+        IMGmort: "image/ogreMort.webp",
+        IMGATQ: "image/ogreATQ.webp",
+        ImID: "",
+        div:"",
+        width: 250,
+        height:350,
+        ATQ: 10,
+        CRIT: 30,
+        DEF: 3,
+        HP: 10,
+        DEX: 5,
+        XP: 5,
+        LOOT: {
+            gobArc : 7,
+            anneauDexterite : 5,
+            potionMana : 15,
+            potionVie: 20,
+        },
+        or: 20, 
+        LVL: 7
+    },
+    mageSkeleton: {
+        txt: "un mage squelette",
+        IMG: "image/mageSkeleton.webp",
+        IMGmort: "image/mageSkeletonMort.webp",
+        IMGATQ: "image/mageSkeletonATQ.webp",
+        ImID: "",
+        div:"",
+        width: 300,
+        height:320,
+        ATQ: 10,
+        CRIT: 30,
+        DEF: 3,
+        HP: 10,
+        DEX: 5,
+        XP: 5,
+        LOOT: {
+            gobArc : 7,
+            anneauDexterite : 5,
+            potionMana : 15,
+            potionVie: 20,
+        },
+        or: 20, 
+        LVL: 4
+    },
+    champi: {
+        txt: "un champignon humanoïde",
+        IMG: "image/champi.webp",
+        IMGmort: "image/champiMort.webp",
+        IMGATQ: "image/champiATQ.webp",
+        ImID: "",
+        div:"",
+        width: 300,
+        height:300,
+        ATQ: 10,
+        CRIT: 30,
+        DEF: 3,
+        HP: 10,
+        DEX: 5,
+        XP: 5,
+        LOOT: {
+            gobArc : 7,
+            anneauDexterite : 5,
+            potionMana : 15,
+            potionVie: 20,
+        },
+        or: 20, 
+        LVL: 2
+    },
+    // dragon: {
+    //     txt: "un dragon légendaire",
+    //     IMG: "image/dragon.webp",
+    //     IMGmort: "image/dragonMort.webp",
+    //     IMGATQ: "image/dragon.webp",
+    //     ImID: "",
+    //     div:"",
+    //     width: 1100,
+    //     height:500,
+    //     ATQ: 10,
+    //     CRIT: 30,
+    //     DEF: 3,
+    //     HP: 10,
+    //     DEX: 5,
+    //     XP: 5,
+    //     LOOT: {
+    //         gobArc : 7,
+    //         anneauDexterite : 5,
+    //         potionMana : 15,
+    //         potionVie: 20,
+    //     },
+    //     or: 20, 
+    //     LVL: 20
+    // },
+    serpent: {
+        txt: "un serpent",
+        IMG: "image/serpent.webp",
+        IMGmort: "image/serpentMort.webp",
+        IMGATQ: "image/serpentATQ.webp",
+        ImID: "",
+        div:"",
+        width: 300,
+        height:300,
+        ATQ: 10,
+        CRIT: 30,
+        DEF: 3,
+        HP: 10,
+        DEX: 5,
+        XP: 5,
+        LOOT: {
+            gobArc : 7,
+            anneauDexterite : 5,
+            potionMana : 15,
+            potionVie: 20,
+        },
+        or: 20, 
+        LVL: 6
     },
 };
 
@@ -519,7 +700,17 @@ function openDoor(door, image, idOpenDoor, imDiv, myRoom) {
     }
 }
 //Compteur pour différencier les differents ennemis du meme type dans le combat.
-let compteur = { orc: 1, gobelin: 1 };
+let compteur = { 
+    orc: 1, 
+    gobelin: 1, 
+    serpent:1, 
+    troll:1, 
+    ogre:1, 
+    dragon:1,
+    champi:1,
+    skeleton: 1,
+    mageSkeleton: 1,
+ };
 let numberEnn = 0;
 let divEnnemi = 1;
 function triggerFight() {
@@ -774,7 +965,6 @@ function gameOver() {
         for (let i = 0; i <= 10; i++) { 
             setTimeout(() => {
                 let opacity = i / 10; 
-                console.log(opacity);
                 op.style.setProperty('--darkness-opacity', opacity);
             }, i * 100); 
         }
@@ -797,24 +987,71 @@ function genererChiffre(base, variation) {
     return Math.round(resultat);
 }
 let runeCrit = 0
-function addCrit (runeId) {
+let runeDoneToDel = []
+
+function addCrit (runeId, runeSource) {
     const runeSkill = document.getElementById(runeId)
+    const runeDoneDiv = document.getElementById("tableauRuneDone")
     runeCrit++
-    console.log(runeCrit)
     runeSkill.remove()
+    const runesDone = document.createElement("img")
+    runesDone.src = "image/"+runeId+".webp"
+    runesDone.width = 180
+    runesDone.height = 200
+    runesDone.id = "done"+runeId
+    runeDoneToDel.push("done"+runeId)
+    runeDoneDiv.appendChild(runesDone)
 }
-function QTErune(temps) {
-    console.log(temps)
+let runeTempo = Object.keys(runes)
+
+const popAndDelRune = async (temps, nbreRune, i) => {
+            setTimeout(() => {
+            const top = randomNumber(220);
+            const left = randomNumber(660);
+            const rune = document.createElement("img");
+            let randomKey = Math.floor(Math.random() * 10) + 1;
+            rune.src = runes[randomKey];
+            rune.style.position = "absolute";
+            rune.style.top = top + "px";
+            rune.style.left = left + "px";
+            rune.id = "rune" + randomKey;
+            rune.width = 40 * (1 + dataStat.DonneeStatPerso.statPerso.Dexterite / 30);
+            rune.height = 50 * (1 + dataStat.DonneeStatPerso.statPerso.Dexterite / 30);
+            runeTempo.splice(randomKey, 1);
+            buttonDoorDiv.tableauRune.appendChild(rune);
+            rune.addEventListener("click", () => {
+                addCrit([rune.id], [rune.src]);         
+            })
+            setTimeout(() => {
+                const delRune = document.getElementById("rune" + randomKey);
+                try {
+                    delRune.remove();
+                } catch  {}
+                console.log("popAndDelRune pour del : ",temps * (1 + (dataStat.DonneeStatPerso.statPerso.Concentration / 30)))
+            }, temps * (1 + (dataStat.DonneeStatPerso.statPerso.Concentration / 30)));
+            console.log("popAndDelRune pour creer : ",((temps) * (1 + (dataStat.DonneeStatPerso.statPerso.Concentration / 30))) * i, i)
+    }, ((temps + 100) * (1 + (dataStat.DonneeStatPerso.statPerso.Concentration / 30))) * (i));
+    }
+const runeTimeOut = async (temps, nbreRune) => {
+        setTimeout(async () => {
+            const spanConcentration = document.getElementById('spanConcentration');
+            spanConcentration.remove();
+            for (let i = 0; i < nbreRune; i++) {
+                await popAndDelRune(temps, nbreRune, i); 
+                runeTempo = Object.keys(runes);
+        }}, 1000);
+};
+
+async function QTErune(temps, nbreRune) {
     const op = document.getElementById("all");
         const dial = document.getElementById('divDialogue')
         buttonDoorDiv.panneauAttaque.style.display ="none"
         dial.style.display="none"
         const tableauRune = document.getElementById("tableauRune")
-        
+        const tableauRuneDone = document.getElementById("tableauRuneDone")
         for (let i = 0; i <= 10; i++) { 
             setTimeout(() => {
                 let opacity = i / 10; 
-                console.log(opacity);
                 op.style.setProperty('--darkness-opacity', opacity);
             }, i * 100); 
         }
@@ -822,47 +1059,29 @@ function QTErune(temps) {
             const spanConcentration = document.createElement("p")
             spanConcentration.textContent = "Concentration"
             spanConcentration.id = "spanConcentration"
+            tableauRuneDone.style.display ="block"
             tableauRune.style.display ="block"
-            tableauRune.style.position="absolute    "
-
+            tableauRune.style.position="absolute"
             tableauRune.appendChild(spanConcentration)
-        }, 1000)
-    let runeTempo = Object.keys(runes)
-    setTimeout(() => {
-        const spanConcentration = document.getElementById('spanConcentration')
-        spanConcentration.remove()
-        
-    for(let i = 0; i < 3; i++) {
-        setTimeout(() => {
-        const top = randomNumber(220)
-        const left = randomNumber(660)
-        const rune = document.createElement("img")
-        let randomKey = Math.floor(Math.random()*10)+1
-            rune.src = runes[randomKey]
-            rune.style.position = "absolute"
-            rune.style.top = top+"px"
-            rune.style.left = left+"px";
-            rune.id = "rune"+randomKey
-            rune.width = 40*(1+dataStat.DonneeStatPerso.statPerso.Dexterite/30)
-            rune.height = 50*(1+dataStat.DonneeStatPerso.statPerso.Dexterite/30)
-            runeTempo.splice(randomKey, 1)
-            rune.addEventListener("click", ()=> addCrit([rune.id]))
-            buttonDoorDiv.tableauRune.appendChild(rune)
-            
-        setTimeout(() => {
-            
-            const delRune = document.getElementById("rune"+randomKey)
-            try{
-            delRune.remove()} catch{}
-        } , temps*(1 +(dataStat.DonneeStatPerso.statPerso.Concentration/30)))}, ((temps+100) *(1 +(dataStat.DonneeStatPerso.statPerso.Concentration/30))) * i)
-        runeTempo = Object.keys(runes)
-    }}, 1500)
+        }, 500)
+    await runeTimeOut(temps, nbreRune)
     setTimeout(()=> {
     buttonDoorDiv.panneauAttaque.style.display ="block"
     dial.style.display="block"
     tableauRune.style.display="none"
+    tableauRuneDone.style.display="none"
+    if (runeDoneToDel){
+        try {
+            runeDoneToDel.forEach((value)=> {
+                const delrune = document.getElementById(value)
+                delrune.remove()
+        })
+        } catch {}
+        runeDoneToDel= []
+    }
         op.style.setProperty('--darkness-opacity', 0)
-    }, 2800+(((temps*2)+100)*(1 +(dataStat.DonneeStatPerso.statPerso.Concentration/30))))
+        console.log("temps total des QTE: ",((((temps)*(1 +(dataStat.DonneeStatPerso.statPerso.Concentration/30))) * nbreRune)+(temps*(1 +(dataStat.DonneeStatPerso.statPerso.Concentration/30))))+2000)
+    }, ((((temps)*(1 +(dataStat.DonneeStatPerso.statPerso.Concentration/30))) * nbreRune)+(temps*(1 +(dataStat.DonneeStatPerso.statPerso.Concentration/30))))+2000)
 }
 function whatAttaque(type, name) {
     if(!isAttacking){
@@ -888,7 +1107,7 @@ function whatAttaque(type, name) {
         showSpells()
     }} else return
 }
-function spell (nom, nomGen, div,ImEnn) {
+async function spell (nom, nomGen, div,ImEnn) {
     if (!spellInUse) {return}
     if (spells[spellInUse].state) {
         if (isAttacking) return; 
@@ -898,7 +1117,7 @@ function spell (nom, nomGen, div,ImEnn) {
         } else {
             isAttacking = true; 
     //CC SYSYTEM ESSAI facon QTE
-    QTErune(spells[spellInUse].tempsRune)
+    await QTErune(spells[spellInUse].tempsRune, spells[spellInUse].nombreRune)
     //QTE END
     setTimeout(()=> {
     const keys = Object.keys(actualEnnemiStatut);
@@ -911,8 +1130,8 @@ function spell (nom, nomGen, div,ImEnn) {
     spell.width = spells[spellInUse].width;
     spell.height = "308";
     spell.zIndex="99"
-    let SPELLDMG = spells[spellInUse].effect()
-    if (runeCrit === 3) {  
+    let SPELLDMG = spells[spellInUse].effect() * (runeCrit * spells[spellInUse].runeMultiple)
+    if (runeCrit === spells[spellInUse].nombreRune) {  
         let spanCrit = document.createElement('p')
         spanCrit.id = "spanCrit"
         spanCrit.textContent = "Exécution parfaite ! "
@@ -924,7 +1143,6 @@ function spell (nom, nomGen, div,ImEnn) {
         spanCrit.textContent = "Raté ! "
         buttonDoorDiv[[div]+"degats"].appendChild(spanCrit)
     }
-    SPELLDMG = SPELLDMG * runeCrit
 
     if (spells[spellInUse].target === "solo"){
         let RANDOM = genererChiffre(SPELLDMG, spells[spellInUse].variation)
@@ -932,7 +1150,6 @@ function spell (nom, nomGen, div,ImEnn) {
             RANDOM = 0
         } 
         actualEnnemiStatut[nom].HP -= RANDOM
-        
         let spanDegats = document.createElement("p")
             spanDegats.id = "spanDegats"
             spanDegats.textContent = "-"+RANDOM
@@ -951,7 +1168,7 @@ function spell (nom, nomGen, div,ImEnn) {
         let spanDegats = document.createElement("p")
             spanDegats.id = "spanDegats"
             spanDegats.textContent = "-"+RANDOM+" "
-            buttonDoorDiv.divEnn1.appendChild(spell)
+        buttonDoorDiv.divEnn1.appendChild(spell)
         buttonDoorDiv[[actualEnnemiStatut[randomKey].div]+"degats"].appendChild(spanDegats)   
         }
     } 
@@ -966,12 +1183,12 @@ function spell (nom, nomGen, div,ImEnn) {
             let spanDegats = document.createElement("p")
                 spanDegats.id = "spanDegats"
                 spanDegats.textContent = "-"+RANDOM+" "
-                buttonDoorDiv.divEnn1.appendChild(spell)
+            buttonDoorDiv.divEnn1.appendChild(spell)
             buttonDoorDiv[[actualEnnemiStatut[value].div]+"degats"].appendChild(spanDegats)  
         })
     }
     dataStat.DonneeStatPerso.statPerso.MPactual -= spells[spellInUse].manaCost
-}, 3300+((spells[spellInUse].tempsRune*2)*(1+dataStat.DonneeStatPerso.statPerso.Concentration/30)))    
+}, (2500+((((spells[spellInUse].tempsRune)*1.5)*(1+dataStat.DonneeStatPerso.statPerso.Concentration/30))*(spells[spellInUse].nombreRune-1))))    
     setTimeout(() => {
         const delSpell = document.getElementById("spell")
         delSpell.remove() 
@@ -997,10 +1214,10 @@ function spell (nom, nomGen, div,ImEnn) {
             }
         })
         vicOrRetaliation()
-    },5300+(spells[spellInUse].tempsRune*(1+dataStat.DonneeStatPerso.statPerso.Concentration/30)))}}} 
+    },(5000+(((spells[spellInUse].tempsRune)*1.5)*(1+dataStat.DonneeStatPerso.statPerso.Concentration/30))*(spells[spellInUse].nombreRune-1)))}}} 
     else  return 
 }
-function skill (nom, nomGen, div,ImEnn) {
+async function skill (nom, nomGen, div,ImEnn) {
     if (!skillInUse) {return}
     if (skills[skillInUse].state) {
         if (isAttacking) return; 
@@ -1010,7 +1227,7 @@ function skill (nom, nomGen, div,ImEnn) {
         } else {
             isAttacking = true; 
     //CC SYSYTEM ESSAI facon QTE
-    QTErune(skills[skillInUse].tempsRune)
+    await QTErune(skills[skillInUse].tempsRune, skills[skillInUse].nombreRune)
     //QTE END
     setTimeout(()=> {
     const keys = Object.keys(actualEnnemiStatut);
@@ -1023,9 +1240,8 @@ function skill (nom, nomGen, div,ImEnn) {
     skill.width = skills[skillInUse].width;
     skill.height = "308";
     skill.zIndex="99"
-    let SKILLDMG = skills[skillInUse].effect()
-        
-    if (runeCrit === 3) {  
+    let SKILLDMG = skills[skillInUse].effect() * runeCrit
+    if (runeCrit === skills[skillInUse].nombreRune) {  
         let spanCrit = document.createElement('p')
         spanCrit.id = "spanCrit"
         spanCrit.textContent = "Exécution parfaite ! "
@@ -1037,13 +1253,12 @@ function skill (nom, nomGen, div,ImEnn) {
         spanCrit.textContent = "Raté ! "
         buttonDoorDiv[[div]+"degats"].appendChild(spanCrit)
     }
-    SKILLDMG = SKILLDMG * runeCrit
-    let RANDOM = genererChiffre(SKILLDMG, skills[skillInUse].variation)
-    if (RANDOM < 0) {
-        RANDOM = 0
-    } 
+
     if (skills[skillInUse].target === "solo"){
-        
+        let RANDOM = genererChiffre(SKILLDMG, skills[skillInUse].variation)
+        if (RANDOM < 0) {
+            RANDOM = 0
+        } 
         actualEnnemiStatut[nom].HP -= RANDOM
         let spanDegats = document.createElement("p")
             spanDegats.id = "spanDegats"
@@ -1055,27 +1270,35 @@ function skill (nom, nomGen, div,ImEnn) {
         for(let i = 0; i < skills[skillInUse].repetition; i++) {
         const ennemiID = Object.keys(actualEnnemiStatut)
         const randomKey = ennemiID[Math.floor(Math.random() * ennemiID.length)]     
+        let RANDOM = genererChiffre(SKILLDMG, skills[skillInUse].variation)
+        if (RANDOM < 0) {
+            RANDOM = 0
+        } 
         actualEnnemiStatut[randomKey].HP -= RANDOM
         let spanDegats = document.createElement("p")
             spanDegats.id = "spanDegats"
             spanDegats.textContent = "-"+RANDOM+" "
-            buttonDoorDiv.divEnn1.appendChild(skill)
+        buttonDoorDiv.divEnn1.appendChild(skill)
         buttonDoorDiv[[actualEnnemiStatut[randomKey].div]+"degats"].appendChild(spanDegats)   
         }
     } 
     else if (skills[skillInUse].target === "all") {
         const ennemiID = Object.keys(actualEnnemiStatut)
         ennemiID.forEach((value) => {
+            let RANDOM = genererChiffre(SKILLDMG, skills[skillInUse].variation)
+            if (RANDOM < 0) {
+                RANDOM = 0
+            } 
             actualEnnemiStatut[value].HP -= RANDOM
             let spanDegats = document.createElement("p")
                 spanDegats.id = "spanDegats"
                 spanDegats.textContent = "-"+RANDOM+" "
-                buttonDoorDiv.divEnn1.appendChild(skill)
+            buttonDoorDiv.divEnn1.appendChild(skill)
             buttonDoorDiv[[actualEnnemiStatut[value].div]+"degats"].appendChild(spanDegats)  
         })
     }
     dataStat.DonneeStatPerso.statPerso.MPactual -= skills[skillInUse].manaCost
-}, 3300+((skills[skillInUse].tempsRune*2)*(1+dataStat.DonneeStatPerso.statPerso.Concentration/30)))    
+}, (2500+(((skills[skillInUse].tempsRune)*(1+dataStat.DonneeStatPerso.statPerso.Concentration/30))*skills[skillInUse].nombreRune)))    
     setTimeout(() => {
         const delSpell = document.getElementById("skill")
         delSpell.remove() 
@@ -1101,7 +1324,7 @@ function skill (nom, nomGen, div,ImEnn) {
             }
         })
         vicOrRetaliation()
-    },5300+((skills[skillInUse].tempsRune*2)*(1+dataStat.DonneeStatPerso.statPerso.Concentration/30)))}}} 
+    },(((skills[skillInUse].tempsRune)*(1+dataStat.DonneeStatPerso.statPerso.Concentration/30))*skills[skillInUse].nombreRune)+5000)}}} 
     else  return 
 }
 function attaque(nom, nomGen, div, ImEnn) {
@@ -1158,7 +1381,7 @@ function attaque(nom, nomGen, div, ImEnn) {
         }, lastAttackDelay + 100);
     }},1000)} 
 }
-function vicOrRetaliation() {
+async function vicOrRetaliation() {
     if (Object.keys(actualEnnemiStatut).length === 0) {
         boiteDialogue("txtVictory")
         setTimeout(() => {
@@ -1242,6 +1465,7 @@ function vicOrRetaliation() {
         runeCrit = 0
     }
 function loot(nom, nomGen, div, ImEnn) {
+    console.log(nom, nomGen, div, ImEnn)
     boiteDialogue("txtKill", ennemi[nomGen].txt);
         dataStat.DonneeStatPerso.statPerso.XP += actualEnnemiStatut[nom].XP;
         dataStat.DonneeStatPerso.money += actualEnnemiStatut[nom].or
@@ -1271,8 +1495,8 @@ function loot(nom, nomGen, div, ImEnn) {
         imDoor[ImEnn].remove();
         const imEnnemi = document.createElement("img");
         imEnnemi.src = ennemi[nomGen].IMGmort;
-        imEnnemi.width = "300";
-        imEnnemi.height = "300";
+        imEnnemi.width = ennemi[nomGen].width;
+        imEnnemi.height = ennemi[nomGen].height;
         imEnnemi.alt = "Ennemi féroce !";
         imEnnemi.id = ImEnn;
         buttonDoorDiv[div].appendChild(imEnnemi);
@@ -1284,17 +1508,17 @@ let torche = false
 const flashlight = document.getElementById("flashlight")
 const overlay = document.getElementById("overlay")
 function darknessOpacity() {
-    if (roomIAm === "start") {roomIAm = ""} 
-    else {
+    if (roomIAm === "start") {
+        roomIAm = ""
+    } 
         const splitRoom = roomIAm.split("");
         let numberEnn = (splitRoom.length/20)
         if (dataStat.DonneeStatPerso.equipement.LeftHand === "torche" || 
             dataStat.DonneeStatPerso.equipement.RightHand === "torche"){
                 overlay.style.display="none"
                 flashlight.style.display="block"
-                flashlight.style.background = `radial-gradient(circle, rgba(255, 181, 22, 0.1) 400px, rgba(0, 0, 0, ${numberEnn}) 650px)`
+                flashlight.style.background = `radial-gradient(circle, rgba(255, 181, 22, ${numberEnn}) 400px, rgba(0, 0, 0, ${numberEnn}) 650px)`
                 torche = true
-                // animateFlashlight()
         }
         else {
             flashlight.style.display="none"
@@ -1302,21 +1526,10 @@ function darknessOpacity() {
             overlay.style.background = ` rgba(0, 0, 0, ${numberEnn})`
             torche = false
         }
-    }
     if (roomIAm ==="") {
         roomIAm = "start"
     }  
 }
-
-// function animateFlashlight() {
-//     if (!torche) return;
-//     const splitRoom = roomIAm.split("")
-//     let numberEnn = splitRoom.length / 20;
-//     const random = genererChiffre(650, 15);
-//     const random2 = genererChiffre(400, 15)
-//     flashlight.style.background = `radial-gradient(circle, rgba(255, 208, 22, 0.1) ${random2}px, rgba(0, 0, 0, ${numberEnn}) ${random}px)`
-//     requestAnimationFrame(animateFlashlight);
-// }
 
 function updateFlashlight() {
         if (torche){
@@ -1325,10 +1538,11 @@ function updateFlashlight() {
             const random = genererChiffre(650, 15)
             const random2 = genererChiffre(400, 15)
             flashlight.style.background = `radial-gradient(circle, rgba(255, 216, 22, 0.1) ${random2}px, rgba(0, 0, 0, ${numberEnn}) ${random}px)`
-      } else {return}
+      } else {
+    }
     }
 
-const interval = setInterval(updateFlashlight, 100)
+setInterval(updateFlashlight, 100)
    
 document.addEventListener("mousemove", (e) => {
     if (torche){
@@ -1340,8 +1554,8 @@ document.addEventListener("mousemove", (e) => {
 function updateRenderFight(type, nomEnnemi, div, ImEnn) {
     const imEnnemi = document.createElement("img");
     imEnnemi.src = ennemi[type].IMG;
-    imEnnemi.width = "300";
-    imEnnemi.height = "300";
+    imEnnemi.width = ennemi[type].width;
+    imEnnemi.height = ennemi[type].height;
     imEnnemi.alt = "Ennemi féroce !";
     imEnnemi.id = ImEnn;
     actualEnnemiStatut[nomEnnemi].ImID = ImEnn
@@ -1844,7 +2058,7 @@ function update() {
 }
 function showSpells() {
 Object.values(dataStat.DonneeStatPerso.statPerso.spells).forEach((value) => {
-    
+   
             imDoor[value].style.display="block"
 
 })

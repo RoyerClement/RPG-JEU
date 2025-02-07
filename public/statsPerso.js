@@ -55,7 +55,7 @@ const arme = {
         IMG: "image/mainDroite.webp",
     },
     epeeDepart: {
-        degats: () => 4 + (3 * statPerso.Force + 2 * statPerso.Dexterite),
+        degats: () => 900 + (3 * statPerso.Force + 2 * statPerso.Dexterite),
         IMG: "image/epeeDepart.webp",
     },
     hacheDepart: {
@@ -137,7 +137,7 @@ const gear = {
             title : "une dague en bon état"
         },
         epeeDepart: {
-            degats: () => 4 + (2 * statPerso.Force + 1 * statPerso.Dexterite),
+            degats: () => 900 + (2 * statPerso.Force + 1 * statPerso.Dexterite),
             IMG: "image/epeeDepart.webp",
             class: "depart",
             test: "testEpeeDepart",
@@ -455,7 +455,7 @@ const stats = {
 };
 let money = 50
 const inventaire = {
-    LeftHand: ["torche", "torche", "torche"],
+    LeftHand: ["torche"],
     RightHand: [],
     Chest: ["armureEnFer"],
     Head: ["casqueEnCuir"],
