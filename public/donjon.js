@@ -711,31 +711,46 @@ let compteur = {
     skeleton: 1,
     mageSkeleton: 1,
  };
-let numberEnn = 0;
-let divEnnemi = 1;
+let expectLVLennemiRoom = 0;
+let divEnnemi = 0;
+let ennemiLVLinRoom = 0
+let ennemiNumberinRoom = 0
 function triggerFight() {
     divEnnemi = 1;
     if (roomIAm === "start") {
-        numberEnn = 1;
+        expectLVLennemiRoom = 1;
     } else {
         const splitRoom = roomIAm.split("");
-        numberEnn = splitRoom.length;
+        expectLVLennemiRoom = splitRoom.length;
     }
-    if (numberEnn > 5) {
-        numberEnn = 5;
-    }
-    for (let i = 0; i < numberEnn; i++) {
-        const findIndexEnnemi = ennemiList[randomNumber(ennemiList.length) - 1];
-        actualFight.push(findIndexEnnemi);
-        const nomEnnemi = `${findIndexEnnemi}${compteur[findIndexEnnemi]}`;
-        actualEnnemiStatut[nomEnnemi] = { ...ennemi[findIndexEnnemi] };
-        compteur[findIndexEnnemi]++;
-        const where = "divEnn" + divEnnemi;
-        const ImEnn = "ImEnn" + divEnnemi;
-        updateRenderFight(findIndexEnnemi, nomEnnemi, where, ImEnn);
-        divEnnemi++;
+    console.log("niveau attendu dans la piece : ", expectLVLennemiRoom)
+    while(expectLVLennemiRoom >  ennemiLVLinRoom ) {
+        if (ennemiNumberinRoom === 5) {
+            break
+        } else {
+            let findIndexEnnemi = ennemiList[randomNumber(ennemiList.length) - 1];
+            while (ennemi[findIndexEnnemi].LVL > (expectLVLennemiRoom - ennemiLVLinRoom)) {
+                findIndexEnnemi = ennemiList[randomNumber(ennemiList.length) - 1];
+            }
+            actualFight.push(findIndexEnnemi);
+            ennemiLVLinRoom += ennemi[findIndexEnnemi].LVL
+            const nomEnnemi = `${findIndexEnnemi}${compteur[findIndexEnnemi]}`;
+            actualEnnemiStatut[nomEnnemi] = { ...ennemi[findIndexEnnemi] };
+            compteur[findIndexEnnemi]++;
+            const where = "divEnn" + divEnnemi;
+            const ImEnn = "ImEnn" + divEnnemi;
+            console.log("div : ", where)
+            updateRenderFight(findIndexEnnemi, nomEnnemi, where, ImEnn);
+            divEnnemi++;
+            ennemiNumberinRoom++
+            console.log("ennemi present dans la piece : ", actualFight ) 
+            console.log("nombre d'ennemi dans la piece : ", ennemiNumberinRoom)
+            console.log('niveau de la piece : ', ennemiLVLinRoom)
+        }
     }
     buttonDoorDiv.panneauAttaque.style.display="block"
+    ennemiLVLinRoom = 0
+    ennemiNumberinRoom = 0
 }
 let dark = false;
 //Si on clique sur la porte ouverte
