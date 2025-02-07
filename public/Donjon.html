@@ -423,9 +423,11 @@
             background: rgb(0, 0, 0, 0); 
             z-index: 2;">    
         </div>
-        <div style="visibility: hidden;">
+        <div>
         <button id ="checkNoFight" data-testid="testCheckNoFight" >NoFight</button>
         <button id ="checkFight" data-testid="testCheckFight">Fight</button>
+        <button id ="checkMarchand" data-testid="testCheckMarchand">Marchand</button>
+        <button id ="checkNoMarchand" data-testid="testCheckNoMarchand">NoMarchand</button>
         </div>
         <div id="tableauRune" style="display: none;"></div>
         <div id="tableauRuneDone" style="display: none;"></div> 
@@ -455,15 +457,15 @@
                             src="image/porteFerme.webp"
                             id="ImA"
                             title="A"
+                            data-testid="porteFermeA"
                             class="porteFerme"
-                            title="A"
                         />
                     </div>
                     <div id="DEUX">
                         <img
                             src="image/porteFerme.webp"
                             id="ImB"
-                            data-testid="firstClosedDoor"
+                            data-testid="porteFermeB"
                             class="porteFerme"
                             title="B"
                         />
@@ -472,6 +474,7 @@
                         <img
                             src="image/porteFerme.webp"
                             id="ImC"
+                            data-testid="porteFermeC"
                             class="porteFerme"
                             title="C"
                         />
@@ -496,7 +499,7 @@
             <div id="market"></div>
             
         </div>
-        <div id="itemMarket" style="display: none">
+        <div id="itemMarket" data-testid="divPetitMarchand" style="display: none">
             <p>Voici ce que le marchand propose :</p>
         </div>
         <button id="Inventaire" class="no-darkness" data-testid="testOpInv">

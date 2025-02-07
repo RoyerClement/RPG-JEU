@@ -687,7 +687,8 @@ function openDoor(door, image, idOpenDoor, imDiv, myRoom) {
     imDoorOpen.height = "408";
     imDoorOpen.alt = "porte ouverte";
     imDoorOpen.id = idOpenDoor;
-    imDoorOpen.setAttribute("data-testid", "firstOpenDoor")
+    const testID = "porteOuvert"+door
+    imDoorOpen.setAttribute("data-testid", "porteOuvertA")
     buttonDoorDiv[imDiv].appendChild(imDoorOpen);
     imDoor[idOpenDoor] = document.getElementById(idOpenDoor);
     imDoor[idOpenDoor].addEventListener("click", () => enterDoor(door, myRoom));
@@ -772,6 +773,18 @@ function triggerFight() {
     ennemiNumberinRoom = 0
 }
 let dark = false;
+let marchand = 0
+let  testMarchand = ""
+const btnMarchand = document.getElementById("checkMarchand")
+const btnNoMarchand = document.getElementById("checkNoMarchand")
+btnMarchand.addEventListener("click", () => {
+    testMarchand = "alwaysMarchand"
+    console.log(testMarchand)
+})
+btnNoMarchand.addEventListener("click", () => {
+    testMarchand = "neverMarchand"
+    console.log(testMarchand)
+})
 //Si on clique sur la porte ouverte
 function enterDoor(door, myRoom) {
 
@@ -821,7 +834,16 @@ function enterDoor(door, myRoom) {
             //SI LA SALLE N'EXISTE PAS ON CREE LES SALLES !
             else {
                 //CONDITION MARCHAND
-                const marchand = randomNumber("100");
+                if (testMarchand === "alwaysMarchand") {
+                    marchand = 100
+                    console.log('bouton Marchand : ', marchand)
+                } else if (testMarchand === "neverMarchand") {
+                    marchand = 0
+                    console.log('bouton noMarchand : ', marchand)
+                } else {
+                marchand = randomNumber("100");
+                console.log("aucun bouton active : ", marchand)
+                }
                 if (marchand > 80) {
                     let howDeep = "";
                     const splitRoom = roomIAm.split("");
@@ -920,6 +942,7 @@ function updateRender(myRoom, marchand) {
         imNewDoorA.height = "408";
         imNewDoorA.alt = "porte ferme";
         imNewDoorA.id = "ImA";
+        imNewDoorA.setAttribute("data-testid", "porteFermeA")
         buttonDoorDiv.D1.appendChild(imNewDoorA);
         imDoor.ImA = document.getElementById("ImA");
         imDoor.ImA.addEventListener("click", () =>
@@ -932,6 +955,7 @@ function updateRender(myRoom, marchand) {
         imNewDoorA.height = "408";
         imNewDoorA.alt = "porte ferme";
         imNewDoorA.id = "ImA";
+        imNewDoorA.setAttribute("data-testid", "porteFermeA")
         buttonDoorDiv.D1.appendChild(imNewDoorA);
         imDoor.ImA = document.getElementById("ImA");
         imDoor.ImA.addEventListener("click", () =>
@@ -944,6 +968,7 @@ function updateRender(myRoom, marchand) {
         imNewDoorB.height = "408";
         imNewDoorB.alt = "porte ferme";
         imNewDoorB.id = "ImB";
+        imNewDoorA.setAttribute("data-testid", "porteFermeB")
         buttonDoorDiv.D2.appendChild(imNewDoorB);
         imDoor.ImB = document.getElementById("ImB");
         imDoor.ImB.addEventListener("click", () =>
@@ -956,6 +981,7 @@ function updateRender(myRoom, marchand) {
         imNewDoorA.height = "408";
         imNewDoorA.alt = "porte ferme";
         imNewDoorA.id = "ImA";
+        imNewDoorA.setAttribute("data-testid", "porteFermeA")
         buttonDoorDiv.D1.appendChild(imNewDoorA);
         imDoor.ImA = document.getElementById("ImA");
         imDoor.ImA.addEventListener("click", () =>
@@ -968,6 +994,7 @@ function updateRender(myRoom, marchand) {
         imNewDoorB.height = "408";
         imNewDoorB.alt = "porte ferme";
         imNewDoorB.id = "ImB";
+        imNewDoorA.setAttribute("data-testid", "porteFermeB")
         buttonDoorDiv.D2.appendChild(imNewDoorB);
         imDoor.ImB = document.getElementById("ImB");
         imDoor.ImB.addEventListener("click", () =>
@@ -980,6 +1007,7 @@ function updateRender(myRoom, marchand) {
         imNewDoorC.height = "408";
         imNewDoorC.alt = "porte ferme";
         imNewDoorC.id = "ImC";
+        imNewDoorA.setAttribute("data-testid", "porteFermeC")
         buttonDoorDiv.D3.appendChild(imNewDoorC);
         imDoor.ImC = document.getElementById("ImC");
         imDoor.ImC.addEventListener("click", () =>
@@ -1885,6 +1913,7 @@ function updateRenderMarket(myRoom) {
         smallMarket.height = "500";
         smallMarket.alt = "Un marchand pour dépenser vos sous";
         smallMarket.id = "smallMarket";
+        smallMarket.setAttribute("data-testid", "petitMarchand")
         buttonDoorDiv.market.appendChild(smallMarket);
         imDoor.smallMarket = document.getElementById("smallMarket");
         imDoor.smallMarket.addEventListener("click", () => itemMarket(myRoom))
@@ -1895,6 +1924,7 @@ function updateRenderMarket(myRoom) {
         mediumMarket.height = "600";
         mediumMarket.alt = "Un marchand pour dépenser vos sous";
         mediumMarket.id = "mediumMarket";
+        smallMarket.setAttribute("data-testid", "moyenMarchand")
         buttonDoorDiv.market.appendChild(mediumMarket);
         imDoor.mediumMarket = document.getElementById("mediumMarket");
         imDoor.mediumMarket.addEventListener("click", () => itemMarket(myRoom));
@@ -1905,6 +1935,7 @@ function updateRenderMarket(myRoom) {
         bigMarket.height = "650";
         bigMarket.alt = "Un marchand pour dépenser vos sous";
         bigMarket.id = "bigMarket";
+        smallMarket.setAttribute("data-testid", "grandMarchand")
         buttonDoorDiv.market.appendChild(bigMarket);
         imDoor.bigMarket = document.getElementById("bigMarket");
         imDoor.bigMarket.addEventListener("click", () => itemMarket(myRoom));
@@ -1923,7 +1954,7 @@ function updateRenderBack(myRoom) {
             imNewDoorA.alt = "porte ouverte";
             imNewDoorA.id = "ImOpenA";
             buttonDoorDiv.D1.appendChild(imNewDoorA);
-            imNewDoorA.setAttribute("data-testid", "firstOpenDoor")
+            imNewDoorA.setAttribute("data-testid", "porteOuvertA")
             imDoor.ImOpenA = document.getElementById("ImOpenA");
             imDoor.ImOpenA.addEventListener("click", () =>
                 enterDoor("A", roomIAm),
@@ -1935,7 +1966,7 @@ function updateRenderBack(myRoom) {
             imNewDoorA.height = "408";
             imNewDoorA.alt = "porte ferme";
             imNewDoorA.id = "ImA";
-            imNewDoorA.setAttribute("data-testid", "firstClosedDoor")
+            imNewDoorA.setAttribute("data-testid", "porteFermeA")
             buttonDoorDiv.D1.appendChild(imNewDoorA);
             imDoor.ImA = document.getElementById("ImA");
             imDoor.ImA.addEventListener("click", () =>
@@ -1951,6 +1982,7 @@ function updateRenderBack(myRoom) {
             imNewDoorB.height = "408";
             imNewDoorB.alt = "porte ouverte";
             imNewDoorB.id = "ImOpenB";
+            imNewDoorB.setAttribute("data-testid", "porteOuvertB")
             buttonDoorDiv.D2.appendChild(imNewDoorB);
             imDoor.ImOpenB = document.getElementById("ImOpenB");
             imDoor.ImOpenB.addEventListener("click", () =>
@@ -1963,6 +1995,7 @@ function updateRenderBack(myRoom) {
             imNewDoorB.height = "408";
             imNewDoorB.alt = "porte ferme";
             imNewDoorB.id = "ImB";
+            imNewDoorB.setAttribute("data-testid", "porteFermeB")
             buttonDoorDiv.D2.appendChild(imNewDoorB);
             imDoor.ImB = document.getElementById("ImB");
             imDoor.ImB.addEventListener("click", () =>
@@ -1978,6 +2011,7 @@ function updateRenderBack(myRoom) {
             imNewDoorC.height = "408";
             imNewDoorC.alt = "porte ouverte";
             imNewDoorC.id = "ImOpenC";
+            imNewDoorC.setAttribute("data-testid", "porteOuvertC")
             buttonDoorDiv.D3.appendChild(imNewDoorC);
             imDoor.ImOpenC = document.getElementById("ImOpenC");
             imDoor.ImOpenC.addEventListener("click", () =>
@@ -1990,6 +2024,7 @@ function updateRenderBack(myRoom) {
             imNewDoorC.height = "408";
             imNewDoorC.alt = "porte ferme";
             imNewDoorC.id = "ImC";
+            imNewDoorC.setAttribute("data-testid", "porteFermeC")
             buttonDoorDiv.D3.appendChild(imNewDoorC);
             imDoor.ImC = document.getElementById("ImC");
             imDoor.ImC.addEventListener("click", () =>
