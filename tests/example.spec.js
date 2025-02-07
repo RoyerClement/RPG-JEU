@@ -19,7 +19,7 @@ test("voir fermer l'inventaire", async ({ page }) => {
     await sleep(2000)
 });
 
-test("fermer l'inventaire puis cliquer sur la premiere porte, puis cliquer sur la porte ouverte !", async ({ page }) => {
+test("entrer dans la premiere piece", async ({ page }) => {
     //En arrivant sur la 1ere page
     await page.goto("http://localhost:3000/index.html");
     //Expect : voir 'Fermer l'inventaire'
@@ -31,6 +31,8 @@ test("fermer l'inventaire puis cliquer sur la premiere porte, puis cliquer sur l
     const closedDoor = await page.getByTestId("firstClosedDoor");
     //VOIR LA PREMIERE PORTE
     await expect (closedDoor).toBeVisible();
+    const checkNoFight = await page.getByTestId("testCheckNoFight")
+    await checkNoFight.click({ force: true });
     //CLIQUEZ SUR LA PREMIERE PORTE
     await closedDoor.click();
     const openDoor = await page.getByTestId("firstOpenDoor");
@@ -43,6 +45,34 @@ test("fermer l'inventaire puis cliquer sur la premiere porte, puis cliquer sur l
     const btnBack = await page.getByTestId('testBack')
     //CLIQUER SUR LE BOUTON REVENIR EN ARRIERE
     await btnBack.click ();
+    //NE PLUS VOIR LE BOUTON REVENIR EN ARRIERE
+    await expect (page.getByText(/Revenir en arrière/)).not.toBeVisible
+    const reset = await page.getByTestId("testReset")
+    await reset.click()
+    await page.waitForURL("http://localhost:3000/index.html");
+    await sleep(2000)
+});
+
+test("Declencher un combat", async ({ page }) => {
+    //En arrivant sur la 1ere page
+    await page.goto("http://localhost:3000/index.html");
+    //Expect : voir 'Fermer l'inventaire'
+    await expect(page.getByText(/Fermer l'inventaire/)).toBeVisible();
+    //Cliquer sur fermer inventaire
+    const closeInv = await page.getByTestId("closeInv");
+    await closeInv.click(),
+    await page.waitForURL("http://localhost:3000/Donjon.html");
+    const closedDoor = await page.getByTestId("firstClosedDoor");
+    //VOIR LA PREMIERE PORTE
+    await expect (closedDoor).toBeVisible();
+    //CLIQUEZ SUR LE BOUTON POUR FORCER LAPPARITION DES COMBATS
+    const checkFight = await page.getByTestId("testCheckFight")
+    await checkFight.click({ force: true });
+    //CLIQUEZ SUR LA PREMIERE PORTE
+    await closedDoor.click();
+    const testPanneauATQ = await page.getByTestId("testPanneauATQ");
+    //VOIR LA PREMIERE PORTE OUVERTE
+    await expect (testPanneauATQ).toBeVisible()
     //NE PLUS VOIR LE BOUTON REVENIR EN ARRIERE
     await expect (page.getByText(/Revenir en arrière/)).not.toBeVisible
     const reset = await page.getByTestId("testReset")

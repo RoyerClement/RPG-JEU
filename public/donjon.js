@@ -406,9 +406,10 @@ const ennemi = {
         DEX: 0,
         XP: 10,
         LOOT: {
-            orcEpee : 9,
+            orcEpee : 5,
             orcCasque: 5,
-            potionVie: 25,
+            potionVie: 7,
+            pain:10,
         },
         or: 50,
         LVL: 5
@@ -430,9 +431,10 @@ const ennemi = {
         XP: 5,
         LOOT: {
             gobArc : 7,
-            anneauDexterite : 5,
-            potionMana : 15,
-            potionVie: 20,
+            anneauDexterite : 1,
+            potionMana : 5,
+            potionVie: 5,
+            pain:10,
         },
         or: 20, 
         LVL: 1
@@ -659,7 +661,18 @@ function back() {
     boiteDialogue("txtBack");
     updateRenderBack(roomIAm);
 }
-
+const btnCheckFight = document.getElementById('checkFight')
+btnCheckFight.addEventListener('click', () => {
+    paramCheckFight = "alwaysFight"
+    console.log(paramCheckFight)
+})
+const btnCheckNoFight = document.getElementById('checkNoFight')
+btnCheckNoFight.addEventListener('click', () => {
+    paramCheckFight = "neverFight"
+    console.log(paramCheckFight)
+})
+let checkFight = 0;
+let paramCheckFight = ""
 //Ouverture de la porte, check si combat ou non selon une variable random de 1/3
 function openDoor(door, image, idOpenDoor, imDiv, myRoom) {
     image.remove();
@@ -679,9 +692,15 @@ function openDoor(door, image, idOpenDoor, imDiv, myRoom) {
     imDoor[idOpenDoor] = document.getElementById(idOpenDoor);
     imDoor[idOpenDoor].addEventListener("click", () => enterDoor(door, myRoom));
     boiteDialogue("txtOpen");
-    const checkFight = randomNumber("3");
+    if (paramCheckFight === "neverFight") {
+        checkFight = 5
+    } else if (paramCheckFight === "alwaysFight") {
+        checkFight = 0
+    } else {
+    checkFight = randomNumber("3");
+    }
     //RISQUE DE FAIRE DES COMBATS
-    if (checkFight) {
+    if (checkFight < 3) {
         actualFight = [];
         imDoor.btnBack.style.display = "none";
         opInventaire.style.display = "none";

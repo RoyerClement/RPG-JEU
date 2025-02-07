@@ -354,6 +354,7 @@
                 margin: 10px;
                 position: absolute;
                 right: 250px;
+                left: 1400px;
                 top: 0px;
                 font-family: "MedievalSharp", serif;
                 font-weight: 400;
@@ -422,11 +423,14 @@
             background: rgb(0, 0, 0, 0); 
             z-index: 2;">    
         </div>
+        <div style="visibility: hidden;">
+        <button id ="checkNoFight" data-testid="testCheckNoFight" >NoFight</button>
+        <button id ="checkFight" data-testid="testCheckFight">Fight</button>
+        </div>
         <div id="tableauRune" style="display: none;"></div>
-        <div id="tableauRuneDone" style="display: none;"></div>
+        <div id="tableauRuneDone" style="display: none;"></div> 
         <div id="all" class="position-relative background-darkness">
-            
-            <div id ="panneauAttaque" style="display: none;">
+            <div id ="panneauAttaque" data-testid="testPanneauATQ" style="display: none;">
                 <button id="btnAttaque" class="panneauATQ">Attaque</button><br>
                 <button id="btnSkill" class="panneauATQ">Compétences</button><br>
                 <button id ="btnSpell" class="panneauATQ">Sorts</button>
