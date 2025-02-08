@@ -421,6 +421,7 @@ const ennemi = {
         IMGATQ: "image/gobelin.webp",
         ImID: "",
         div:"",
+        testid: "testGob",
         width: 300,
         height:250,
         ATQ: 10,
@@ -661,6 +662,8 @@ function back() {
     boiteDialogue("txtBack");
     updateRenderBack(roomIAm);
 }
+
+//POUR LES TESTS
 const btnCheckFight = document.getElementById('checkFight')
 btnCheckFight.addEventListener('click', () => {
     paramCheckFight = "alwaysFight"
@@ -671,8 +674,27 @@ btnCheckNoFight.addEventListener('click', () => {
     paramCheckFight = "neverFight"
     console.log(paramCheckFight)
 })
+const btnAllATQ = document.getElementById('getAllATQ')
+btnAllATQ.addEventListener('click', () => {
+    imDoor.sortArcane.style.display="block"
+    imDoor.sortBlast.style.display="block"
+    imDoor.sortFeu.style.display="block"
+    imDoor.sortFoudre.style.display="block"
+    imDoor.skillAll.style.display="block"
+    imDoor.skillDouble.style.display="block"
+})
+
+const btnGetStuff = document.getElementById('getStuff')
+btnGetStuff.addEventListener('click', () => {
+    dataStat.DonneeStatPerso.inventaire.LeftHand = ["espadon", "dague", "batonDepart", "arcDepart", "epeeDepart", "hacheDepart", "orcHache", "gobArc"]
+    dataStat.DonneeStatPerso.inventaire.Chest = ["armureEnFer", "armureEnCuir"]
+    dataStat.DonneeStatPerso.inventaire.Head = ["casqueEnCuir"]
+    console.log(dataStat)
+})
+
 let checkFight = 0;
 let paramCheckFight = ""
+
 //Ouverture de la porte, check si combat ou non selon une variable random de 1/3
 function openDoor(door, image, idOpenDoor, imDiv, myRoom) {
     image.remove();
@@ -1620,6 +1642,7 @@ function updateRenderFight(type, nomEnnemi, div, ImEnn) {
     imEnnemi.height = ennemi[type].height;
     imEnnemi.alt = "Ennemi féroce !";
     imEnnemi.id = ImEnn;
+    imEnnemi.setAttribute("data-testid", ennemi[type].testid)
     actualEnnemiStatut[nomEnnemi].ImID = ImEnn
     actualEnnemiStatut[nomEnnemi].div = div
     buttonDoorDiv[div].appendChild(imEnnemi);
