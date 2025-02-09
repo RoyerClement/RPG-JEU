@@ -455,14 +455,14 @@ const stats = {
 };
 let money = 50
 const inventaire = {
-    LeftHand: ["torche"],
+    LeftHand: [],
     RightHand: [],
-    Chest: ["armureEnFer"],
-    Head: ["casqueEnCuir"],
+    Chest: [],
+    Head: [],
     Ring: [],
     Neck: [],
     Object: [],
-    Scroll: ["sortFeu", "sortFoudre", "sortArcane", "sortBlast"],
+    Scroll: [],
 };
 let maxCheck = false
 function update() {
@@ -719,62 +719,166 @@ TitreEtOr.appendChild(inventaireOr);
 inventaireDiv.appendChild(TitreEtOr)
 inventaireDiv.appendChild(divTitreInv);
 document.body.appendChild(inventaireDiv);
+// CREATION CLASSE DE DEPART 
 
-//CREATION SECTION ARME DE DEPART
-if (!depart) {
-    const armeDepartDiv = document.createElement("div");
-    armeDepartDiv.id = "armeDepart";
-    const armeTitle = document.createElement("p");
-    armeTitle.textContent = "Choisissez votre arme";
-    armeDepartDiv.appendChild(armeTitle);
-    const equipementSpan = document.createElement("span");
-    const equipementDepart = [
+let classPerso = ""
+console.log
+if (!classPerso) {
+    const classDepartDiv = document.createElement("div")
+    classDepartDiv.id = "classDiv"
+    const classTitle = document.createElement("p");
+    classTitle.textContent = "Choisissez votre classe de départ"
+    classDepartDiv.appendChild(classTitle)
+    const classSpan = document.createElement('span')
+    const classDepart = [
         {
-            id: "epeeDepart",
+            id : "magicien",
             class: "depart",
-            testId : "testEpeeDepart",
-            imgSrc: "image/epeeDepart.webp",
-            title: "Epee simple || inflige des dégats selon la force et la dexterité", 
+            testId : "testMagicien",
+            IMG : "image/magicien.webp"
         },
         {
-            id: "hacheDepart",
+            id : "voleur",
             class: "depart",
-            testId: "testHacheDepart",
-            imgSrc: "image/hacheDepart.webp",
-            title: "Hache simple || inflige des dégats selon la force",
+            testId : "testVoleur",
+            IMG : "image/voleur.webp"
         },
         {
-            id: "arcDepart",
+            id : "guerrier",
             class: "depart",
-            testId : "testArcDepart",
-            imgSrc: "image/arcDepart.webp",
-            title: "Arc simple || Inflige plus de dégats avec votre force et dexterité",
-        },
-        {
-            id: "batonDepart",
-            class: "depart",
-            testId : "testBatonDepart",
-            imgSrc: "image/batonDepart.webp",
-            title: "Baton simple || Inflige plus de dégats avec votre force et intelligence",
+            testId : "testGuerrier",
+            IMG : "image/guerrier.webp"
         },
     ];
-    equipementDepart.forEach((equipement) => {
-        const equipementDiv = document.createElement("div");
-        equipementDiv.id = equipement.id;
-        equipementDiv.className = equipement.class;
-        const equipementImg = document.createElement("img");
-        equipementImg.id = equipement.id
-        equipementImg.src = equipement.imgSrc;
-        equipementImg.setAttribute("data-testid", equipement.testId)
-        equipementImg.title = equipement.title;
-        equipementImg.width = 100;
-        equipementImg.height = 108;
-        equipementDiv.appendChild(equipementImg);
-        equipementSpan.appendChild(equipementDiv);
-    });
-    armeDepartDiv.appendChild(equipementSpan);
-    document.body.appendChild(armeDepartDiv);
-}
+    classDepart.forEach((value) => {
+                const classDiv = document.createElement("div");
+                classDiv.id = value.id;
+                classDiv.className = value.class;
+                const classImg = document.createElement("img");
+                classImg.id = value.id
+                classImg.src = value.IMG;
+                classImg.setAttribute("data-testid", value.testId)
+                classImg.width = 300;
+                classImg.height = 408;
+                classDiv.appendChild(classImg);
+                classSpan.appendChild(classDiv);
+            });
+            classDepartDiv.appendChild(classSpan);
+            document.body.appendChild(classDepartDiv);
+        }
+const classDiv = document.getElementById("classDiv")
+const mag = document.getElementById("magicien")
+mag.addEventListener("click", () => {
+    statPerso.Force = 0;
+    statPerso.Dexterite = 2;
+    statPerso.Intelligence = 4;
+    statPerso.Concentration = 2;
+    statPerso.Volonte = 3
+    statPerso.Vitalite = 1
+    update()
+    statPerso.HPactual = statPerso.HP
+    statPerso.MPactual = statPerso.MP
+    update()
+    classPerso = "magicien"
+    classDiv.style.display="none"
+})
+const vol = document.getElementById("voleur")
+vol.addEventListener("click", () => {
+    statPerso.Force = 2;
+    statPerso.Dexterite = 4;
+    statPerso.Intelligence = 0;
+    statPerso.Concentration = 2;
+    statPerso.Volonte = 2
+    statPerso.Vitalite = 2
+    update()
+    statPerso.HPactual = statPerso.HP
+    statPerso.MPactual = statPerso.MP
+    update()
+    classPerso = "voleur"
+    classDiv.style.display="none"
+})
+const guer = document.getElementById("guerrier")
+guer.addEventListener("click", () => {
+    statPerso.Force = 5;
+    statPerso.Dexterite = 2;
+    statPerso.Intelligence = 0;
+    statPerso.Concentration = 1;
+    statPerso.Volonte = 0
+    statPerso.Vitalite = 4
+    update()
+    statPerso.HPactual = statPerso.HP
+    statPerso.MPactual = statPerso.MP
+    update()
+    classPerso = "guerrier"
+    classDiv.style.display="none"
+})
+//CREATION SECTION ARME DE DEPART
+// if (!depart) {
+//     const armeDepartDiv = document.createElement("div");
+//     armeDepartDiv.id = "armeDepart";
+//     const armeTitle = document.createElement("p");
+//     armeTitle.textContent = "Choisissez votre arme";
+//     armeDepartDiv.appendChild(armeTitle);
+//     const equipementSpan = document.createElement("span");
+//     const equipementDepart = [
+//         {
+//             id: "epeeDepart",
+//             class: "depart",
+//             testId : "testEpeeDepart",
+//             imgSrc: "image/epeeDepart.webp",
+//             title: "Epee simple || inflige des dégats selon la force et la dexterité", 
+//         },
+//         {
+//             id: "hacheDepart",
+//             class: "depart",
+//             testId: "testHacheDepart",
+//             imgSrc: "image/hacheDepart.webp",
+//             title: "Hache simple || inflige des dégats selon la force",
+//         },
+//         {
+//             id: "arcDepart",
+//             class: "depart",
+//             testId : "testArcDepart",
+//             imgSrc: "image/arcDepart.webp",
+//             title: "Arc simple || Inflige plus de dégats avec votre force et dexterité",
+//         },
+//         {
+//             id: "batonDepart",
+//             class: "depart",
+//             testId : "testBatonDepart",
+//             imgSrc: "image/batonDepart.webp",
+//             title: "Baton simple || Inflige plus de dégats avec votre force et intelligence",
+//         },
+//     ];
+//     equipementDepart.forEach((equipement) => {
+//         const equipementDiv = document.createElement("div");
+//         equipementDiv.id = equipement.id;
+//         equipementDiv.className = equipement.class;
+//         const equipementImg = document.createElement("img");
+//         equipementImg.id = equipement.id
+//         equipementImg.src = equipement.imgSrc;
+//         equipementImg.setAttribute("data-testid", equipement.testId)
+//         equipementImg.title = equipement.title;
+//         equipementImg.width = 100;
+//         equipementImg.height = 108;
+//         equipementDiv.appendChild(equipementImg);
+//         equipementSpan.appendChild(equipementDiv);
+//     });
+//     armeDepartDiv.appendChild(equipementSpan);
+//     document.body.appendChild(armeDepartDiv);
+// }
+// elements.epeeDepart.addEventListener("click", () =>
+//     takeWeapon("epeeDepart", "LeftHand", "depart"),
+// );
+// elements.hacheDepart.addEventListener("click", () =>
+//     takeWeapon("hacheDepart", "LeftHand", "depart"),
+// );
+// elements.arcDepart.addEventListener("click", () =>
+//     takeWeapon("arcDepart", "LeftHand", "depart"),
+// );
+// elements.batonDepart.addEventListener("click", () =>
+//     takeWeapon("batonDepart", "LeftHand", "depart"),
+// );
 //CREATION BOUTON FERMER INVENTAIRE
 const fermerButton = document.createElement("button");
 fermerButton.id = "FermerInv";
@@ -849,10 +953,10 @@ function whatObject(value, key, valueImage) {
 }
 // FONCTION DE GESTION DES ARMES
 function takeWeapon(name, type, genre) {
-    if (genre === "depart") {
-        depart = true;
-        suppDepart();
-    }
+    // if (genre === "depart") {
+    //     depart = true;
+    //     suppDepart();
+    // }
     // En premier c'est pour retirer une arme des mains.
     // si l'arme n'est pas dans l'inventaire & est dans main gauche ou main droite
     if (
@@ -935,6 +1039,11 @@ function suppDepart() {
         elements.depart.forEach((element) => element.remove());
     }
 }
+function suppClassDepart() {
+    if (classPerso !== "") {
+        classDiv.remove();
+    }
+}
 function takeObject(name, type, baseType) {
     //Utilisation objet : suppression objet et ajout de l'effet
     if (type === "Object") {
@@ -1002,19 +1111,6 @@ function takeObject(name, type, baseType) {
     VisualRender();
 }
 
-// AJOUT EVENTLISTENER
-elements.epeeDepart.addEventListener("click", () =>
-    takeWeapon("epeeDepart", "LeftHand", "depart"),
-);
-elements.hacheDepart.addEventListener("click", () =>
-    takeWeapon("hacheDepart", "LeftHand", "depart"),
-);
-elements.arcDepart.addEventListener("click", () =>
-    takeWeapon("arcDepart", "LeftHand", "depart"),
-);
-elements.batonDepart.addEventListener("click", () =>
-    takeWeapon("batonDepart", "LeftHand", "depart"),
-);
 elements.FermerInv.addEventListener("click", () => FermerInv());
 let roomIAm = "";
 let room = {
@@ -1074,6 +1170,7 @@ async function FermerInv() {
         marketMemory,
         itemList,
         money,
+        classPerso,
     };
     const res = await fetch("http://localhost:8000/all-data", {
         method: "PUT",
@@ -1136,6 +1233,8 @@ function replaceStat() {
     backCheck = recData.donjonpath.backCheck;
     message = recData.donjonpath.message;
     money = recData.donjonpath.dataStat.DonneeStatPerso.money
+    classPerso = recData.donjonpath.dataStat.DonneeStatPerso.classPerso
+    suppClassDepart()
     suppDepart();
     btnStat();
     update();

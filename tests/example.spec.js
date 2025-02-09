@@ -71,7 +71,6 @@ test("trouver marchand", async ({ page }) => {
     //CLIQUEZ SUR LA PREMIERE PORTE
     await closedDoor.click();
     const openDoor = await page.getByTestId("porteOuvertA");
-    const openDoorB = await page.getByTestId("porteOuvertB");
     //VOIR LA PREMIERE PORTE OUVERTE
     await expect (openDoor).toBeVisible()
     //CLIQUEZ SUR LA PORTE OUVERTE
@@ -80,8 +79,8 @@ test("trouver marchand", async ({ page }) => {
     await expect (page.getByText(/Revenir en arrière/)).toBeVisible 
     const porteA = await page.getByTestId('porteFermeA')
     const checkMarchand = await page.getByTestId("testCheckMarchand")
-    await checkMarchand.click()
-    await porteA.click ();
+    await checkMarchand.click();
+    await porteA.click ({force: true});
     await openDoor.click();
     const marchand = await page.getByTestId("petitMarchand")
     await expect (marchand).toBeVisible
@@ -94,6 +93,7 @@ test("trouver marchand", async ({ page }) => {
     await btnBack.click ();
     const porteB = await page.getByTestId('porteFermeB')
     await porteB.click()
+
     // const checkNoMarchand = await page.getByTestId("testCheckNoMarchand")
     // await checkNoMarchand.click()
     // await expect (page.getByTestId("moyenMarchand")).toBeVisible
@@ -365,6 +365,41 @@ test("modification HP/MP en fonction des stats", async({page}) => {
     await page.waitForURL("http://localhost:3000/index.html");
     await sleep(2000)
 })
+
+test ("defense/armure" , async ({page}) => {
+    await page.goto("localhost:3000/index.html")
+    const closeInv = await page.getByTestId("closeInv");
+    await closeInv.click(); 
+    await page.waitForURL("http://localhost:3000/Donjon.html");
+    const getStuff = await page.getByTestId("testGetStuff")
+    await getStuff.click();
+    const openInv = await page.getByTestId("testOpInv")
+    await openInv.click()
+    await page.waitForURL("http://localhost:3000/index.html");
+    const armureEnCuir = await page.getByTestId("testArmureEnCuir")
+    const chest = await page.getByTestId("testChest")
+    const head = await page.getByTestId("testCasqueEnCuir")
+    await expect (chest).toBeVisible
+    await expect (head).toBeVisible
+    await expect (armureEnCuir).toBeVisible
+    await expect (page.getByText(/Défense : 0/)).toBeVisible
+    await armureEnCuir.click();
+    await expect (chest).not.toBeVisible
+    await expect (armureEnCuir).toBeVisible;
+    await expect (head).toBeVisible
+    await expect (page.getByText(/Défense : 10/)).toBeVisible
+    const casqueEnCuir = await page.getByTestId("testCasqueEnCuir");
+    await casqueEnCuir.click();
+    await expect (chest).not.toBeVisible
+    await expect (head).not.toBeVisible
+    await expect (page.getByText(/Défense : 20/)).toBeVisible;
+    await closeInv.click()
+    await page.waitForURL("http://localhost:3000/Donjon.html");
+    const reset = await page.getByTestId("testReset")
+    await reset.click()
+    await page.waitForURL("http://localhost:3000/index.html");
+})
+
 test ("arme à deux mains", async ({page}) => {
     await page.goto("localhost:3000/index.html")
     const closeInv = await page.getByTestId("closeInv");
@@ -390,42 +425,6 @@ test ("arme à deux mains", async ({page}) => {
     await espadon.click()
     await expect (page.getByText(/Arme gauche : 13/)).toBeVisible 
     await expect (page.getByText(/Arme droite : 13/)).toBeVisible 
-    await closeInv.click()
-    await page.waitForURL("http://localhost:3000/Donjon.html");
-    const reset = await page.getByTestId("testReset")
-    await reset.click()
-    await page.waitForURL("http://localhost:3000/index.html");
-    await sleep(2000)
-})
-test ("defense/armure" , async ({page}) => {
-    await page.goto("localhost:3000/index.html")
-    const closeInv = await page.getByTestId("closeInv");
-    await closeInv.click(); 
-    await page.waitForURL("http://localhost:3000/Donjon.html");
-    const getStuff = await page.getByTestId("testGetStuff")
-    await getStuff.click();
-    const openInv = await page.getByTestId("testOpInv")
-    await openInv.click()
-    await page.waitForURL("http://localhost:3000/index.html");
-    const armureEnCuir = await page.getByTestId("testArmureEnCuir")
-    const chest = await page.getByTestId("testChest")
-    const casqueEnCuir = await page.getByTestId("testCasqueEnCuir")
-    const head = await page.getByTestId("testCasqueEnCuir")
-    await expect (chest).toBeVisible
-    await expect (head).toBeVisible
-    await expect (armureEnCuir).toBeVisible
-    await expect (page.getByText(/Défense : 0/))
-    await armureEnCuir.click()
-    await expect (chest).not.toBeVisible
-    await expect (armureEnCuir).toBeVisible
-    await expect (head).toBeVisible
-    await expect (page.getByText(/Défense : 10/))
-    await casqueEnCuir.click()
-    await expect (chest).not.toBeVisible
-    await expect (head).not.toBeVisible
-    await expect (armureEnCuir).toBeVisible
-    await expect (casqueEnCuir).toBeVisible
-    await expect (page.getByText(/Défense : 20/))
     await closeInv.click()
     await page.waitForURL("http://localhost:3000/Donjon.html");
     const reset = await page.getByTestId("testReset")

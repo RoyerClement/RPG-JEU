@@ -92,6 +92,19 @@ const room = {
         },
     },
 };
+let money = 0
+let classPerso = ""
+const persoClass = {
+    magicien : {
+        IMG : "image/magicien.webp"
+    },
+    voleur : {
+        IMG : "image/voleur.webp"
+    },
+    guerrier : {
+        IMG : "image/guerrier.webp"
+    }
+}
 const marketMemory = { start: [], };
 let itemList = [];
 let dataStat = {
@@ -1065,6 +1078,18 @@ function gameOver() {
         end = true
     }
 }
+function imgPerso (classPerso) {
+const perso = document.createElement('img')
+const persoDiv = document.getElementById("perso")
+perso.src = persoClass[classPerso].IMG
+perso.width = 370
+perso.height = 400
+perso.id = classPerso
+persoDiv.appendChild(perso)
+document.body.appendChild(persoDiv)
+}
+
+
 function genererChiffre(base, variation) {
     let randomVariation = (Math.random() * (2 * variation)) - variation;
     let resultat = base + randomVariation;
@@ -1635,6 +1660,8 @@ document.addEventListener("mousemove", (e) => {
     flashlight.style.top = `${e.clientY}px`;}
     else {return}
 });
+
+
 function updateRenderFight(type, nomEnnemi, div, ImEnn) {
     const imEnnemi = document.createElement("img");
     imEnnemi.src = ennemi[type].IMG;
@@ -1737,6 +1764,7 @@ function replaceStat() {
     message = dataStat.DonneeStatPerso.message;
     itemList = dataStat.DonneeStatPerso.itemList
     money = dataStat.DonneeStatPerso.money
+    classPerso = dataStat.DonneeStatPerso.classPerso
     Object.entries(dataStat.DonneeStatPerso.marketMemory).forEach(
         ([key, value]) => {
             marketMemory[key] = value;
@@ -1745,6 +1773,7 @@ function replaceStat() {
     backCheckFn();
     boiteDialogue("recDonnee");
     updateRenderBack(roomIAm);
+    imgPerso(classPerso)
     update()
 }
 imDoor.reset.addEventListener("click", () => fnReset())
@@ -1811,8 +1840,6 @@ const reset = {
 const opInventaire = document.getElementById("Inventaire");
 opInventaire.addEventListener("click", () => savePath());
 
-let money = 0
-
 async function savePath() {
     const donjonpath = {
         room,
@@ -1823,6 +1850,7 @@ async function savePath() {
         marketMemory,
         itemList,
         money,
+        classPerso
     };
     const res = await fetch("http://localhost:8000/all-data", {
         method: "PUT",
