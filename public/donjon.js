@@ -257,7 +257,7 @@ let skillInUse = ""
 let spellInUse = "" 
 let skills = {
     skillAll : {
-        effect: () => dataStat.DonneeStatPerso.mainGauche+dataStat.DonneeStatPerso.mainDroite,
+        effect: () => dataStat.DonneeStatPerso.stats[designationPerso].LeftHand+dataStat.DonneeStatPerso.stats[designationPerso].LeftHand,
         manaCost: 5,
         variation: 5,
         target:"all",
@@ -272,7 +272,7 @@ let skills = {
         
     },
     skillDouble: {
-        effect: () => (dataStat.DonneeStatPerso.mainGauche+dataStat.DonneeStatPerso.mainDroite)*2,
+        effect: () => (dataStat.DonneeStatPerso.stats[designationPerso].LeftHand+dataStat.DonneeStatPerso.stats[designationPerso].LeftHand)*2,
         manaCost: 5,
         variation: 5,
         target:"solo",
@@ -781,7 +781,7 @@ btnAllATQ.addEventListener('click', () => {
 
 const btnGetStuff = document.getElementById('getStuff')
 btnGetStuff.addEventListener('click', () => {
-    dataStat.DonneeStatPerso.inventaire.LeftHand = ["espadon", "dague", "batonDepart", "arcDepart", "epeeDepart", "hacheDepart", "orcHache", "gobArc"]
+    dataStat.DonneeStatPerso.inventaire.LeftHand = ["torche","espadon", "dague", "batonDepart", "arcDepart", "epeeDepart", "hacheDepart", "orcHache", "gobArc"]
     dataStat.DonneeStatPerso.inventaire.Chest = ["armureEnFer", "armureEnCuir"]
     dataStat.DonneeStatPerso.inventaire.Head = ["casqueEnCuir"]
 })
@@ -1780,8 +1780,13 @@ function darknessOpacity() {
     } 
         const splitRoom = roomIAm.split("");
         let numberEnn = (splitRoom.length/20)
-        if (dataStat.DonneeStatPerso.equipement.LeftHand === "torche" || 
-            dataStat.DonneeStatPerso.equipement.RightHand === "torche"){
+        if (dataStat.DonneeStatPerso.equipement.perso1.LeftHand === "torche" || 
+            dataStat.DonneeStatPerso.equipement.perso1.RightHand === "torche" ||
+            dataStat.DonneeStatPerso.equipement.perso2.LeftHand === "torche" || 
+            dataStat.DonneeStatPerso.equipement.perso2.RightHand === "torche" ||
+            dataStat.DonneeStatPerso.equipement.perso3.LeftHand === "torche" || 
+            dataStat.DonneeStatPerso.equipement.perso3.RightHand === "torche")
+        {
                 overlay.style.display="none"
                 flashlight.style.display="block"
                 flashlight.style.background = `radial-gradient(circle, rgba(255, 181, 22, ${numberEnn}) 400px, rgba(0, 0, 0, ${numberEnn}) 650px)`
@@ -2314,6 +2319,9 @@ infoDiv.appendChild(pointsSpan);
 document.body.appendChild(infoDiv);
 
 function update() {
+    console.log(dataStat.DonneeStatPerso.statPerso.perso1.nom)
+    console.log(dataStat.DonneeStatPerso.statPerso[designationPerso].nom)
+    console.log(designationPerso)
     document.getElementById("nomDuPerso").textContent = `${dataStat.DonneeStatPerso.statPerso[designationPerso].nom}`
     document.getElementById("defense").textContent = `Défense : ${dataStat.DonneeStatPerso.stats[designationPerso].Def}`;
     document.getElementById("degatsArmeG").textContent =

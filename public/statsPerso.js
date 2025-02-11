@@ -155,7 +155,10 @@ const arme = {
         IMG: "image/dague.webp",
     },
     torche: {
-        degats: 10,
+        degatsBase : 8,
+        degatsForce: 0,
+        degatsDexterite : 0,
+        degatsIntelligence: 0,
         IMG: "image/torche.webp",
     },
     orcHache: {
@@ -664,7 +667,7 @@ function addStat(stat) {
         if (statPerso[designationPerso].Point === 0) {
             const btn = document.querySelectorAll(".btnStat");
             btn.forEach((element) => {
-                element.style.display = "none";
+                element.style.visibility = "hidden";
                 btnCheck = true;
             });
         }
