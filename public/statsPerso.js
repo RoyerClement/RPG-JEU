@@ -1,18 +1,69 @@
+let compteurPerso = 1
+let designationPerso = "perso"+compteurPerso
+const triggerDesignation = () => {
+    designationPerso = "perso" + compteurPerso
+
+}
+
+let nombreDePerso = 1
 const statPerso = {
-    Force: 0,
-    Dexterite: 0,
-    Vitalite: 0,
-    Volonte: 0,
-    Concentration: 0,
-    Intelligence: 0,
-    Point: 10,
-    HP:50,
-    HPactual: 50,
-    MP: 50,
-    MPactual: 50,
-    XP: 0,
-    LVL: 1,
-    spells: []
+    perso1 : 
+        {   
+            nom: "",
+            class: "",
+            Force: 0,
+            Dexterite: 0,
+            Vitalite: 0,
+            Volonte: 0,
+            Concentration: 0,
+            Intelligence: 0,
+            Point: 1,
+            HP:50,
+            HPactual: 50,
+            MP: 50,
+            MPactual: 50,
+            XP: 0,
+            LVL: 1,
+            spells: []
+        },
+        perso2 : 
+        {   
+            nom:"",
+            class: "",
+            Force: 0,
+            Dexterite: 0,
+            Vitalite: 0,
+            Volonte: 0,
+            Concentration: 0,
+            Intelligence: 0,
+            Point: 1,
+            HP:50,
+            HPactual: 50,
+            MP: 50,
+            MPactual: 50,
+            XP: 0,
+            LVL: 1,
+            spells: []
+        },
+        perso3 : 
+        {   
+            nom: "",
+            class: "",
+            Force: 0,
+            Dexterite: 0,
+            Vitalite: 0,
+            Volonte: 0,
+            Concentration: 0,
+            Intelligence: 0,
+            Point: 1,
+            HP:50,
+            HPactual: 50,
+            MP: 50,
+            MPactual: 50,
+            XP: 0,
+            LVL: 1,
+            spells: []
+        },
 };
 
 let skills = {
@@ -26,7 +77,7 @@ let skills = {
                     valeur -= randomAttaque
                 }
             }))
-            dataStat.DonneeStatPerso.statPerso.MPactual -= 20
+            dataStat.DonneeStatPerso.statPerso[designationPerso].MPactual -= 20
         },
         state: false,
         IMG: "image/allATQ.webp"
@@ -35,7 +86,7 @@ let skills = {
         effect : () => { 
             genererChiffre((dataStat.DonneeStatPerso.mainGauche +
             dataStat.DonneeStatPerso.mainDroite)*2, 10)
-            dataStat.DonneeStatPerso.statPerso.MPactual -= 10
+            dataStat.DonneeStatPerso.statPerso[designationPerso].MPactual -= 10
         },
         state: false,
         IMG : "image/doubleATQ.webp"
@@ -47,36 +98,36 @@ let skills = {
 
 const arme = {
     mainGauche: {
-        degats: () => 1 + 1 * statPerso.Dexterite,
+        degats: () => 1 + 1 * statPerso[designationPerso].Dexterite,
         IMG: "image/mainGauche.webp",
     },
     mainDroite: {
-        degats: () => 1 + 1 * statPerso.Force,
+        degats: () => 1 + 1 * statPerso[designationPerso].Force,
         IMG: "image/mainDroite.webp",
     },
     epeeDepart: {
-        degats: () => 900 + (3 * statPerso.Force + 2 * statPerso.Dexterite),
+        degats: () => 900 + (3 * statPerso[designationPerso].Force + 2 * statPerso[designationPerso].Dexterite),
         IMG: "image/epeeDepart.webp",
     },
     hacheDepart: {
-        degats: () => 5 + 4 * statPerso.Force,
+        degats: () => 5 + 4 * statPerso[designationPerso].Force,
         IMG: "image/hacheDepart.webp",
     },
     arcDepart: {
-        degats: () => 7 + 1 * statPerso.Force + 2 * statPerso.Dexterite,
+        degats: () => 7 + 1 * statPerso[designationPerso].Force + 2 * statPerso[designationPerso].Dexterite,
         IMG: "image/arcDepart.webp",
     },
     batonDepart: {
-        degats: () => 7 + 1 * statPerso.Force + 2 * statPerso.Intelligence,
+        degats: () => 7 + 1 * statPerso[designationPerso].Force + 2 * statPerso[designationPerso].Intelligence,
         IMG: "image/batonDepart.webp",
     },
     espadon: {
-        degats: () => 13 + (2 * statPerso.Force + 2 * statPerso.Dexterite),
+        degats: () => 13 + (2 * statPerso[designationPerso].Force + 2 * statPerso[designationPerso].Dexterite),
         IMG: "image/espadon.webp",
         twoHand: true,
     },
     dague: {
-        degats: () => 3 + 3 * statPerso.Dexterite,
+        degats: () => 3 + 3 * statPerso[designationPerso].Dexterite,
         IMG: "image/dague.webp",
     },
     torche: {
@@ -84,21 +135,21 @@ const arme = {
         IMG: "image/torche.webp",
     },
     orcHache: {
-        degats: () => 15 + (statPerso.Force * 3),
+        degats: () => 15 + (statPerso[designationPerso].Force * 3),
         IMG: "image/orcHache.webp",
         class: "image",
         test: "testOrcHache",
         title: "Une Hache fraichement trouvé sur un cadavre d'orc"
     },
     gobArc: {
-        degats: () => 10 + 3 * statPerso.Dexterite,
+        degats: () => 10 + 3 * statPerso[designationPerso].Dexterite,
         IMG: "image/gobArc.webp",
         class: "image",
         test: "testGobArc",
         title: "Un arc qui nécessite une bonne dextérité !"
     },
     orcEpee: {
-        degats: () => 15 + 2 * statPerso.Force + 1 * statPerso.Dexterite,
+        degats: () => 15 + 2 * statPerso[designationPerso].Force + 1 * statPerso[designationPerso].Dexterite,
         IMG: "image/orcEpee.webp",
         class: "image",
         test: "testOrcEpee",
@@ -108,21 +159,21 @@ const arme = {
 const gear = {
     LeftHand: {
         mainGauche: {
-            degats: () => 1 + 1 * statPerso.Force,
+            degats: () => 1 + 1 * statPerso[designationPerso].Force,
             IMG: "image/mainGauche.webp",
             class: "depart",
             test: "testMainGauche",
             title: "votre main gauche",
         },
         mainDroite: {
-            degats: () => 1 + 1 * statPerso.Dexterite,
+            degats: () => 1 + 1 * statPerso[designationPerso].Dexterite,
             IMG: "image/mainDroite.webp",
             class: "depart",
             test: "testMainDroite",
             title :"votre main droite",
         },
         espadon: {
-            degats: () => 3 + (3 * statPerso.Force + 2 * statPerso.Dexterite),
+            degats: () => 3 + (3 * statPerso[designationPerso].Force + 2 * statPerso[designationPerso].Dexterite),
             IMG: "image/espadon.webp",
             class: "image",
             test: "testEspadon",
@@ -130,35 +181,35 @@ const gear = {
             twoHand: true,
         },
         dague: {
-            degats: () => 3 + 3 * statPerso.Dexterite,
+            degats: () => 3 + 3 * statPerso[designationPerso].Dexterite,
             IMG: "image/dague.webp",
             class: "image",
             test: "testDague",
             title : "une dague en bon état"
         },
         epeeDepart: {
-            degats: () => 900 + (2 * statPerso.Force + 1 * statPerso.Dexterite),
+            degats: () => 900 + (2 * statPerso[designationPerso].Force + 1 * statPerso[designationPerso].Dexterite),
             IMG: "image/epeeDepart.webp",
             class: "depart",
             test: "testEpeeDepart",
             title: "une épée de mauvaise qualité"
         },
         hacheDepart: {
-            degats: () => 5 + 3 * statPerso.Force,
+            degats: () => 5 + 3 * statPerso[designationPerso].Force,
             IMG: "image/hacheDepart.webp",
             class: "depart",
             test: "testHacheDepart",
             title: "une hache emoussée"
         },
         arcDepart: {
-            degats: () => 4 + 1 * statPerso.Force + 2 * statPerso.Dexterite,
+            degats: () => 4 + 1 * statPerso[designationPerso].Force + 2 * statPerso[designationPerso].Dexterite,
             IMG: "image/arcDepart.webp",
             class: "depart",
             test: "testArcDepart",
             title: "un arc rudimentaire"
         },
         batonDepart: {
-            degats: () => 7 + 1 * statPerso.Force + 2 * statPerso.Intelligence,
+            degats: () => 7 + 1 * statPerso[designationPerso].Force + 2 * statPerso[designationPerso].Intelligence,
             IMG: "image/batonDepart.webp",
             class: "depart",
             test: "testBatonDepart",
@@ -172,21 +223,21 @@ const gear = {
             title: "une torche",
         },
         orcHache: {
-            degats: () => 15 + (statPerso.Force * 3),
+            degats: () => 15 + (statPerso[designationPerso].Force * 3),
             IMG: "image/orcHache.webp",
             class: "image",
             test: "testOrcHache",
             title: "Une Hache fraichement trouvé sur un cadavre d'orc"
         },
         gobArc: {
-            degats: () => 10 + 3 * statPerso.Dexterite,
+            degats: () => 10 + 3 * statPerso[designationPerso].Dexterite,
             IMG: "image/gobArc.webp",
             class: "image",
             test: "testGobArc",
             title: "Un arc qui nécessite une bonne dextérité !"
         },
         orcEpee: {
-            degats: () => 15 + 2 * statPerso.Force + 1 * statPerso.Dexterite,
+            degats: () => 15 + 2 * statPerso[designationPerso].Force + 1 * statPerso[designationPerso].Dexterite,
             IMG: "image/orcEpee.webp",
             class: "image",
             test: "testOrcEpee",
@@ -195,21 +246,21 @@ const gear = {
     },
     RightHand: {
         mainGauche: {
-            degats: () => 1 + 1 * statPerso.Force,
+            degats: () => 1 + 1 * statPerso[designationPerso].Force,
             IMG: "image/mainGauche.webp",
             class: "depart",
             test: "testMainGauche",
             title: "votre main gauche",
         },
         mainDroite: {
-            degats: () => 1 + 1 * statPerso.Dexterite,
+            degats: () => 1 + 1 * statPerso[designationPerso].Dexterite,
             IMG: "image/mainDroite.webp",
             class: "depart",
             test: "testMainDroite",
             title :"votre main droite",
         },
         espadon: {
-            degats: () => 3 + (3 * statPerso.Force + 2 * statPerso.Dexterite),
+            degats: () => 3 + (3 * statPerso[designationPerso].Force + 2 * statPerso[designationPerso].Dexterite),
             IMG: "image/espadon.webp",
             class: "image",
             test: "testEspadon",
@@ -217,35 +268,35 @@ const gear = {
             twoHand: true,
         },
         dague: {
-            degats: () => 3 + 3 * statPerso.Dexterite,
+            degats: () => 3 + 3 * statPerso[designationPerso].Dexterite,
             IMG: "image/dague.webp",
             class: "image",
             test: "testDague",
             title : "une dague en bon état"
         },
         epeeDepart: {
-            degats: () => 4 + (2 * statPerso.Force + 1 * statPerso.Dexterite),
+            degats: () => 4 + (2 * statPerso[designationPerso].Force + 1 * statPerso[designationPerso].Dexterite),
             IMG: "image/epeeDepart.webp",
             class: "depart",
             test: "testEpeeDepart",
             title: "une épée de mauvaise qualité"
         },
         hacheDepart: {
-            degats: () => 5 + 3 * statPerso.Force,
+            degats: () => 5 + 3 * statPerso[designationPerso].Force,
             IMG: "image/hacheDepart.webp",
             class: "depart",
             test: "testHacheDepart",
             title: "une hache emoussée"
         },
         arcDepart: {
-            degats: () => 4 + 1 * statPerso.Force + 2 * statPerso.Dexterite,
+            degats: () => 4 + 1 * statPerso[designationPerso].Force + 2 * statPerso[designationPerso].Dexterite,
             IMG: "image/arcDepart.webp",
             class: "depart",
             test: "testArcDepart",
             title: "un arc rudimentaire"
         },
         batonDepart: {
-            degats: () => 7 + 1 * statPerso.Force + 2 * statPerso.Intelligence,
+            degats: () => 7 + 1 * statPerso[designationPerso].Force + 2 * statPerso[designationPerso].Intelligence,
             IMG: "image/batonDepart.webp",
             class: "depart",
             test: "testBatonDepart",
@@ -260,21 +311,21 @@ const gear = {
             nombre: 0
         },
         orcHache: {
-            degats: () => 15 + (statPerso.Force * 3),
+            degats: () => 15 + (statPerso[designationPerso].Force * 3),
             IMG: "image/orcHache.webp",
             class: "image",
             test: "testOrcHache",
             title: "Une Hache fraichement trouvé sur un cadavre d'orc"
         },
         gobArc: {
-            degats: () => 10 + 3 * statPerso.Dexterite,
+            degats: () => 10 + 3 * statPerso[designationPerso].Dexterite,
             IMG: "image/gobArc.webp",
             class: "image",
             test: "testGobArc",
             title: "Un arc qui nécessite une bonne dextérité !"
         },
         orcEpee: {
-            degats: () => 15 + 2 * statPerso.Force + 1 * statPerso.Dexterite,
+            degats: () => 15 + 2 * statPerso[designationPerso].Force + 1 * statPerso[designationPerso].Dexterite,
             IMG: "image/orcEpee.webp",
             class: "image",
             test: "testOrcEpee",
@@ -348,13 +399,13 @@ const gear = {
     Object: {
         potionVie: {
             effect: () => {
-                if (statPerso.HPactual === statPerso.HP) { 
+                if (statPerso[designationPerso].HPactual === statPerso[designationPerso].HP) { 
                     alert('HP déjà au maximum')
                     maxCheck = true
                 } else {
-                    statPerso.HPactual += 50 
-                    if (statPerso.HPactual > statPerso.HP) {
-                        statPerso.HPactual = statPerso.HP
+                    statPerso[designationPerso].HPactual += 50 
+                    if (statPerso[designationPerso].HPactual > statPerso[designationPerso].HP) {
+                        statPerso[designationPerso].HPactual = statPerso[designationPerso].HP
                     }
                 }
             },
@@ -364,13 +415,13 @@ const gear = {
         },
         potionMana: {
             effect: () => {
-                if (statPerso.MPactual === statPerso.MP) { 
+                if (statPerso[designationPerso].MPactual === statPerso[designationPerso].MP) { 
                     alert("MP déjà au maximum")
                     maxCheck = true
                 } else {
-                    statPerso.MPactual += 50 
-                    if (statPerso.MPactual > statPerso.MP) {
-                        statPerso.MPactual = statPerso.MP
+                    statPerso[designationPerso].MPactual += 50 
+                    if (statPerso[designationPerso].MPactual > statPerso[designationPerso].MP) {
+                        statPerso[designationPerso].MPactual = statPerso[designationPerso].MP
                     }
                 }
             },
@@ -380,13 +431,13 @@ const gear = {
         },
         pain: {
             effect: () => {
-                    statPerso.HPactual += 25 
-                    if (statPerso.HPactual > statPerso.HP) {
-                        statPerso.HPactual = statPerso.HP
+                    statPerso[designationPerso].HPactual += 25 
+                    if (statPerso[designationPerso].HPactual > statPerso[designationPerso].HP) {
+                        statPerso[designationPerso].HPactual = statPerso[designationPerso].HP
                     }
-                    statPerso.MPactual += 25 
-                    if (statPerso.MPactual > statPerso.MP) {
-                        statPerso.MPactual = statPerso.MP
+                    statPerso[designationPerso].MPactual += 25 
+                    if (statPerso[designationPerso].MPactual > statPerso[designationPerso].MP) {
+                        statPerso[designationPerso].MPactual = statPerso[designationPerso].MP
                     }
             },
             IMG: "image/pain.webp",
@@ -396,7 +447,7 @@ const gear = {
     },
     Scroll: {
         sortFoudre : {
-            effect: () => {statPerso.spells.push("sortFoudre")},
+            effect: () => {statPerso[designationPerso].spells.push("sortFoudre")},
             IMG: "image/parchemin.webp",
             title: "Lisez ce parchemin pour apprendre un sort",
         },
@@ -406,50 +457,70 @@ const gear = {
             title: "Lisez ce parchemin pour apprendre un sort",
         },
         sortFeu : {
-            effect: () => {statPerso.spells.push("sortFeu")},
+            effect: () => {statPerso[designationPerso].spells.push("sortFeu")},
             IMG: "image/parchemin.webp",
             title: "Lisez ce parchemin pour apprendre un sort",
         },
         sortArcane : {
-            effect: () => {statPerso.spells.push("sortArcane")},
+            effect: () => {statPerso[designationPerso].spells.push("sortArcane")},
             IMG: "image/parchemin.webp",
             title: "Lisez ce parchemin pour apprendre un sort",
         },
         sortBlast : {
-            effect: () => {statPerso.spells.push("sortBlast")},
+            effect: () => {statPerso[designationPerso].spells.push("sortBlast")},
             IMG: "image/parchemin.webp",
             title: "Lisez ce parchemin pour apprendre un sort",
         },
     }
 };
-console.log("apres scroll", statPerso.spells)
 const Buff = {
-    anneauForce: () => (statPerso.Force += 5),
-    anneauDexterite: () => (statPerso.Dexterite += 5),
+    anneauForce: () => (statPerso[designationPerso].Force += 5),
+    anneauDexterite: () => (statPerso[designationPerso].Dexterite += 5),
 };
 const Debuff = {
-    anneauForce: () => (statPerso.Force -= 5),
-    anneauDexterite: () => (statPerso.Dexterite -= 5),
+    anneauForce: () => (statPerso[designationPerso].Force -= 5),
+    anneauDexterite: () => (statPerso[designationPerso].Dexterite -= 5),
 };
 const equipement = {
-    LeftHand: "mainGauche",
-    RightHand: "mainDroite",
-    Chest: "Chest",
-    Head: "Head",
-    Ring: "Ring",
-    Neck: "Neck",
+    perso1 : 
+    {
+        LeftHand: "mainGauche",
+        RightHand: "mainDroite",
+        Chest: "Chest",
+        Head: "Head",
+        Ring: "Ring",
+        Neck: "Neck",
+    },
+    perso2 : 
+    {
+        LeftHand: "mainGauche",
+        RightHand: "mainDroite",
+        Chest: "Chest",
+        Head: "Head",
+        Ring: "Ring",
+        Neck: "Neck",
+    },
+    perso3 : 
+    {
+        LeftHand: "mainGauche",
+        RightHand: "mainDroite",
+        Chest: "Chest",
+        Head: "Head",
+        Ring: "Ring",
+        Neck: "Neck",
+    },
 };
 
 const stats = {
     get LeftHand() {
-        return arme[equipement.LeftHand].degats(); // Appelle la fonction de calcul dynamique
+        return arme[equipement[designationPerso].LeftHand].degats(); // Appelle la fonction de calcul dynamique
     },
     get RightHand() {
-        return arme[equipement.RightHand].degats(); // Appelle la fonction de calcul dynamique
+        return arme[equipement[designationPerso].RightHand].degats(); // Appelle la fonction de calcul dynamique
     },
     get Def() {
         return (
-            gear.Chest[equipement.Chest].def + gear.Head[equipement.Head].def
+            gear.Chest[equipement[designationPerso].Chest].def + gear.Head[equipement[designationPerso].Head].def
         );
     },
 };
@@ -466,50 +537,51 @@ const inventaire = {
 };
 let maxCheck = false
 function update() {
+    document.getElementById("namePerso").textContent = `${statPerso[designationPerso].nom}`
     document.getElementById("defense").textContent = `Défense : ${stats.Def}`;
     document.getElementById("degatsArmeG").textContent =
         `Arme gauche : ${stats.LeftHand}`;
     document.getElementById("degatsArmeD").textContent =
         `Arme droite : ${stats.RightHand}`;
     document.getElementById("statFor").textContent =
-        `Force : ${statPerso.Force}`;
+        `Force : ${statPerso[designationPerso].Force}`;
     document.getElementById("statDex").textContent =
-        `Dextérité : ${statPerso.Dexterite}`;
+        `Dextérité : ${statPerso[designationPerso].Dexterite}`;
     document.getElementById("statVit").textContent =
-        `Vitalité : ${statPerso.Vitalite}`;
+        `Vitalité : ${statPerso[designationPerso].Vitalite}`;
     document.getElementById("statConc").textContent =
-        `Lucidité : ${statPerso.Concentration}`;
+        `Lucidité : ${statPerso[designationPerso].Concentration}`;
     document.getElementById("statVol").textContent =
-        `Volonté : ${statPerso.Volonte}`;
+        `Volonté : ${statPerso[designationPerso].Volonte}`;
     document.getElementById("statInt").textContent =
-        `Intelligence : ${statPerso.Intelligence}`;
+        `Intelligence : ${statPerso[designationPerso].Intelligence}`;
     document.getElementById("point").textContent =
-        `Point(s) disponible(s) : ${statPerso.Point}`;
-    statPerso.HP = 50 + 25 * statPerso.Vitalite + 10 * statPerso.Force;
+        `Point(s) disponible(s) : ${statPerso[designationPerso].Point}`;
+    statPerso[designationPerso].HP = 50 + 25 * statPerso[designationPerso].Vitalite + 10 * statPerso[designationPerso].Force;
     document.getElementById("hp").textContent =
-        `Points de vie : ${statPerso.HPactual}/${statPerso.HP}`;
-    statPerso.MP = 50 + 25 * statPerso.Volonte + 10 * statPerso.Intelligence;
+        `Points de vie : ${statPerso[designationPerso].HPactual}/${statPerso[designationPerso].HP}`;
+    statPerso[designationPerso].MP = 50 + 25 * statPerso[designationPerso].Volonte + 10 * statPerso[designationPerso].Intelligence;
     document.getElementById("mp").textContent =
-        `Points de mana : ${statPerso.MPactual}/${statPerso.MP}`;
+        `Points de mana : ${statPerso[designationPerso].MPactual}/${statPerso[designationPerso].MP}`;
     document.getElementById("inventaireOr").textContent =
         `Or : ${money}`
     document.getElementById("experience").textContent =
-        `Expérience : ${statPerso.XP}`
+        `Expérience : ${statPerso[designationPerso].XP}`
     document.getElementById("level").textContent =
-        `Niveau : ${statPerso.LVL}`
+        `Niveau : ${statPerso[designationPerso].LVL}`
 }
 function addStat(stat) {
-    if (statPerso.Point >= 1) {
-        statPerso.Point--;
-        statPerso[stat]++;
+    if (statPerso[designationPerso].Point >= 1) {
+        statPerso[designationPerso].Point--;
+        statPerso[designationPerso][stat]++;
         if (stat === "Vitalite") {
-            statPerso.HPactual += 25
+            statPerso[designationPerso].HPactual += 25
         }
         if (stat === "Volonte") {
-            statPerso.MPactual += 25
+            statPerso[designationPerso].MPactual += 25
         }
         update();
-        if (statPerso.Point === 0) {
+        if (statPerso[designationPerso].Point === 0) {
             const btn = document.querySelectorAll(".btnStat");
             btn.forEach((element) => {
                 element.style.display = "none";
@@ -615,12 +687,19 @@ infoDiv.appendChild(experienceSpan);
 infoDiv.appendChild(document.createElement("br"));
 const levelSpan = document.createElement("span");
 levelSpan.id = "level";
-levelSpan.textContent = `Niveau : ${statPerso.LVL}`;
+levelSpan.textContent = `Niveau : ${statPerso.perso1.LVL}`;
 infoDiv.appendChild(levelSpan);
 
 document.body.appendChild(infoDiv);
+//CREATION NOM PERSO
+const nomPerso = document.createElement("div")
+nomPerso.id = "nomPerso"
+const spanNomPerso = document.createElement("span")
+spanNomPerso.id = "namePerso"
+spanNomPerso.textContent = statPerso.perso1.nom
+nomPerso.appendChild(spanNomPerso)
+document.body.appendChild(nomPerso)
 //CREATION EQUIPEMENT
-
 const equipementDiv = document.createElement("div");
 equipementDiv.id = "equipement";
 
@@ -693,8 +772,80 @@ equipements.forEach((equipement) => {
     equipementContainer.appendChild(img);
     equipementDiv.appendChild(equipementContainer);
 });
+
+
+//CHANGER DE PERSO  
+const btnSwitchPersoNext = document.createElement("button")
+btnSwitchPersoNext.textContent = "->"
+btnSwitchPersoNext.id = "nextPerso"
+btnSwitchPersoNext.addEventListener("click", () => {
+    compteurPerso++
+    if (compteurPerso > nombreDePerso) {
+        compteurPerso = 1
+    }
+    
+    triggerDesignation()
+    update()
+    if (statPerso[designationPerso].Point === 0) {
+        const btn = document.querySelectorAll(".btnStat");
+        btn.forEach((element) => {
+            element.style.visibility = "hidden";
+        });
+    } else { 
+        const btn = document.querySelectorAll(".btnStat");
+        btn.forEach((element) => {
+            element.style.visibility = "visible";
+        });
+     }
+    VisualRender()
+})
+const btnSwitchPersoBack = document.createElement("button")
+btnSwitchPersoBack.textContent = "<-"
+btnSwitchPersoBack.id = "backPerso"
+btnSwitchPersoBack.addEventListener("click", () => {
+    compteurPerso--
+    
+    if (compteurPerso < 1) {
+        compteurPerso = nombreDePerso   
+    }
+    triggerDesignation()
+    update()
+    if (statPerso[designationPerso].Point === 0) {
+        const btn = document.querySelectorAll(".btnStat");
+        btn.forEach((element) => {
+            element.style.visibility = "hidden";
+        });
+    } else { 
+        const btn = document.querySelectorAll(".btnStat");
+        btn.forEach((element) => {
+            element.style.visibility = "visible";
+        });
+     }
+    VisualRender()
+})
+equipementDiv.appendChild(btnSwitchPersoBack)
+equipementDiv.appendChild(btnSwitchPersoNext)
 document.body.appendChild(equipementDiv);
 
+function checkNombrePerso() {
+    console.log("nombre de perso : ", nombreDePerso)
+    const idBtnPersoBack = document.getElementById("backPerso")
+    const idBtnPersoNext = document.getElementById("nextPerso")
+    if (statPerso.perso3.nom) {
+        nombreDePerso = 3
+    } else if (statPerso.perso2.nom) {
+        nombreDePerso = 2
+    } else {
+        nombreDePerso = 1
+    }
+    if (nombreDePerso === 1) {
+        idBtnPersoBack.style.display="none"
+        idBtnPersoNext.style.display="none"
+    } else {
+        idBtnPersoBack.style.display="block"
+        idBtnPersoNext.style.display="block"
+    }
+}
 // CREATION INVENTAIRE
 const inventaireDiv = document.createElement("div");
 inventaireDiv.id = "inventaire";
@@ -719,15 +870,50 @@ TitreEtOr.appendChild(inventaireOr);
 inventaireDiv.appendChild(TitreEtOr)
 inventaireDiv.appendChild(divTitreInv);
 document.body.appendChild(inventaireDiv);
+
+//CREATION NOM PERSO 
+
+if (!statPerso.perso1.nom) {
+    const selectName = document.createElement("div")
+    selectName.id = "nameDiv"
+    const nameTitle = document.createElement("p")
+    nameTitle.textContent = "Ecrivez le nom de votre personnage"
+    nameTitle.style.position = "absolute";
+    nameTitle.style.left = "200px";
+    nameTitle.style.top = "100px";
+    let input = document.createElement("input");
+    input.type = "text";
+    input.id = "nom"
+    input.className = "info";
+    input.placeholder = "Entrez le nom de votre personnage";
+    input.style.position = "absolute";
+    input.style.left = "200px";
+    input.style.top = "200px";
+    const btnNameOk = document.createElement("button")
+    btnNameOk.textContent = "Validez"
+    btnNameOk.style.position = "absolute";
+    btnNameOk.style.left = "400px";
+    btnNameOk.style.top = "200px";
+    btnNameOk.addEventListener("click", () => {
+        statPerso.perso1.nom = input.value.trim() ? input.value : "Luigi Mangione";
+        selectName.style.display = "none"
+    })
+    selectName.appendChild(nameTitle)
+    selectName.appendChild(input)
+    selectName.appendChild(btnNameOk)
+    
+    document.body.appendChild(selectName)
+}
+
 // CREATION CLASSE DE DEPART 
 
-let classPerso = ""
-console.log
-if (!classPerso) {
+if (!statPerso.perso1.class) {
     const classDepartDiv = document.createElement("div")
     classDepartDiv.id = "classDiv"
     const classTitle = document.createElement("p");
     classTitle.textContent = "Choisissez votre classe de départ"
+    classTitle.style.position = "absolute";
+    classTitle.style.left = "900px";
     classDepartDiv.appendChild(classTitle)
     const classSpan = document.createElement('span')
     const classDepart = [
@@ -751,67 +937,81 @@ if (!classPerso) {
         },
     ];
     classDepart.forEach((value) => {
-                const classDiv = document.createElement("div");
-                classDiv.id = value.id;
-                classDiv.className = value.class;
+                // const classDiv = document.createElement("div");
+                // classDiv.id = value.id;
+                
                 const classImg = document.createElement("img");
+                classImg.className = value.class;
                 classImg.id = value.id
                 classImg.src = value.IMG;
                 classImg.setAttribute("data-testid", value.testId)
-                classImg.width = 300;
+                classImg.width = 300;   
                 classImg.height = 408;
-                classDiv.appendChild(classImg);
-                classSpan.appendChild(classDiv);
+                // classDiv.appendChild(classImg);
+                classSpan.appendChild(classImg);
             });
             classDepartDiv.appendChild(classSpan);
             document.body.appendChild(classDepartDiv);
-        }
+        
 const classDiv = document.getElementById("classDiv")
 const mag = document.getElementById("magicien")
 mag.addEventListener("click", () => {
-    statPerso.Force = 0;
-    statPerso.Dexterite = 2;
-    statPerso.Intelligence = 4;
-    statPerso.Concentration = 2;
-    statPerso.Volonte = 3
-    statPerso.Vitalite = 1
+    let designationPerso = "perso"+compteurPerso
+    statPerso[designationPerso].Force = 0;
+    statPerso[designationPerso].Dexterite = 2;
+    statPerso[designationPerso].Intelligence = 4;
+    statPerso[designationPerso].Concentration = 2;
+    statPerso[designationPerso].Volonte = 3
+    statPerso[designationPerso].Vitalite = 1
     update()
-    statPerso.HPactual = statPerso.HP
-    statPerso.MPactual = statPerso.MP
+    statPerso[designationPerso].HPactual = statPerso[designationPerso].HP
+    statPerso[designationPerso].MPactual = statPerso[designationPerso].MP
+    inventaire.LeftHand = ["batonDepart"]
+    statPerso[designationPerso].spells = ["sortFeu"]
     update()
-    classPerso = "magicien"
+    VisualRender()
+    statPerso.perso1.class = "magicien"
     classDiv.style.display="none"
 })
 const vol = document.getElementById("voleur")
 vol.addEventListener("click", () => {
-    statPerso.Force = 2;
-    statPerso.Dexterite = 4;
-    statPerso.Intelligence = 0;
-    statPerso.Concentration = 2;
-    statPerso.Volonte = 2
-    statPerso.Vitalite = 2
+    let designationPerso = "perso"+compteurPerso
+    statPerso[designationPerso].Force = 2;
+    statPerso[designationPerso].Dexterite = 4;
+    statPerso[designationPerso].Intelligence = 0;
+    statPerso[designationPerso].Concentration = 2;
+    statPerso[designationPerso].Volonte = 2
+    statPerso[designationPerso].Vitalite = 2
     update()
-    statPerso.HPactual = statPerso.HP
-    statPerso.MPactual = statPerso.MP
+    statPerso[designationPerso].HPactual = statPerso[designationPerso].HP
+    statPerso[designationPerso].MPactual = statPerso[designationPerso].MP
+    inventaire.LeftHand = ["dague"]
+    inventaire.spells = ["voler"]
+    VisualRender()
     update()
-    classPerso = "voleur"
+    statPerso.perso1.class = "voleur"
     classDiv.style.display="none"
 })
 const guer = document.getElementById("guerrier")
 guer.addEventListener("click", () => {
-    statPerso.Force = 5;
-    statPerso.Dexterite = 2;
-    statPerso.Intelligence = 0;
-    statPerso.Concentration = 1;
-    statPerso.Volonte = 0
-    statPerso.Vitalite = 4
+    let designationPerso = "perso"+compteurPerso
+    statPerso[designationPerso].Force = 5;
+    statPerso[designationPerso].Dexterite = 2;
+    statPerso[designationPerso].Intelligence = 0;
+    statPerso[designationPerso].Concentration = 1;
+    statPerso[designationPerso].Volonte = 0
+    statPerso[designationPerso].Vitalite = 4
     update()
-    statPerso.HPactual = statPerso.HP
-    statPerso.MPactual = statPerso.MP
+    statPerso[designationPerso].HPactual = statPerso[designationPerso].HP
+    statPerso[designationPerso].MPactual = statPerso[designationPerso].MP
+    inventaire.LeftHand = ["hacheDepart"]
+    statPerso[designationPerso].spells = ["skillDouble"]
+    VisualRender()
     update()
-    classPerso = "guerrier"
+    statPerso.perso1.class = "guerrier"
     classDiv.style.display="none"
 })
+}
 //CREATION SECTION ARME DE DEPART
 // if (!depart) {
 //     const armeDepartDiv = document.createElement("div");
@@ -819,8 +1019,8 @@ guer.addEventListener("click", () => {
 //     const armeTitle = document.createElement("p");
 //     armeTitle.textContent = "Choisissez votre arme";
 //     armeDepartDiv.appendChild(armeTitle);
-//     const equipementSpan = document.createElement("span");
-//     const equipementDepart = [
+//     const equipement[designationPerso]Span = document.createElement("span");
+//     const equipement[designationPerso]Depart = [
 //         {
 //             id: "epeeDepart",
 //             class: "depart",
@@ -850,21 +1050,21 @@ guer.addEventListener("click", () => {
 //             title: "Baton simple || Inflige plus de dégats avec votre force et intelligence",
 //         },
 //     ];
-//     equipementDepart.forEach((equipement) => {
-//         const equipementDiv = document.createElement("div");
-//         equipementDiv.id = equipement.id;
-//         equipementDiv.className = equipement.class;
-//         const equipementImg = document.createElement("img");
-//         equipementImg.id = equipement.id
-//         equipementImg.src = equipement.imgSrc;
-//         equipementImg.setAttribute("data-testid", equipement.testId)
-//         equipementImg.title = equipement.title;
-//         equipementImg.width = 100;
-//         equipementImg.height = 108;
-//         equipementDiv.appendChild(equipementImg);
-//         equipementSpan.appendChild(equipementDiv);
+//     equipement[designationPerso]Depart.forEach((equipement[designationPerso]) => {
+//         const equipement[designationPerso]Div = document.createElement("div");
+//         equipement[designationPerso]Div.id = equipement[designationPerso].id;
+//         equipement[designationPerso]Div.className = equipement[designationPerso].class;
+//         const equipement[designationPerso]Img = document.createElement("img");
+//         equipement[designationPerso]Img.id = equipement[designationPerso].id
+//         equipement[designationPerso]Img.src = equipement[designationPerso].imgSrc;
+//         equipement[designationPerso]Img.setAttribute("data-testid", equipement[designationPerso].testId)
+//         equipement[designationPerso]Img.title = equipement[designationPerso].title;
+//         equipement[designationPerso]Img.width = 100;
+//         equipement[designationPerso]Img.height = 108;
+//         equipement[designationPerso]Div.appendChild(equipement[designationPerso]Img);
+//         equipement[designationPerso]Span.appendChild(equipement[designationPerso]Div);
 //     });
-//     armeDepartDiv.appendChild(equipementSpan);
+//     armeDepartDiv.appendChild(equipement[designationPerso]Span);
 //     document.body.appendChild(armeDepartDiv);
 // }
 // elements.epeeDepart.addEventListener("click", () =>
@@ -879,6 +1079,7 @@ guer.addEventListener("click", () => {
 // elements.batonDepart.addEventListener("click", () =>
 //     takeWeapon("batonDepart", "LeftHand", "depart"),
 // );
+
 //CREATION BOUTON FERMER INVENTAIRE
 const fermerButton = document.createElement("button");
 fermerButton.id = "FermerInv";
@@ -961,22 +1162,22 @@ function takeWeapon(name, type, genre) {
     // si l'arme n'est pas dans l'inventaire & est dans main gauche ou main droite
     if (
         !inventaire[type].includes(name) &&
-        (equipement.LeftHand === name || equipement.RightHand === name)
+        (equipement[designationPerso].LeftHand === name || equipement[designationPerso].RightHand === name)
     ) {
         //je la met dans l'inventaire
         inventaire[type].push(name);
         // Si arme à deux mains je la retire des deux mains
         if (arme[name].twoHand !== undefined) {
-            equipement.LeftHand = "mainGauche";
-            equipement.RightHand = "mainDroite";
+            equipement[designationPerso].LeftHand = "mainGauche";
+            equipement[designationPerso].RightHand = "mainDroite";
             // Sinon je la retire d'une main
         } else {
             //Si c'est la main gauche je la retire de la main gauche
-            if (equipement.LeftHand === name) {
-                equipement.LeftHand = "mainGauche";
+            if (equipement[designationPerso].LeftHand === name) {
+                equipement[designationPerso].LeftHand = "mainGauche";
             } //Si c'est la main droite je la retire de la main droite
             else {
-                equipement.RightHand = "mainDroite";
+                equipement[designationPerso].RightHand = "mainDroite";
             }
         }
         //En deuxieme c'est pour mettre dans l'inventaire
@@ -984,7 +1185,7 @@ function takeWeapon(name, type, genre) {
     } else if (!inventaire[type].includes(name)) {
         inventaire[type].push(name);
     }
-    // En Troisieme c'est pour equiper une arme de l'inventaire dans mon equipement
+    // En Troisieme c'est pour equiper une arme de l'inventaire dans mon equipement[designationPerso]
     // Si l'arme est dans linventaire je l'equipe
     else if (inventaire[type].includes(name)) {
         const index = inventaire[type].findIndex((type) => type === name);
@@ -994,39 +1195,39 @@ function takeWeapon(name, type, genre) {
         //Si arme à deux mains !
         if (arme[name].twoHand !== undefined) {
             //Si j'ai une arme en main gauche, je l'ajoute à l'inventaire
-            if (equipement.LeftHand !== "mainGauche") {
-                inventaire[type].push(equipement.LeftHand);
+            if (equipement[designationPerso].LeftHand !== "mainGauche") {
+                inventaire[type].push(equipement[designationPerso].LeftHand);
                 //Puis j'equipe cette arme dans la main gauche
-                equipement.LeftHand = name;
+                equipement[designationPerso].LeftHand = name;
             }
             //Si j'ai une arme en main droite je l'ajoute à l'inventaire
-            if (equipement.RightHand !== "mainDroite") {
-                inventaire[type].push(equipement.RightHand);
+            if (equipement[designationPerso].RightHand !== "mainDroite") {
+                inventaire[type].push(equipement[designationPerso].RightHand);
                 //Puis je l'equipe dans la main droite
-                equipement.RightHand = name;
+                equipement[designationPerso].RightHand = name;
             }
             //Si pas d'arme du coup, j'equipe l'arme et je remets rien dans l'inventaire
-            equipement.LeftHand = name;
-            equipement.RightHand = name;
+            equipement[designationPerso].LeftHand = name;
+            equipement[designationPerso].RightHand = name;
         } else {
             //[SI il y a une arme en main gauche : oui =>
-            if (equipement.LeftHand !== "mainGauche") {
+            if (equipement[designationPerso].LeftHand !== "mainGauche") {
                 // je regarde [SI il y a une arme en main droite, oui =>
-                if (equipement.RightHand !== "mainDroite") {
+                if (equipement[designationPerso].RightHand !== "mainDroite") {
                     // Si arme à deux mains je desequipe les deux mains quand j'équipe la main gauche
-                    if (equipement.LeftHand === equipement.RightHand) {
-                        equipement.RightHand = "mainDroite";
+                    if (equipement[designationPerso].LeftHand === equipement[designationPerso].RightHand) {
+                        equipement[designationPerso].RightHand = "mainDroite";
                     }
                     // je retire l'arme main gauche et la remet dans l'inventaire et j'equipe l'arme selectionné si non =>
-                    inventaire[type].push(equipement.LeftHand);
-                    equipement.LeftHand = name;
+                    inventaire[type].push(equipement[designationPerso].LeftHand);
+                    equipement[designationPerso].LeftHand = name;
                     // j'equipe l'arme dans main droite vide]
                 } else {
-                    equipement.RightHand = name;
+                    equipement[designationPerso].RightHand = name;
                 }
                 //Si non j'equipe l'arme en main gauche]
             } else {
-                equipement.LeftHand = name;
+                equipement[designationPerso].LeftHand = name;
             }
         }
     }
@@ -1040,8 +1241,15 @@ function suppDepart() {
     }
 }
 function suppClassDepart() {
-    if (classPerso !== "") {
+    if (statPerso.perso1.class !== "") {
+        const classDiv = document.getElementById("classDiv")
         classDiv.remove();
+    }
+}
+function suppSelectName() {
+    if (statPerso.perso1.nom !== "") {
+        const suppSelectName = document.getElementById("nameDiv")
+        suppSelectName.remove();
     }
 }
 function takeObject(name, type, baseType) {
@@ -1061,20 +1269,20 @@ function takeObject(name, type, baseType) {
         const index = inventaire[type].findIndex((type) => type === name);
         if (index !== -1) {
             
-            console.log("avant takeObject" , statPerso)
+            console.log("avant takeObject" , statPerso[designationPerso])
             gear[type][name].effect()
             inventaire[type].splice(index, 1);
-            console.log(statPerso)
+            console.log(statPerso[designationPerso])
         } 
     } else {
-        // En premier c'est pour retirer un objet de l'equipement.
-        // si l'objet n'est pas dans l'inventaire & est dans l'equipement
-        if (!inventaire[type].includes(name) && equipement[type] === name) {
+        // En premier c'est pour retirer un objet de l'equipement[designationPerso].
+        // si l'objet n'est pas dans l'inventaire & est dans l'equipement[designationPerso]
+        if (!inventaire[type].includes(name) && equipement[designationPerso][type] === name) {
             //je la met dans l'inventaire
             inventaire[type].push(name);
-            //et je la retire de l'equipement
-            equipement[type] = type;
-            //Si l'equipement est un bijou alors j'enleve le buff de ce bijou
+            //et je la retire de l'equipement[designationPerso]
+            equipement[designationPerso][type] = type;
+            //Si l'equipement[designationPerso] est un bijou alors j'enleve le buff de ce bijou
             if (type === "Ring" || type === "Neck") {
                 Debuff[name]();
             }
@@ -1082,24 +1290,24 @@ function takeObject(name, type, baseType) {
             // Si l'objet n'est pas dans l'inventaire, je la met dans l'inventaire
         } else if (!inventaire[type].includes(name)) {
             inventaire[type].push(name);
-        } // En Troisieme c'est pour equiper un objet de l'inventaire dans mon equipement
+        } // En Troisieme c'est pour equiper un objet de l'inventaire dans mon equipement[designationPerso]
         // Si l'objet est dans linventaire je l'equipe
         else if (inventaire[type].includes(name)) {
             const index = inventaire[type].findIndex((type) => type === name);
             if (index !== -1) {
                 inventaire[type].splice(index, 1);
                 //S'il y a déjà un objet dans le slot, je le mets dans l'inventaire et j'equipe l'objet.
-                if (equipement[type] !== type) {
+                if (equipement[designationPerso][type] !== type) {
                     if (type === "Ring" || type === "Neck") {
-                        Debuff[equipement[type]]();
+                        Debuff[equipement[designationPerso][type]]();
                     }
-                    inventaire[type].push(equipement[type]);
-                    equipement[type] = name;
+                    inventaire[type].push(equipement[designationPerso][type]);
+                    equipement[designationPerso][type] = name;
                     if (type === "Ring" || type === "Neck") {
                         Buff[name]();
                     }
                 } else {
-                    equipement[type] = name;
+                    equipement[designationPerso][type] = name;
                     if (type === "Ring" || type === "Neck") {
                         Buff[name]();
                     }
@@ -1170,7 +1378,7 @@ async function FermerInv() {
         marketMemory,
         itemList,
         money,
-        classPerso,
+        nombreDePerso
     };
     const res = await fetch("http://localhost:8000/all-data", {
         method: "PUT",
@@ -1192,19 +1400,49 @@ async function getData() {
     return recData;
 }
 //REMETTRE LES STATS RECUPERER DANS LES BONS POTS !
-function replaceStat() {
+async function replaceStat() {
+    //LES STATS POUR CHAQUE PERSO
     Object.entries(
-        recData.donjonpath.dataStat.DonneeStatPerso.statPerso,
+        recData.donjonpath.dataStat.DonneeStatPerso.statPerso.perso1,
     ).forEach(([key, value]) => {
-        if (statPerso[key] !== undefined) {
-            statPerso[key] = value;
+        if (statPerso.perso1[key] !== undefined) {
+            statPerso[designationPerso][key] = value;
         }
     });
     Object.entries(
-        recData.donjonpath.dataStat.DonneeStatPerso.equipement,
+        recData.donjonpath.dataStat.DonneeStatPerso.statPerso.perso2,
     ).forEach(([key, value]) => {
-        if (equipement[key] !== undefined) {
-            equipement[key] = value;
+        if (statPerso.perso2[key] !== undefined) {
+            statPerso.perso2[key] = value;
+        }
+    });
+    Object.entries(
+        recData.donjonpath.dataStat.DonneeStatPerso.statPerso.perso3,
+    ).forEach(([key, value]) => {
+        if (statPerso.perso3[key] !== undefined) {
+            statPerso.perso3[key] = value;
+        }
+    });
+    //EQUIPEMENT POUR CHAQUE PERSO (ya grave moyen d'optimiser ça)
+    Object.entries(
+        recData.donjonpath.dataStat.DonneeStatPerso.equipement.perso1,
+    ).forEach(([key, value]) => {
+        if (equipement.perso1[key] !== undefined) {
+            equipement.perso1[key] = value;
+        }   
+    });
+    Object.entries(
+        recData.donjonpath.dataStat.DonneeStatPerso.equipement.perso2,
+    ).forEach(([key, value]) => {
+        if (equipement.perso2[key] !== undefined) {
+            equipement.perso2[key] = value;
+        }   
+    });
+    Object.entries(
+        recData.donjonpath.dataStat.DonneeStatPerso.equipement.perso3,
+    ).forEach(([key, value]) => {
+        if (equipement.perso3[key] !== undefined) {
+            equipement.perso3[key] = value;
         }   
     });
     Object.entries(
@@ -1233,12 +1471,18 @@ function replaceStat() {
     backCheck = recData.donjonpath.backCheck;
     message = recData.donjonpath.message;
     money = recData.donjonpath.dataStat.DonneeStatPerso.money
-    classPerso = recData.donjonpath.dataStat.DonneeStatPerso.classPerso
-    suppClassDepart()
+    nombreDePerso = recData.donjonpath.dataStat.DonneeStatPerso.nombreDePerso
+    console.log("recData...", recData.donjonpath.dataStat.DonneeStatPerso.nombreDePerso)
+    console.log("nombre de Perso : ",nombreDePerso)
+    console.log("les perso : ", statPerso)
+    checkNombrePerso()
+    suppSelectName();
+    suppClassDepart();
     suppDepart();
     btnStat();
     update();
     VisualRender();
+    
 }
 function delAllGearImage() {
     const allDelete = document.querySelectorAll(".image");
@@ -1246,8 +1490,8 @@ function delAllGearImage() {
 }
 function VisualRender() {
     delAllGearImage();
-    Object.entries(equipement).forEach(([key, value]) => {
-        if (equipement[key] !== undefined) {
+    Object.entries(equipement[designationPerso]).forEach(([key, value]) => {
+        if (equipement[designationPerso][key] !== undefined) {
             const image = document.createElement("img");    
             image.src = gear[key][value].IMG;
             image.width = "100";
@@ -1292,6 +1536,7 @@ function VisualRender() {
         });
     });
 }
+checkNombrePerso()
 getData();
 VisualRender()
 update()

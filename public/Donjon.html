@@ -363,10 +363,26 @@
                 background-color: #886146;
                 color:#331d1d
             }
-            #perso {
+            #perso1 {
                 position: absolute;
                 top : 450px;
                 left : 400px;
+                right: 700px;
+                bottom : 700px;
+                z-index: 5;
+            }
+            #perso2 {
+                position: absolute;
+                top : 450px;
+                left : 770px;
+                right: 700px;
+                bottom : 700px;
+                z-index: 5;
+            }
+            #perso3 {
+                position: absolute;
+                top : 450px;
+                left : 1140px;
                 right: 700px;
                 bottom : 700px;
                 z-index: 5;
@@ -437,6 +453,7 @@
         <button id ="checkNoMarchand" data-testid="testCheckNoMarchand">NoMarchand</button>
         <button id ="getAllATQ" data-testid="testGetAllATQ">AllATQ</button>
         <button id ="getStuff" data-testid="testGetStuff">getStuff</button>
+        <button id ="getNewPerso" data-testid="testGetNewPerso">newChar</button>
         </div>
         <div id="tableauRune" style="display: none;"></div>
         <div id="tableauRuneDone" style="display: none;"></div> 
@@ -452,8 +469,8 @@
                     <button id ="btnArcane" data-testid="testBtnSortArcane" class="spell" style="display: none;border:2px solid #29c1c7"">Arcane</button>
                 </div>
                 <div id ="allSkill" style="display: none;">
-                    <button id ="btnAttaqueAll" data-testid="testBtnATQall" class="panneauATQ">Attaque horizontale</button>
-                    <button id ="btnATQdouble" data-testid="testBtnATQdouble" class="panneauATQ">Double attaque</button>
+                    <button id ="btnAttaqueAll" data-testid="testBtnATQall" style="display: none;"class="panneauATQ">Attaque horizontale</button>
+                    <button id ="btnATQdouble" data-testid="testBtnATQdouble" style="display: none;" class="panneauATQ">Double attaque</button>
                 </div>
             </div>
             <div id="darkness"></div>
@@ -492,7 +509,9 @@
             </div>
             
             <div id="sol"></div>
-            <div id = "perso"></div>
+            <div id = "perso1"></div>
+            <div id = "perso2"></div>
+            <div id = "perso3"></div>
             <div id="ennemi">
                 <div id="first" class="positionEnnemi"></div>
                 <div id="second"class="positionEnnemi"></div>
