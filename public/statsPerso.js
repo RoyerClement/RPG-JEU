@@ -98,58 +98,91 @@ let skills = {
 
 const arme = {
     mainGauche: {
-        degats: () => 1 + 1 * statPerso[designationPerso].Dexterite,
+        degatsBase : 1,
+        degatsForce: 0,
+        degatsDexterite : 0,
+        degatsIntelligence: 0,
         IMG: "image/mainGauche.webp",
     },
     mainDroite: {
-        degats: () => 1 + 1 * statPerso[designationPerso].Force,
+        degatsBase : 1,
+        degatsForce: 0,
+        degatsDexterite : 0,
+        degatsIntelligence: 0,
         IMG: "image/mainDroite.webp",
     },
     epeeDepart: {
-        degats: () => 900 + (3 * statPerso[designationPerso].Force + 2 * statPerso[designationPerso].Dexterite),
+        degatsBase : 5,
+        degatsForce: 2,
+        degatsDexterite : 2,
+        degatsIntelligence: 0,
         IMG: "image/epeeDepart.webp",
     },
     hacheDepart: {
-        degats: () => 5 + 4 * statPerso[designationPerso].Force,
+        degatsBase : 5,
+        degatsForce: 4,
+        degatsDexterite : 0,
+        degatsIntelligence: 0,
         IMG: "image/hacheDepart.webp",
     },
     arcDepart: {
-        degats: () => 7 + 1 * statPerso[designationPerso].Force + 2 * statPerso[designationPerso].Dexterite,
+        degatsBase : 5,
+        degatsForce: 1,
+        degatsDexterite : 2,
+        degatsIntelligence: 0,
         IMG: "image/arcDepart.webp",
     },
     batonDepart: {
-        degats: () => 7 + 1 * statPerso[designationPerso].Force + 2 * statPerso[designationPerso].Intelligence,
+        degatsBase : 5,
+        degatsForce: 1,
+        degatsDexterite : 0,
+        degatsIntelligence: 3,
         IMG: "image/batonDepart.webp",
     },
     espadon: {
-        degats: () => 13 + (2 * statPerso[designationPerso].Force + 2 * statPerso[designationPerso].Dexterite),
+        degatsBase : 12,
+        degatsForce: 3,
+        degatsDexterite : 2,
+        degatsIntelligence: 0,
         IMG: "image/espadon.webp",
         twoHand: true,
     },
     dague: {
-        degats: () => 3 + 3 * statPerso[designationPerso].Dexterite,
+        degatsBase : 5,
+        degatsForce: 0,
+        degatsDexterite : 3,
+        degatsIntelligence: 0,
         IMG: "image/dague.webp",
     },
     torche: {
-        degats: () => 10,
+        degats: 10,
         IMG: "image/torche.webp",
     },
     orcHache: {
-        degats: () => 15 + (statPerso[designationPerso].Force * 3),
+        degatsBase : 15,
+        degatsForce: 5,
+        degatsDexterite : 0,
+        degatsIntelligence: 0,
         IMG: "image/orcHache.webp",
         class: "image",
         test: "testOrcHache",
         title: "Une Hache fraichement trouvé sur un cadavre d'orc"
     },
     gobArc: {
-        degats: () => 10 + 3 * statPerso[designationPerso].Dexterite,
+        degatsBase : 12,
+        degatsForce: 1,
+        degatsDexterite : 3,
+        degatsIntelligence: 0,
         IMG: "image/gobArc.webp",
         class: "image",
         test: "testGobArc",
         title: "Un arc qui nécessite une bonne dextérité !"
     },
     orcEpee: {
-        degats: () => 15 + 2 * statPerso[designationPerso].Force + 1 * statPerso[designationPerso].Dexterite,
+        degatsBase : 15,
+        degatsForce: 3,
+        degatsDexterite : 3,
+        degatsIntelligence: 0,
         IMG: "image/orcEpee.webp",
         class: "image",
         test: "testOrcEpee",
@@ -159,14 +192,14 @@ const arme = {
 const gear = {
     LeftHand: {
         mainGauche: {
-            degats: () => 1 + 1 * statPerso[designationPerso].Force,
+            degats: () => 1,
             IMG: "image/mainGauche.webp",
             class: "depart",
             test: "testMainGauche",
             title: "votre main gauche",
         },
         mainDroite: {
-            degats: () => 1 + 1 * statPerso[designationPerso].Dexterite,
+            degats: () => 1,
             IMG: "image/mainDroite.webp",
             class: "depart",
             test: "testMainDroite",
@@ -246,14 +279,14 @@ const gear = {
     },
     RightHand: {
         mainGauche: {
-            degats: () => 1 + 1 * statPerso[designationPerso].Force,
+            degats: () => 1,
             IMG: "image/mainGauche.webp",
             class: "depart",
             test: "testMainGauche",
             title: "votre main gauche",
         },
         mainDroite: {
-            degats: () => 1 + 1 * statPerso[designationPerso].Dexterite,
+            degats: () => 1,
             IMG: "image/mainDroite.webp",
             class: "depart",
             test: "testMainDroite",
@@ -512,17 +545,64 @@ const equipement = {
 };
 
 const stats = {
-    get LeftHand() {
-        return arme[equipement[designationPerso].LeftHand].degats(); // Appelle la fonction de calcul dynamique
+    perso1 : {
+        get LeftHand() {
+            return arme[equipement.perso1.LeftHand].degatsBase+ 
+            (arme[equipement.perso1.LeftHand].degatsForce*statPerso.perso1.Force) + 
+            (arme[equipement.perso1.LeftHand].degatsDexterite*statPerso.perso1.Dexterite) +
+            (arme[equipement.perso1.LeftHand].degatsIntelligence*statPerso.perso1.Intelligence); 
+        },
+        get RightHand() {
+            return arme[equipement.perso1.RightHand].degatsBase+ 
+            (arme[equipement.perso1.RightHand].degatsForce*statPerso.perso1.Force) + 
+            (arme[equipement.perso1.RightHand].degatsDexterite*statPerso.perso1.Dexterite) +
+            (arme[equipement.perso1.RightHand].degatsIntelligence*statPerso.perso1.Intelligence); 
+        },
+        get Def() {
+            return (
+                gear.Chest[equipement.perso1.Chest].def + gear.Head[equipement.perso1.Head].def
+            );
+        }
     },
-    get RightHand() {
-        return arme[equipement[designationPerso].RightHand].degats(); // Appelle la fonction de calcul dynamique
+    perso2 : {
+        get LeftHand() {
+            return arme[equipement.perso2.LeftHand].degatsBase+ 
+            (arme[equipement.perso2.LeftHand].degatsForce*statPerso.perso2.Force) + 
+            (arme[equipement.perso2.LeftHand].degatsDexterite*statPerso.perso2.Dexterite) +
+            (arme[equipement.perso2.LeftHand].degatsIntelligence*statPerso.perso2.Intelligence); 
+        },
+        get RightHand() {
+            return arme[equipement.perso2.RightHand].degatsBase+ 
+            (arme[equipement.perso2.RightHand].degatsForce*statPerso.perso2.Force) + 
+            (arme[equipement.perso2.RightHand].degatsDexterite*statPerso.perso2.Dexterite) +
+            (arme[equipement.perso2.RightHand].degatsIntelligence*statPerso.perso2.Intelligence); 
+        },
+        get Def() {
+            return (
+                gear.Chest[equipement.perso2.Chest].def + gear.Head[equipement.perso2.Head].def
+            );
+        }
     },
-    get Def() {
-        return (
-            gear.Chest[equipement[designationPerso].Chest].def + gear.Head[equipement[designationPerso].Head].def
-        );
+    perso3 : {
+        get LeftHand() {
+            return arme[equipement.perso3.LeftHand].degatsBase+ 
+            (arme[equipement.perso3.LeftHand].degatsForce*statPerso.perso3.Force) + 
+            (arme[equipement.perso3.LeftHand].degatsDexterite*statPerso.perso3.Dexterite) +
+            (arme[equipement.perso3.LeftHand].degatsIntelligence*statPerso.perso3.Intelligence)
+        },
+        get RightHand() {
+            return arme[equipement.perso3.RightHand].degatsBase+ 
+            (arme[equipement.perso3.RightHand].degatsForce*statPerso.perso3.Force) + 
+            (arme[equipement.perso3.RightHand].degatsDexterite*statPerso.perso3.Dexterite) +
+            (arme[equipement.perso3.RightHand].degatsIntelligence*statPerso.perso3.Intelligence)
+        },
+        get Def() {
+            return (
+                gear.Chest[equipement.perso3.Chest].def + gear.Head[equipement.perso3.Head].def
+            );
+        }
     },
+
 };
 let money = 50
 const inventaire = {
@@ -538,11 +618,11 @@ const inventaire = {
 let maxCheck = false
 function update() {
     document.getElementById("namePerso").textContent = `${statPerso[designationPerso].nom}`
-    document.getElementById("defense").textContent = `Défense : ${stats.Def}`;
+    document.getElementById("defense").textContent = `Défense : ${stats[designationPerso].Def}`;
     document.getElementById("degatsArmeG").textContent =
-        `Arme gauche : ${stats.LeftHand}`;
+        `Arme gauche : ${stats[designationPerso].LeftHand}`;
     document.getElementById("degatsArmeD").textContent =
-        `Arme droite : ${stats.RightHand}`;
+        `Arme droite : ${stats[designationPerso].RightHand}`;
     document.getElementById("statFor").textContent =
         `Force : ${statPerso[designationPerso].Force}`;
     document.getElementById("statDex").textContent =
@@ -596,7 +676,7 @@ function btnStat() {
     if (btnCheck) {
         const btn = document.querySelectorAll(".btnStat");
         btn.forEach((element) => {
-            element.style.display = "none";
+            element.style.visibility = "hidden";
         });
     }
 }
@@ -1362,10 +1442,9 @@ let marketMemory = { start: [], }
 let backCheck = "";
 let message = [];
 async function FermerInv() {
+
     const DonneeStatPerso = {
-        mainGauche: stats.LeftHand,
-        mainDroite: stats.RightHand,
-        def: stats.Def,
+        stats,
         equipement,
         inventaire,
         statPerso,

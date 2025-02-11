@@ -113,9 +113,23 @@ const marketMemory = { start: [], };
 let itemList = [];
 let dataStat = {
     DonneeStatPerso: {
-        mainDroite: 0,
-        mainGauche: 0,
-        def: 0,
+        stats : {
+            perso1 : {
+            mainDroite: 0,
+            mainGauche: 0,
+            def: 0,
+            },
+            perso2 : {
+                mainDroite: 0,
+                mainGauche: 0,
+                def: 0,
+            },
+            perso3 : {
+                mainDroite: 0,
+                mainGauche: 0,
+                def: 0,
+            },
+        }
     },
     equipement: {
         perso1 : 
@@ -1582,8 +1596,8 @@ function attaque(nom, nomGen, div, ImEnn) {
         attaque.width = "400";
         attaque.height = "208";
         buttonDoorDiv[div].appendChild(attaque)
-        let randomAttaque = genererChiffre(dataStat.DonneeStatPerso.mainGauche +
-            dataStat.DonneeStatPerso.mainDroite, 10)
+        let randomAttaque = genererChiffre(dataStat.DonneeStatPerso.stats[designationPerso].RightHand +
+            dataStat.DonneeStatPerso.stats[designationPerso].LeftHand, 10)
             while (randomAttaque < 0) {
                 randomAttaque++
             }
@@ -1661,10 +1675,12 @@ async function vicOrRetaliation() {
                 if (end) {return}
                 const CRT = randomNumber(100)
                 const numRand = randomNumber(nombreDePerso)
+                console.log("nbre de perso : ",nombreDePerso)
+                console.log("perso choisi : ",numRand)
                 const persoRand = "perso"+numRand
             if (CRT-dataStat.DonneeStatPerso.statPerso[persoRand].Dexterite > 90+actualEnnemiStatut[key].DEX) {
                 const rand = genererChiffre(actualEnnemiStatut[key].CRIT, 10)
-                const randDef = Math.round(rand - (rand * (dataStat.DonneeStatPerso.def / 100)))
+                const randDef = Math.round(rand - (rand * (dataStat.DonneeStatPerso.stats[persoRand].Def / 100)))
                 nombreDegatsTemporaire ="Coup critique ! ! ! !"+"-"+ randDef +" "+  "dégats"
                 dataStat.DonneeStatPerso.statPerso[persoRand].HPactual -= randDef
                 
@@ -1672,7 +1688,7 @@ async function vicOrRetaliation() {
                 nombreDegatsTemporaire = "Raté !"
             } else {
                 const rand = genererChiffre(actualEnnemiStatut[key].ATQ,5)
-                const randDef = Math.round(rand - (rand * (dataStat.DonneeStatPerso.def / 100)))
+                const randDef = Math.round(rand - (rand * (dataStat.DonneeStatPerso.stats[persoRand].Def / 100)))
                 nombreDegatsTemporaire = "-" + randDef + " " + "dégats"
                 dataStat.DonneeStatPerso.statPerso[persoRand].HPactual -= randDef
             
@@ -2299,11 +2315,11 @@ document.body.appendChild(infoDiv);
 
 function update() {
     document.getElementById("nomDuPerso").textContent = `${dataStat.DonneeStatPerso.statPerso[designationPerso].nom}`
-    document.getElementById("defense").textContent = `Défense : ${dataStat.DonneeStatPerso.def}`;
+    document.getElementById("defense").textContent = `Défense : ${dataStat.DonneeStatPerso.stats[designationPerso].Def}`;
     document.getElementById("degatsArmeG").textContent =
-        `Arme gauche : ${dataStat.DonneeStatPerso.mainDroite}`;
+        `Arme gauche : ${dataStat.DonneeStatPerso.stats[designationPerso].LeftHand}`;
     document.getElementById("degatsArmeD").textContent =
-        `Arme droite : ${dataStat.DonneeStatPerso.mainGauche}`; 
+        `Arme droite : ${dataStat.DonneeStatPerso.stats[designationPerso].RightHand}`; 
     document.getElementById("hp").textContent =
         `Points de vie : ${dataStat.DonneeStatPerso.statPerso[designationPerso].HPactual}/${dataStat.DonneeStatPerso.statPerso[designationPerso].HP}`;
     document.getElementById("mp").textContent =
@@ -2338,3 +2354,4 @@ function showSkills() {
     
     })
     }
+    update()
