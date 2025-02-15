@@ -9,6 +9,9 @@
         />
 
         <style>
+            body {
+                font-size: 100%;
+            }
             #flashlight {
                 position: fixed;
                 width: 1000%; /* Largeur du cercle lumineux */
@@ -172,7 +175,7 @@
                 font-weight: 400;
                 font-style: normal;
                 font-size: 16px;
-                color: #706c2e;
+                color: #272511;
             }
             #Inventaire {
                 position: absolute;
@@ -189,7 +192,7 @@
                 font-weight: 400;
                 font-style: normal;
                 font-size: 24px;
-                color: #706c2e;
+                color: #272511;
             }
             #reset {
                 position: absolute;
@@ -204,8 +207,8 @@
                 font-family: "MedievalSharp", serif;
                 font-weight: 400;
                 font-style: normal;
-                font-size: 24px;
-                color: #706c2e;
+                font-size: 3em;
+                color: #2d2b13;
             }
             #back {
                 position: absolute;
@@ -218,11 +221,12 @@
                 margin: 5px;
                 width: 180px;
                 height: 100px;
+                z-index: 20;
                 font-family: "MedievalSharp", serif;
                 font-weight: 400;
                 font-style: normal;
                 font-size: 24px;
-                color: #706c2e;
+                color: #1c1b0b;
             }
             #tableauRune {
                 position: absolute;
@@ -240,7 +244,7 @@
                 font-weight: 400;
                 font-style: normal;
                 font-size: 24px;
-                color: #706c2e;
+                color: #272511;
             }
             #tableauRuneDone {
                 position: absolute;
@@ -258,16 +262,17 @@
                 font-weight: 400;
                 font-style: normal;
                 font-size: 24px;
-                color: #706c2e;
+                color: #131308;
             }
             #panneauAttaque {
                 position: absolute;
-                right: 399px;
-                bottom: 110px;
+                right: 250px;
+                top : 80%;
+                bottom: 0px;
                 float: right;
                 z-index: 5;
-                width: 400px;
-                height: 300px;
+                width: 28%;
+                height: 44%;
                 border: 5px solid #4d372a;
                 background-color: #563620;
                 padding: 5px;
@@ -276,24 +281,24 @@
                 font-weight: 400;
                 font-style: normal;
                 font-size: 24px;
-                color: #706c2e;
+                color: #131209;
             }
             .panneauATQ { 
-                border: 5px solid #34251c;
+                border: 2% solid #34251c;
                 background-color: #886146;
-                padding: 5px;
-                margin: 5px;
+                padding: 2%;
+                margin: 2%;
                 font-family: "MedievalSharp", serif;
                 font-weight: 400;
                 font-style: normal;
-                font-size: 24px;
-                color: #706c2e;
+                font-size: 100%;
+                color: #131207;
                 }
             .spell { 
                 border: 3px solid #465188;
                 background-color: #241b52;
-                padding: 3px;
-                margin: 3px;
+                padding: 1.5%;
+                margin: 1.5%;
                 font-family: "MedievalSharp", serif;
                 font-weight: 400;
                 font-style: normal;
@@ -348,14 +353,17 @@
                 top: 0px;
             }
             #info {
-                font-size: 24px;
-                border: 1px solid #ccc;
-                padding: 10px;
-                margin: 10px;
+                font-size: 140%;
+                border: 0.3125em solid #ccc;
+                padding: 0.625em;;
+                margin: 0.625em;
+                height: 15em;
+                width: 13em;
                 position: absolute;
                 right: 250px;
-                left: 1400px;
+                left: 900px;
                 top: 0px;
+                bottom: 320px;
                 font-family: "MedievalSharp", serif;
                 font-weight: 400;
                 font-style: normal;
@@ -411,26 +419,28 @@
                 color: #2bc1c8;
             }
             #allSpell {
-                border: 1px solid #ccc;
-                padding: 10px;
-                margin: 10px;
+                border: 2px solid #ccc;
+                padding: 1px;
+                margin: 1px;
                 position: absolute;
-                width: 350px;
-                height: 140px;
-                top: 110px;
-                border: 5px solid #ecd81e;
+                width: 90%;
+                height: 54%;
+                top: 125px;
+                bottom: 0px;
+                border: 3px solid #ecd81e;
                 background-color: #465188;
             }
             #allSkill {
-                border: 1px solid #ccc;
-                padding: 10px;
-                margin: 10px;
+                border: 2px solid #ccc;
+                padding: 1px;
+                margin: 1px;
                 position: absolute;
-                width: 350px;
-                height: 140px;
-                top: 110px;
-                border: 5px solid #612520;
-                background-color: #893927;
+                width: 90%;
+                height: 54%;
+                top: 125px;
+                bottom: 0px;
+                border: 3px solid #ba7719;
+                background-color: #681919;
             }
         </style>
     </head>
@@ -464,9 +474,9 @@
                 <button id ="btnSpell" data-testid="testBtnSpell" class="panneauATQ">Sorts</button>
                 <div id ="allSpell" style="display: none;">
                     <button id ="btnFeu" data-testid="testBtnSortFeu" class="spell" style="display: none; border:2px solid #860d0d">Flamme</button>
-                    <button id ="btnFoudre" data-testid="testBtnSortFoudre" class="spell" style="display: none;border:2px solid #2765b8"">Foudre</button>
-                    <button id ="btnBlast" data-testid="testBtnSortBlast" class="spell" style="display: none;border:2px solid #b47f0c"">Blast</button>
-                    <button id ="btnArcane" data-testid="testBtnSortArcane" class="spell" style="display: none;border:2px solid #29c1c7"">Arcane</button>
+                    <button id ="btnFoudre" data-testid="testBtnSortFoudre" class="spell" style="display: none;border:2px solid #2765b8">Foudre</button>
+                    <button id ="btnBlast" data-testid="testBtnSortBlast" class="spell" style="display: none;border:2px solid #b47f0c">Blast</button>
+                    <button id ="btnArcane" data-testid="testBtnSortArcane" class="spell" style="display: none;border:2px solid #29c1c7">Arcane</button>
                 </div>
                 <div id ="allSkill" style="display: none;">
                     <button id ="btnAttaqueAll" data-testid="testBtnATQall" style="display: none;"class="panneauATQ">Attaque horizontale</button>
