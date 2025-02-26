@@ -9,6 +9,7 @@ let nombreDePerso = 1
 const statPerso = {
     perso1 : 
         {   
+            type : "perso1",
             nom: "",
             class: "",
             Force: 0,
@@ -28,6 +29,7 @@ const statPerso = {
         },
         perso2 : 
         {   
+            type : "perso2",
             nom:"",
             class: "",
             Force: 0,
@@ -47,6 +49,7 @@ const statPerso = {
         },
         perso3 : 
         {   
+            type : "perso3",
             nom: "",
             class: "",
             Force: 0,

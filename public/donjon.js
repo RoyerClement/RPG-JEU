@@ -173,6 +173,7 @@ let dataStat = {
     statPerso: {
         perso1 : 
         {   
+            type : "perso1",
             nom: "",
             class: "",
             Force: 0,
@@ -192,6 +193,7 @@ let dataStat = {
         },
         perso2 : 
         {   
+            type : "perso2",
             nom:"",
             class: "",
             Force: 0,
@@ -211,6 +213,7 @@ let dataStat = {
         },
         perso3 : 
         {   
+            type : "perso3",
             nom: "",
             class: "",
             Force: 0,
@@ -762,12 +765,10 @@ function back() {
 const btnCheckFight = document.getElementById('checkFight')
 btnCheckFight.addEventListener('click', () => {
     paramCheckFight = "alwaysFight"
-    console.log(paramCheckFight)
 })
 const btnCheckNoFight = document.getElementById('checkNoFight')
 btnCheckNoFight.addEventListener('click', () => {
     paramCheckFight = "neverFight"
-    console.log(paramCheckFight)
 })
 const btnAllATQ = document.getElementById('getAllATQ')
 btnAllATQ.addEventListener('click', () => {
@@ -788,6 +789,7 @@ btnGetStuff.addEventListener('click', () => {
 const btnNewChar = document.getElementById('getNewPerso')
 btnNewChar.addEventListener('click', () => {
     dataStat.DonneeStatPerso.statPerso.perso2 = {
+        type: "perso2",
         nom: "Rengar",
         class: "voleur",
         Force: 5,
@@ -886,6 +888,12 @@ let expectLVLennemiRoom = 0;
 let divEnnemi = 0;
 let ennemiLVLinRoom = 0
 let ennemiNumberinRoom = 0
+let ordreTourAttaque = []
+let ordreTourAttaque2 = []
+function ajouterEnnemiOrdreTour (nom, dex, bolean) {
+    ordreTourAttaque.push({nom, dex, bolean})
+    ordreTourAttaque.sort((a,b) => b.dex - a.dex)
+}
 function triggerFight() {
     divEnnemi = 1;
     if (roomIAm === "start") {
@@ -894,7 +902,6 @@ function triggerFight() {
         const splitRoom = roomIAm.split("");
         expectLVLennemiRoom = splitRoom.length;
     }
-    console.log("niveau attendu dans la piece : ", expectLVLennemiRoom)
     while(expectLVLennemiRoom >  ennemiLVLinRoom ) {
         if (ennemiNumberinRoom === 5) {
             break
@@ -906,22 +913,128 @@ function triggerFight() {
             actualFight.push(findIndexEnnemi);
             ennemiLVLinRoom += ennemi[findIndexEnnemi].LVL
             const nomEnnemi = `${findIndexEnnemi}${compteur[findIndexEnnemi]}`;
+            ajouterEnnemiOrdreTour(nomEnnemi, ennemi[findIndexEnnemi].DEX, false)
             actualEnnemiStatut[nomEnnemi] = { ...ennemi[findIndexEnnemi] };
             compteur[findIndexEnnemi]++;
             const where = "divEnn" + divEnnemi;
             const ImEnn = "ImEnn" + divEnnemi;
-            console.log("div : ", where)
             updateRenderFight(findIndexEnnemi, nomEnnemi, where, ImEnn);
             divEnnemi++;
             ennemiNumberinRoom++
-            console.log("ennemi present dans la piece : ", actualFight ) 
-            console.log("nombre d'ennemi dans la piece : ", ennemiNumberinRoom)
-            console.log('niveau de la piece : ', ennemiLVLinRoom)
         }
     }
+    ajouterEnnemiOrdreTour(dataStat.DonneeStatPerso.statPerso.perso1.type, dataStat.DonneeStatPerso.statPerso.perso1.Dexterite, false)
+    try {
+        if (dataStat.DonneeStatPerso.statPerso.perso2.nom){
+        ajouterEnnemiOrdreTour(dataStat.DonneeStatPerso.statPerso.perso2.type, dataStat.DonneeStatPerso.statPerso.perso2.Dexterite, false)
+        }
+        if (dataStat.DonneeStatPerso.statPerso.perso3.nom){
+        ajouterEnnemiOrdreTour(dataStat.DonneeStatPerso.statPerso.perso3.type, dataStat.DonneeStatPerso.statPerso.perso3.Dexterite, false)
+        }
+    } catch {}
+    console.log("Tour des attaques : ", ordreTourAttaque)
+    
+    launchFight()
     ennemiLVLinRoom = 0
     ennemiNumberinRoom = 0
 }
+
+let currentFighter = ordreTourAttaque[0];
+
+function launchFight() {
+    console.log(ordreTourAttaque);
+    
+    function nextTurn() {
+
+        if (ordreTourAttaque.length === 0 && ordreTourAttaque2.length > 0) {
+            ordreTourAttaque = ordreTourAttaque2
+        }
+
+        if (ordreTourAttaque.length === 0) {
+            console.log("Fin du combat !");
+            return;
+        }
+        if (ordreTourAttaque[0]) {
+        currentFighter = ordreTourAttaque[0];
+        } else {
+            ordreTourAttaque = ordreTourAttaque2
+            currentFighter = ordreTourAttaque[0]
+        }
+        if (currentFighter.nom === "perso1" || currentFighter.nom === "perso2" || currentFighter.nom === "perso3") {
+            console.log("C'est au tour de :", currentFighter.nom);
+            ordreTourAttaque2.push(ordreTourAttaque.shift())
+            if (ordreTourAttaque.lenght === 0) {
+                ordreTourAttaque = ordreTourAttaque2
+                console.log("ordre du tour : ", ordreTourAttaque)
+            }
+            console.log("reste du tour : ", ordreTourAttaque )
+            return; 
+        }
+
+        console.log("Tour de :", currentFighter.nom);
+
+        setTimeout(() => {
+            const CRT = randomNumber(100);
+            const numRand = randomNumber(nombreDePerso);
+            const persoRand = "perso" + numRand;
+
+            if (CRT - dataStat.DonneeStatPerso.statPerso[persoRand].Dexterite > 90 + actualEnnemiStatut[currentFighter.nom].DEX) {
+                const rand = genererChiffre(actualEnnemiStatut[currentFighter.nom].CRIT, 10);
+                const randDef = Math.round(rand - (rand * (dataStat.DonneeStatPerso.stats[persoRand].Def / 100)));
+                nombreDegatsTemporaire = "Coup critique ! ! ! -" + randDef + " dégâts";
+                dataStat.DonneeStatPerso.statPerso[persoRand].HPactual -= randDef;
+            } else if (CRT - dataStat.DonneeStatPerso.statPerso[persoRand].Dexterite < 10 + actualEnnemiStatut[currentFighter.nom].DEX) {
+                nombreDegatsTemporaire = "Raté !";
+            } else {
+                const rand = genererChiffre(actualEnnemiStatut[currentFighter.nom].ATQ, 5);
+                const randDef = Math.round(rand - (rand * (dataStat.DonneeStatPerso.stats[persoRand].Def / 100)));
+                nombreDegatsTemporaire = "-" + randDef + " dégâts";
+                dataStat.DonneeStatPerso.statPerso[persoRand].HPactual -= randDef;
+            }
+
+            // Mise à jour de l'affichage
+            const OldImg = document.getElementById(actualEnnemiStatut[currentFighter.nom].ImID);
+            OldImg.style.display = "none";
+            const imAttaque = document.createElement("img");
+            const nomGenerique = currentFighter.nom.replace(/\s*[0-9]+\s*/g, '');
+            imAttaque.src = ennemi[nomGenerique].IMGATQ;
+            imAttaque.style.zIndex = "5";
+            imAttaque.style.width = "400px";
+            imAttaque.style.height = "400px";
+            buttonDoorDiv.divEnn3.appendChild(imAttaque);
+
+            let spanDegats = document.createElement("span");
+            spanDegats.id = "spanDegats";
+            spanDegats.textContent = nombreDegatsTemporaire || "Raté !";
+            buttonDoorDiv.ennemiDegats.appendChild(spanDegats);
+
+            setTimeout(() => {
+                // Réinitialisation après l'attaque
+                OldImg.style.display = "block";
+                imAttaque.remove();
+                spanDegats.remove();
+                update();
+                
+                // Passer au prochain combattant
+                ordreTourAttaque2.push(ordreTourAttaque.shift());
+
+                // Vérifier la fin du jeu
+                if (!end) {
+                    gameOver();
+                }
+
+                // Appeler récursivement la fonction pour le prochain tour
+                nextTurn();
+            }, 800);
+        }, 1300);
+    }
+
+    // Lancer le premier tour
+    nextTurn();
+}
+
+
+
 let dark = false;
 let marchand = 0
 let  testMarchand = ""
@@ -929,11 +1042,9 @@ const btnMarchand = document.getElementById("checkMarchand")
 const btnNoMarchand = document.getElementById("checkNoMarchand")
 btnMarchand.addEventListener("click", () => {
     testMarchand = "alwaysMarchand"
-    console.log(testMarchand)
 })
 btnNoMarchand.addEventListener("click", () => {
     testMarchand = "neverMarchand"
-    console.log(testMarchand)
 })
 //Si on clique sur la porte ouverte
 function enterDoor(door, myRoom) {
@@ -986,13 +1097,10 @@ function enterDoor(door, myRoom) {
                 //CONDITION MARCHAND
                 if (testMarchand === "alwaysMarchand") {
                     marchand = 100
-                    console.log('bouton Marchand : ', marchand)
                 } else if (testMarchand === "neverMarchand") {
                     marchand = 0
-                    console.log('bouton noMarchand : ', marchand)
                 } else {
                 marchand = randomNumber("100");
-                console.log("aucun bouton active : ", marchand)
                 }
                 if (marchand > 80) {
                     let howDeep = "";
@@ -1212,8 +1320,16 @@ function imgPerso () {
                 perso1.width = 370
                 perso1.height = 400
                 perso1.id = "img"+cle
-                perso1.addEventListener("click", () => {
-                if (fighting) { 
+                perso1.addEventListener("click", ()=> chooseChar(valeur.type))
+        persoDiv.appendChild(perso1)
+        document.body.appendChild(persoDiv)}
+        })
+
+}
+
+function chooseChar (type) {
+            if (fighting) { 
+                if(currentFighter.nom === type) {
                     Object.entries(imDoor.ALL).forEach(([key, value]) => {
                         value.style.display = "none"
                     }) 
@@ -1221,20 +1337,23 @@ function imgPerso () {
                     document.body.style.cursor = "default"
                     buttonDoorDiv.allSpell.style.display ="none"
                     buttonDoorDiv.allSkill.style.display ="none"
-                    designationPerso = cle
+                    designationPerso = type
                     buttonDoorDiv.panneauAttaque.style.display="block"
                     update()
                 } else {
-                    designationPerso = cle
+                    attack = false
+                    document.body.style.cursor = "default"
+                    buttonDoorDiv.allSpell.style.display ="none"
+                    buttonDoorDiv.allSkill.style.display ="none"
+                    designationPerso = type 
+                    buttonDoorDiv.panneauAttaque.style.display="none"
                     update()
                 }
-        })
-        persoDiv.appendChild(perso1)
-        document.body.appendChild(persoDiv)}
-        })
-
-}
-
+            } else {
+                designationPerso = type
+                update()
+            }
+        }
 
 function genererChiffre(base, variation) {
     let randomVariation = (Math.random() * (2 * variation)) - variation;
@@ -1282,9 +1401,7 @@ const popAndDelRune = async (temps, nbreRune, i) => {
                 try {
                     delRune.remove();
                 } catch  {}
-                console.log("popAndDelRune pour del : ",temps * (1 + (dataStat.DonneeStatPerso.statPerso[designationPerso].Concentration / 30)))
             }, temps * (1 + (dataStat.DonneeStatPerso.statPerso[designationPerso].Concentration / 30)));
-            console.log("popAndDelRune pour creer : ",((temps) * (1 + (dataStat.DonneeStatPerso.statPerso[designationPerso].Concentration / 30))) * i, i)
     }, ((temps + 100) * (1 + (dataStat.DonneeStatPerso.statPerso[designationPerso].Concentration / 30))) * (i));
     }
 const runeTimeOut = async (temps, nbreRune) => {
@@ -1335,7 +1452,6 @@ async function QTErune(temps, nbreRune) {
         runeDoneToDel= []
     }
         op.style.setProperty('--darkness-opacity', 0)
-        console.log("temps total des QTE: ",((((temps)*(1 +(dataStat.DonneeStatPerso.statPerso[designationPerso].Concentration/30))) * nbreRune)+(temps*(1 +(dataStat.DonneeStatPerso.statPerso[designationPerso].Concentration/30))))+2000)
     }, ((((temps)*(1 +(dataStat.DonneeStatPerso.statPerso[designationPerso].Concentration/30))) * nbreRune)+(temps*(1 +(dataStat.DonneeStatPerso.statPerso[designationPerso].Concentration/30))))+2000)
 }
 function whatAttaque(type, name) {
@@ -1371,6 +1487,9 @@ async function spell (nom, nomGen, div,ImEnn) {
         if (dataStat.DonneeStatPerso.statPerso[designationPerso].MPactual < spells[spellInUse].manaCost) {
             alert("mana insuffisant pour lancer ", spells[spellInUse].nom)
         } else {
+            buttonDoorDiv.allSpell.style.display ="none"
+            buttonDoorDiv.allSkill.style.display ="none"
+            buttonDoorDiv.panneauAttaque.style.display="none"
             isAttacking = true; 
     //CC SYSYTEM ESSAI facon QTE
     await QTErune(spells[spellInUse].tempsRune, spells[spellInUse].nombreRune)
@@ -1458,6 +1577,14 @@ async function spell (nom, nomGen, div,ImEnn) {
             const findDiv = actualEnnemiStatut[value].div
             const findImEnn = actualEnnemiStatut[value].ImID
             loot(value, ennemiGen, findDiv, findImEnn)
+            const index = ordreTourAttaque.findIndex(e => e.nom === nom)
+            if (index !== -1){
+                ordreTourAttaque.splice(index , 1)
+            }
+            const index2 = ordreTourAttaque2.findIndex(e => e.nom === nom)
+            if (index2 !== -1){ 
+                ordreTourAttaque2.splice(index2 , 1)
+            }
             setTimeout(() => {
                 spellInUse=""
                 isAttacking = false
@@ -1482,6 +1609,9 @@ async function skill (nom, nomGen, div,ImEnn) {
             alert("mana insuffisant pour lancer ", skills[skillInUse].nom)
         } else {
             isAttacking = true; 
+            buttonDoorDiv.allSpell.style.display ="none"
+            buttonDoorDiv.allSkill.style.display ="none"
+            buttonDoorDiv.panneauAttaque.style.display="none"
     //CC SYSYTEM ESSAI facon QTE
     await QTErune(skills[skillInUse].tempsRune, skills[skillInUse].nombreRune)
     //QTE END
@@ -1568,6 +1698,14 @@ async function skill (nom, nomGen, div,ImEnn) {
             const findDiv = actualEnnemiStatut[value].div
             const findImEnn = actualEnnemiStatut[value].ImID
             loot(value, ennemiGen, findDiv, findImEnn)
+            const index = ordreTourAttaque.findIndex(e => e.nom === nom)
+            if (index !== -1){
+                ordreTourAttaque.splice(index , 1)
+            }
+            const index2 = ordreTourAttaque2.findIndex(e => e.nom === nom)
+            if (index2 !== -1){ 
+                ordreTourAttaque2.splice(index2 , 1)
+            }
             setTimeout(() => {
                 skillInUse=""
                 isAttacking = false
@@ -1587,6 +1725,9 @@ function attaque(nom, nomGen, div, ImEnn) {
     if (attack) {
         if (isAttacking) return; 
     else {
+        buttonDoorDiv.allSpell.style.display ="none"
+            buttonDoorDiv.allSkill.style.display ="none"
+            buttonDoorDiv.panneauAttaque.style.display="none"
         const keys = Object.keys(actualEnnemiStatut);
         lastAttackDelay = (keys.length - 1) * 1300 + 800;
     isAttacking = true; }
@@ -1629,6 +1770,14 @@ function attaque(nom, nomGen, div, ImEnn) {
     } else {
         spanDegats.remove()
         loot(nom, nomGen, div, ImEnn)
+            const index = ordreTourAttaque.findIndex(e => e.nom === nom)
+            if (index !== -1){
+                ordreTourAttaque.splice(index , 1)
+            }
+            const index2 = ordreTourAttaque2.findIndex(e => e.nom === nom)
+            if (index2 !== -1){ 
+                ordreTourAttaque2.splice(index2 , 1)
+            }
         vicOrRetaliation()
         setTimeout(() => {
             document.body.style.cursor ="default"
@@ -1636,6 +1785,9 @@ function attaque(nom, nomGen, div, ImEnn) {
             isAttacking = false;
         }, lastAttackDelay + 100);
     }},1000)} 
+}
+async function nextAttaque() {
+
 }
 async function vicOrRetaliation() {
     if (Object.keys(actualEnnemiStatut).length === 0) {
@@ -1660,77 +1812,21 @@ async function vicOrRetaliation() {
             Object.entries(imDoor.ALL).forEach(([key, value]) => {
                 value.style.display = "none"
             }) 
+            ordreTourAttaque = []
+            ordreTourAttaque2 = []
             update()
             fighting = false
             isAttacking = false;
             tooltip.style.visibility = "hidden"
         },1000)
-        
+        console.log("fin du combat : ", ordreTourAttaque, ordreTourAttaque2)
     }
     else {
-        const keys = Object.keys(actualEnnemiStatut);
-        lastAttackDelay = (keys.length - 1) * 1300 + 800;
-        keys.forEach((key, index) => {
-            setTimeout(() => { 
-                if (end) {return}
-                const CRT = randomNumber(100)
-                const numRand = randomNumber(nombreDePerso)
-                console.log("nbre de perso : ",nombreDePerso)
-                console.log("perso choisi : ",numRand)
-                const persoRand = "perso"+numRand
-            if (CRT-dataStat.DonneeStatPerso.statPerso[persoRand].Dexterite > 90+actualEnnemiStatut[key].DEX) {
-                const rand = genererChiffre(actualEnnemiStatut[key].CRIT, 10)
-                const randDef = Math.round(rand - (rand * (dataStat.DonneeStatPerso.stats[persoRand].Def / 100)))
-                nombreDegatsTemporaire ="Coup critique ! ! ! !"+"-"+ randDef +" "+  "dégats"
-                dataStat.DonneeStatPerso.statPerso[persoRand].HPactual -= randDef
-                
-            } else if (CRT-dataStat.DonneeStatPerso.statPerso[persoRand].Dexterite < 10+actualEnnemiStatut[key].DEX) {
-                nombreDegatsTemporaire = "Raté !"
-            } else {
-                const rand = genererChiffre(actualEnnemiStatut[key].ATQ,5)
-                const randDef = Math.round(rand - (rand * (dataStat.DonneeStatPerso.stats[persoRand].Def / 100)))
-                nombreDegatsTemporaire = "-" + randDef + " " + "dégats"
-                dataStat.DonneeStatPerso.statPerso[persoRand].HPactual -= randDef
-            
-            }
-                const OldImg = document.getElementById(actualEnnemiStatut[key].ImID)
-                OldImg.style.display="none"
-                const imAttaque = document.createElement("img")
-                const nomGenerique = key.replace(/\s*[0-9]+\s*/g, '')
-                imAttaque.src = ennemi[nomGenerique].IMGATQ
-                imAttaque.style.zIndex="5"
-                imAttaque.style.width="400px"
-                imAttaque.style.height="400px"
-                buttonDoorDiv.divEnn3.appendChild(imAttaque)
-                let spanDegats = document.createElement("span")
-                spanDegats.id = "spanDegats"
-                if(nombreDegatsTemporaire !== undefined){
-                    spanDegats.textContent =nombreDegatsTemporaire
-                    buttonDoorDiv.ennemiDegats.appendChild(spanDegats)
-                    nombreDegatsTemporaire = ""
-                } 
-                else {
-                    spanDegats.textContent ="Raté !"
-                    buttonDoorDiv.ennemiDegats.appendChild(spanDegats)
-                    nombreDegatsTemporaire = ""
-                }
-                    setTimeout(() => {
-                    OldImg.style.display="block"
-                    imAttaque.remove()
-                    spanDegats.remove()
-                    update()
-                    if (end) {return} else {
-                    gameOver()}
-                    },800)
-                },index * 1300) 
-            
-                
-            })
+        launchFight ()
         }
         runeCrit = 0
     }
 function loot(nom, nomGen, div, ImEnn) {
-    console.log(nom, nomGen, div, ImEnn)
     boiteDialogue("txtKill", ennemi[nomGen].txt);
         Object.entries(dataStat.DonneeStatPerso.statPerso).forEach(([key, value]) => {
             value.XP += Math.round(actualEnnemiStatut[nom].XP / nombreDePerso);
@@ -2319,9 +2415,6 @@ infoDiv.appendChild(pointsSpan);
 document.body.appendChild(infoDiv);
 
 function update() {
-    console.log(dataStat.DonneeStatPerso.statPerso.perso1.nom)
-    console.log(dataStat.DonneeStatPerso.statPerso[designationPerso].nom)
-    console.log(designationPerso)
     document.getElementById("nomDuPerso").textContent = `${dataStat.DonneeStatPerso.statPerso[designationPerso].nom}`
     document.getElementById("defense").textContent = `Défense : ${dataStat.DonneeStatPerso.stats[designationPerso].Def}`;
     document.getElementById("degatsArmeG").textContent =
