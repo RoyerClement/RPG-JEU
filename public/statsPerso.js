@@ -194,6 +194,17 @@ const arme = {
         test: "testOrcEpee",
         title: "Une épée recouverte de sang et de rouille"
     },
+    hallebarde: {
+        degatsBase : 20,
+        degatsForce: 4,
+        degatsDexterite : 1,
+        degatsIntelligence: 0,
+        IMG: "image/hallebarde.webp",
+        class: "image",
+        test: "testHallebarde",
+        title: "Une hallebarde",
+        twoHand: true,
+    },
 };
 const gear = {
     LeftHand: {
@@ -212,11 +223,18 @@ const gear = {
             title :"votre main droite",
         },
         espadon: {
-            degats: () => 3 + (3 * statPerso[designationPerso].Force + 2 * statPerso[designationPerso].Dexterite),
+            //degats: () => 3 + (3 * statPerso[designationPerso].Force + 2 * statPerso[designationPerso].Dexterite),
             IMG: "image/espadon.webp",
             class: "image",
             test: "testEspadon",
             title: "Une épée à deux mains",
+            twoHand: true,
+        },
+        hallebarde: {
+            IMG: "image/hallebarde.webp",
+            class: "image",
+            test: "testHallebarde",
+            title: "Une hallebarde",
             twoHand: true,
         },
         dague: {
@@ -304,6 +322,13 @@ const gear = {
             class: "image",
             test: "testEspadon",
             title: "Une épée à deux mains",
+            twoHand: true,
+        },
+        hallebarde: {
+            IMG: "image/hallebarde.webp",
+            class: "image",
+            test: "testHallebarde",
+            title: "Une hallebarde",
             twoHand: true,
         },
         dague: {
@@ -1317,6 +1342,10 @@ function takeWeapon(name, type, genre) {
             }
         }
     }
+    //Check les doublons
+    let seen = new Set();  
+    let result = inventaire.LeftHand.filter(item => seen.has(item) ? false : seen.add(item));
+    inventaire.LeftHand = result
     update();
     VisualRender();
 }
@@ -1557,9 +1586,6 @@ async function replaceStat() {
     message = recData.donjonpath.message;
     money = recData.donjonpath.dataStat.DonneeStatPerso.money
     nombreDePerso = recData.donjonpath.dataStat.DonneeStatPerso.nombreDePerso
-    console.log("recData...", recData.donjonpath.dataStat.DonneeStatPerso.nombreDePerso)
-    console.log("nombre de Perso : ",nombreDePerso)
-    console.log("les perso : ", statPerso)
     checkNombrePerso()
     suppSelectName();
     suppClassDepart();

@@ -24,7 +24,8 @@ const buttonDoorDiv = {
     allSpell: document.getElementById("allSpell"),
     tableauRune: document.getElementById('tableauRune'),
     tableauRuneDone: document.getElementById("tableauRuneDone"),
-    all: document.getElementById("all")
+    all: document.getElementById("all"),
+    mur : document.getElementById("mur"),
 };
 const imDoor = {
     ImA: document.getElementById("ImA"),
@@ -782,7 +783,7 @@ btnAllATQ.addEventListener('click', () => {
 
 const btnGetStuff = document.getElementById('getStuff')
 btnGetStuff.addEventListener('click', () => {
-    dataStat.DonneeStatPerso.inventaire.LeftHand = ["torche","espadon", "dague", "batonDepart", "arcDepart", "epeeDepart", "hacheDepart", "orcHache", "gobArc"]
+    dataStat.DonneeStatPerso.inventaire.LeftHand = ["hallebarde" ,"torche","espadon", "dague", "batonDepart", "arcDepart", "epeeDepart", "hacheDepart", "orcHache", "gobArc"]
     dataStat.DonneeStatPerso.inventaire.Chest = ["armureEnFer", "armureEnCuir"]
     dataStat.DonneeStatPerso.inventaire.Head = ["casqueEnCuir"]
 })
@@ -935,19 +936,52 @@ function triggerFight() {
     console.log("Tour des attaques : ", ordreTourAttaque)
     
     launchFight()
+    checkOrderFight()
     ennemiLVLinRoom = 0
     ennemiNumberinRoom = 0
 }
 
 let currentFighter = ordreTourAttaque[0];
 
+function checkOrderFight() {
+
+    try {
+    document.getElementById("divTourImage").remove()
+    } catch {}
+    const divTourImage = document.createElement("div")
+    divTourImage.id = "divTourImage"
+    
+    ordreTourAttaque.forEach((value) => {
+        const rawValue = value.nom.replace(/\s*[0-9]+\s*/g, '')
+        const imgTourEnn = document.createElement("img")
+        imgTourEnn.src = "image/"+[rawValue]+"Head.webp"
+        imgTourEnn.width = 100
+        imgTourEnn.height = 100
+        imgTourEnn.id = value
+        imgTourEnn.style.border = "4px solid red"
+        divTourImage.appendChild(imgTourEnn)
+    })
+    ordreTourAttaque2.forEach((value) => {
+        const rawValue = value.nom.replace(/\s*[0-9]+\s*/g, '')
+        const imgTourEnn = document.createElement("img")
+        imgTourEnn.width = 100
+        imgTourEnn.height = 100
+        imgTourEnn.id = value
+        imgTourEnn.style.border = "4px solid red"
+        imgTourEnn.src = "image/"+[rawValue]+"Head.webp"
+        divTourImage.appendChild(imgTourEnn)
+    })
+    buttonDoorDiv.mur.appendChild(divTourImage)
+}
+
 function launchFight() {
     console.log(ordreTourAttaque);
     
     function nextTurn() {
-
+        checkOrderFight() 
         if (ordreTourAttaque.length === 0 && ordreTourAttaque2.length > 0) {
             ordreTourAttaque = ordreTourAttaque2
+            ordreTourAttaque2 = []
         }
 
         if (ordreTourAttaque.length === 0) {
@@ -1017,7 +1051,6 @@ function launchFight() {
                 
                 // Passer au prochain combattant
                 ordreTourAttaque2.push(ordreTourAttaque.shift());
-
                 // Vérifier la fin du jeu
                 if (!end) {
                     gameOver();
@@ -1577,11 +1610,11 @@ async function spell (nom, nomGen, div,ImEnn) {
             const findDiv = actualEnnemiStatut[value].div
             const findImEnn = actualEnnemiStatut[value].ImID
             loot(value, ennemiGen, findDiv, findImEnn)
-            const index = ordreTourAttaque.findIndex(e => e.nom === nom)
+            const index = ordreTourAttaque.findIndex(e => e.nom === value)
             if (index !== -1){
                 ordreTourAttaque.splice(index , 1)
             }
-            const index2 = ordreTourAttaque2.findIndex(e => e.nom === nom)
+            const index2 = ordreTourAttaque2.findIndex(e => e.nom === value)
             if (index2 !== -1){ 
                 ordreTourAttaque2.splice(index2 , 1)
             }
@@ -1698,11 +1731,11 @@ async function skill (nom, nomGen, div,ImEnn) {
             const findDiv = actualEnnemiStatut[value].div
             const findImEnn = actualEnnemiStatut[value].ImID
             loot(value, ennemiGen, findDiv, findImEnn)
-            const index = ordreTourAttaque.findIndex(e => e.nom === nom)
+            const index = ordreTourAttaque.findIndex(e => e.nom === value)
             if (index !== -1){
                 ordreTourAttaque.splice(index , 1)
             }
-            const index2 = ordreTourAttaque2.findIndex(e => e.nom === nom)
+            const index2 = ordreTourAttaque2.findIndex(e => e.nom === value)
             if (index2 !== -1){ 
                 ordreTourAttaque2.splice(index2 , 1)
             }
@@ -1819,9 +1852,11 @@ async function vicOrRetaliation() {
             isAttacking = false;
             tooltip.style.visibility = "hidden"
         },1000)
+        document.getElementById("divTourImage").remove()
         console.log("fin du combat : ", ordreTourAttaque, ordreTourAttaque2)
     }
     else {
+        checkOrderFight()
         launchFight ()
         }
         runeCrit = 0
