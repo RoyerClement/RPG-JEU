@@ -51,6 +51,7 @@ const imDoor = {
         sortBlast: document.getElementById("btnBlast"),
         skillAll: document.getElementById("btnAttaqueAll"),
         skillDouble: document.getElementById("btnATQdouble"),
+        skillVol: document.getElementById("skillVol"),
     }
 };
 const runes = {
@@ -77,8 +78,14 @@ const dialogue = {
     txtVictory: "Vous avez remporté le combat",
     txtAttaque: `Vous attaquez `,
     txtKill: `Vous tuez `,
+    noMoney : `Vous n'avez pas assez d'or pour acheter `,
+    txtVol : `Vous réussissez à voler `,
+    txtVolOr : `Vous reussissez à voler de l'or`,
+    txtVolRate : `Vous n'avez rien reussi à voler !`,
     txtMarchand: `Il y a un marchand dans cette salle`,
     txtLoot: `Qqchose tombe du monstre... Vous ramassez `,
+    txtLootOr: `Vous ramassez de l'or`,
+    txtRateSkill : `Vous ratez lamentablement votre tentative`,
     txtDarkness: "Il fait trop noir pour continuer sans lumière, vous ne pouvez pas combattre ainsi"
 };
 let textDialogue = "";
@@ -190,7 +197,8 @@ let dataStat = {
             MPactual: 50,
             XP: 0,
             LVL: 1,
-            spells: []
+            spells: [],
+            arme:"",
         },
         perso2 : 
         {   
@@ -210,7 +218,8 @@ let dataStat = {
             MPactual: 50,
             XP: 0,
             LVL: 1,
-            spells: []
+            spells: [],
+            arme:"",
         },
         perso3 : 
         {   
@@ -230,7 +239,8 @@ let dataStat = {
             MPactual: 50,
             XP: 0,
             LVL: 1,
-            spells: []
+            spells: [],
+            arme:"",
         },
     },
     marketMemory: {start : [], },
@@ -289,8 +299,19 @@ let skills = {
         tempsRune: 600,  
         width: "300"
     },
-    steal : {
-        effect : "on va voir"
+    skillVol : {
+        effect : () => lootObject(currentTarget),
+        manaCost: 5,
+        variation: 0,
+        target:"noDmg",
+        repetition:1,
+        state:true,
+        nom: "skillVol",
+        IMG: "image/skillVol.webp",
+        nombreRune: 3,
+        runeMultiple: 0,
+        tempsRune: 600,  
+        width: "300"
     }
 }
 let spells = {
@@ -348,7 +369,7 @@ let spells = {
         runeMultiple: 0.5,
         nombreRune: 5,
         tempsRune: 3000,   
-        width: "500" 
+        width: "700" 
     }
 }
 const item = {
@@ -366,7 +387,31 @@ const item = {
     },
     anneauDexterite: {
         nom: "un anneau de dextérité",
-        IMG: "image/anneauForce.webp",
+        IMG: "image/anneauDex.webp",
+        cost: 100,
+        type: "Ring"
+    },
+    anneauDef: {
+        nom: "un anneau de défense",
+        IMG: "image/anneauDef.webp",
+        cost: 100,
+        type: "Ring"
+    },
+    anneauInt: {
+        nom: "un anneau d'intelligence",
+        IMG: "image/anneauInt.webp",
+        cost: 100,
+        type: "Ring"
+    },
+    anneauVie: {
+        nom: "un anneau de vie",
+        IMG: "image/anneauVie.webp",
+        cost: 100,
+        type: "Ring"
+    },
+    anneauLuc: {
+        nom: "un anneau de lucidité",
+        IMG: "image/anneauLuc.webp",
         cost: 100,
         type: "Ring"
     },
@@ -424,35 +469,35 @@ const item = {
     sortFeu: {
         nom: "un parchemin mystérieux",
         IMG: "image/parchemin.webp",
-        cost: 150,
+        cost: 350,
         id: "sortFeu",
         type: "Scroll"
     },
     sortLumiere: {
         nom: "un parchemin mystérieux",
         IMG: "image/parchemin.webp",
-        cost: 100,
+        cost: 500,
         id: "sortLumiere",
         type: "Scroll"
     },
     sortFoudre: {
         nom: "un parchemin mystérieux",
         IMG: "image/parchemin.webp",
-        cost: 300,
+        cost: 900,
         id: "sortFoudre",
         type: "Scroll"
     },
     sortBlast: {
         nom: "un parchemin mystérieux",
         IMG: "image/parchemin.webp",
-        cost: 300,
+        cost: 1200,
         id: "sortBlast",
         type: "Scroll"
     },
     sortArcane: {
         nom: "un parchemin mystérieux",
         IMG: "image/parchemin.webp",
-        cost: 300,
+        cost: 5000,
         id: "sortArcane",
         type: "Scroll"
     },
@@ -480,10 +525,74 @@ const item = {
     gobArc: {
         nom: "un arc de gobelin",
         IMG: "image/gobArc.webp",
-        cost : 150,
+        cost : 700,
         id: "gobArc",
         type: "LeftHand",
-    }
+    },
+    batonMage : {
+        nom: "un baton de mage",
+        IMG: "image/batonMage.webp",
+        cost: 2000,
+        test: "testBatonMage",
+        title: "Un baton excellent pour la pratique de la magie",
+        type: "LeftHand",
+    },
+    batonClerc : {
+        nom: "un baton de clerc",
+        IMG: "image/batonClerc.webp",
+        cost: 1500,
+        test: "testBatonClerc",
+        title: "Un baton utilisé par les clercs",
+        type: "LeftHand",
+    },
+    lance: {
+        nom: "une lance",
+        IMG: "image/lance.webp",
+        cost: 1000,
+        test: "testLance",
+        title: "Un lance",
+        type: "LeftHand",
+    },
+    gourdin: {
+        nom: "un gourdin",
+        IMG: "image/gourdin.webp",
+        cost: 300,
+        test: "testGourdin",
+        title: "Un gourdin",
+        type: "LeftHand",
+    },
+    masse: {
+        nom: "une masse",
+        IMG: "image/masse.webp",
+        cost: 500,
+        test: "testMasse",
+        title: "Une masse",
+        type: "LeftHand",
+    },
+    hallebarde: {
+        nom: "une hallebarde",
+        IMG: "image/hallebarde.webp",
+        cost: 1700,
+        test: "testHallebarde",
+        title: "Une hallebarde",
+        type: "LeftHand",
+    },
+    lance2: {
+        nom: "une lance de qualité",
+        IMG: "image/lance2.webp",
+        cost: 1800,
+        test: "testLance2",
+        title: "Un lance impressionnante",
+        type: "LeftHand",
+    },
+    katana: {
+        nom: "un katana",
+        IMG: "image/katana.webp",
+        cost: 800,
+        test: "testKatana",
+        title: "Un katana",
+        type: "LeftHand",
+    },
 };
 let actualFight = [];
 let actualEnnemiStatut = {};
@@ -504,12 +613,16 @@ const ennemi = {
         HP: 60,
         DEX: 0,
         XP: 50,
+        faible:["tranchant","estoc"],
+        norme: [],
+        fort:["contondant"],
         LOOT: {
             orcEpee : 5,
             orcCasque: 5,
             potionVie: 7,
             pain:10,
         },
+        nbreObjet : 4,
         or: 50,
         LVL: 5
     },
@@ -529,6 +642,9 @@ const ennemi = {
         HP: 10,
         DEX: 2,
         XP: 10,
+        faible:["tranchant","estoc"],
+        norme: ["contondant"],
+        fort:[],
         LOOT: {
             gobArc : 7,
             anneauDexterite : 1,
@@ -536,6 +652,7 @@ const ennemi = {
             potionVie: 5,
             pain:10,
         },
+        nbreObjet : 5,
         or: 20, 
         LVL: 1
     },
@@ -554,12 +671,16 @@ const ennemi = {
         HP: 10,
         DEX: 1,
         XP: 30,
+        faible:["contondant"],
+        norme: ["estoc"],
+        fort:["tranchant"],
         LOOT: {
             gobArc : 7,
             anneauDexterite : 5,
             potionMana : 15,
             potionVie: 20,
         },
+        nbreObjet : 4,
         or: 20, 
         LVL: 3
     },
@@ -578,12 +699,16 @@ const ennemi = {
         HP: 210,
         DEX: 0,
         XP: 100,
+        faible:["estoc"],
+        norme: [],
+        fort:["tranchant","contondant"],
         LOOT: {
             gobArc : 7,
             anneauDexterite : 5,
             potionMana : 15,
             potionVie: 20,
         },
+        nbreObjet : 4,
         or: 20, 
         LVL: 10
     },
@@ -602,12 +727,16 @@ const ennemi = {
         HP: 120,
         DEX: 2,
         XP: 70,
+        faible:["estoc"],
+        norme: ["tranchant"],
+        fort:["contondant"],
         LOOT: {
             gobArc : 7,
             anneauDexterite : 5,
             potionMana : 15,
             potionVie: 20,
         },
+        nbreObjet : 4,
         or: 20, 
         LVL: 7
     },
@@ -626,12 +755,16 @@ const ennemi = {
         HP: 30,
         DEX: 1,
         XP: 40,
+        faible:["contondant"],
+        norme: ["tranchant","estoc"],
+        fort:[],
         LOOT: {
             gobArc : 7,
             anneauDexterite : 5,
             potionMana : 15,
             potionVie: 20,
         },
+        nbreObjet : 4,
         or: 20, 
         LVL: 4
     },
@@ -650,12 +783,16 @@ const ennemi = {
         HP: 40,
         DEX: 5,
         XP: 20,
+        faible:["tranchant"],
+        norme: ["contondant","estoc"],
+        fort:[],
         LOOT: {
             gobArc : 7,
             anneauDexterite : 5,
             potionMana : 15,
             potionVie: 20,
         },
+        nbreObjet : 4,
         or: 20, 
         LVL: 2
     },
@@ -698,12 +835,16 @@ const ennemi = {
         HP: 85,
         DEX: 10,
         XP: 60,
+        faible:[],
+        norme: ["estoc"],
+        fort:["tranchant","contondant"],
         LOOT: {
             gobArc : 7,
             anneauDexterite : 5,
             potionMana : 15,
             potionVie: 20,
         },
+        nbreObjet : 4,
         or: 20, 
         LVL: 6
     },
@@ -779,13 +920,40 @@ btnAllATQ.addEventListener('click', () => {
     imDoor.ALL.sortFoudre.style.display="block"
     imDoor.ALL.skillAll.style.display="block"
     imDoor.ALL.skillDouble.style.display="block"
+    imDoor.ALL.skillVol.style.display="block"
 })
 
 const btnGetStuff = document.getElementById('getStuff')
 btnGetStuff.addEventListener('click', () => {
-    dataStat.DonneeStatPerso.inventaire.LeftHand = ["hallebarde" ,"torche","espadon", "dague", "batonDepart", "arcDepart", "epeeDepart", "hacheDepart", "orcHache", "gobArc"]
+    dataStat.DonneeStatPerso.inventaire.LeftHand = [
+        "masse",
+        "batonMage",
+        "batonClerc",
+        "lance",
+        "lance2",
+        "gourdin",
+        "katana",
+        "hallebarde",
+        "torche",
+        "espadon", 
+        "dague", 
+        "batonDepart", 
+        "arcDepart", 
+        "epeeDepart", 
+        "hacheDepart", 
+        "orcHache", 
+        "gobArc"
+    ]
+
     dataStat.DonneeStatPerso.inventaire.Chest = ["armureEnFer", "armureEnCuir"]
     dataStat.DonneeStatPerso.inventaire.Head = ["casqueEnCuir"]
+    dataStat.DonneeStatPerso.inventaire.Ring = [
+        "anneauDexterite",
+        "anneauDef",
+        "anneauInt",
+        "anneauVie",
+        "anneauLuc",
+    ]
 })
 const btnNewChar = document.getElementById('getNewPerso')
 btnNewChar.addEventListener('click', () => {
@@ -805,8 +973,9 @@ btnNewChar.addEventListener('click', () => {
         MP: 95,
         MPactual: 16,
         XP: 0,
-        LVL: 3,
-        spells: ["sortFoudre"]
+        LVL: 11,
+        spells: ["sortFoudre", "skillVol"],
+        arme: "estoc"
     }
     dataStat.DonneeStatPerso.equipement.perso2 = {
             LeftHand: "dague",
@@ -936,7 +1105,6 @@ function triggerFight() {
     console.log("Tour des attaques : ", ordreTourAttaque)
     
     launchFight()
-    checkOrderFight()
     ennemiLVLinRoom = 0
     ennemiNumberinRoom = 0
 }
@@ -944,7 +1112,6 @@ function triggerFight() {
 let currentFighter = ordreTourAttaque[0];
 
 function checkOrderFight() {
-
     try {
     document.getElementById("divTourImage").remove()
     } catch {}
@@ -954,11 +1121,24 @@ function checkOrderFight() {
     ordreTourAttaque.forEach((value) => {
         const rawValue = value.nom.replace(/\s*[0-9]+\s*/g, '')
         const imgTourEnn = document.createElement("img")
+        if (value.nom === "perso1") {
+            imgTourEnn.src = "image/"+dataStat.DonneeStatPerso.statPerso.perso1.class+"Head.webp"
+        } else if (value.nom === "perso2") {
+            imgTourEnn.src = "image/"+dataStat.DonneeStatPerso.statPerso.perso2.class+"Head.webp"
+        }
+        else if (value.nom === "perso3") {
+            imgTourEnn.src = "image/"+dataStat.DonneeStatPerso.statPerso.perso3.class+"Head.webp"
+        } else {
         imgTourEnn.src = "image/"+[rawValue]+"Head.webp"
+        }
         imgTourEnn.width = 100
         imgTourEnn.height = 100
         imgTourEnn.id = value
+        if (value.nom === ordreTourAttaque[0].nom) {
+            imgTourEnn.style.border = "4px solid yellow"
+        } else {
         imgTourEnn.style.border = "4px solid red"
+        }
         divTourImage.appendChild(imgTourEnn)
     })
     ordreTourAttaque2.forEach((value) => {
@@ -967,8 +1147,21 @@ function checkOrderFight() {
         imgTourEnn.width = 100
         imgTourEnn.height = 100
         imgTourEnn.id = value
+        if (value.nom === ordreTourAttaque2[0].nom && !ordreTourAttaque[0]) {
+            imgTourEnn.style.border = "4px solid yellow"
+        } else {
         imgTourEnn.style.border = "4px solid red"
+        }
+        if (value.nom === "perso1") {
+            imgTourEnn.src = "image/"+dataStat.DonneeStatPerso.statPerso.perso1.class+"Head.webp"
+        } else if (value.nom === "perso2") {
+            imgTourEnn.src = "image/"+dataStat.DonneeStatPerso.statPerso.perso2.class+"Head.webp"
+        }
+        else if (value.nom === "perso3") {
+            imgTourEnn.src = "image/"+dataStat.DonneeStatPerso.statPerso.perso3.class+"Head.webp"
+        } else {
         imgTourEnn.src = "image/"+[rawValue]+"Head.webp"
+        }
         divTourImage.appendChild(imgTourEnn)
     })
     buttonDoorDiv.mur.appendChild(divTourImage)
@@ -1364,6 +1557,7 @@ function chooseChar (type) {
             if (fighting) { 
                 if(currentFighter.nom === type) {
                     Object.entries(imDoor.ALL).forEach(([key, value]) => {
+                        
                         value.style.display = "none"
                     }) 
                     attack = false
@@ -1633,6 +1827,7 @@ async function spell (nom, nomGen, div,ImEnn) {
     },(5000+(((spells[spellInUse].tempsRune)*1.5)*(1+dataStat.DonneeStatPerso.statPerso[designationPerso].Concentration/30))*(spells[spellInUse].nombreRune-1)))}}} 
     else  return 
 }
+let currentTarget = ""
 async function skill (nom, nomGen, div,ImEnn) {
     if (!skillInUse) {return}
     if (skills[skillInUse].state) {
@@ -1646,6 +1841,7 @@ async function skill (nom, nomGen, div,ImEnn) {
             buttonDoorDiv.allSkill.style.display ="none"
             buttonDoorDiv.panneauAttaque.style.display="none"
     //CC SYSYTEM ESSAI facon QTE
+    currentTarget = nom
     await QTErune(skills[skillInUse].tempsRune, skills[skillInUse].nombreRune)
     //QTE END
     setTimeout(()=> {
@@ -1659,7 +1855,6 @@ async function skill (nom, nomGen, div,ImEnn) {
     skill.width = skills[skillInUse].width;
     skill.height = "308";
     skill.zIndex="99"
-    let SKILLDMG = skills[skillInUse].effect() * runeCrit
     if (runeCrit === skills[skillInUse].nombreRune) {  
         let spanCrit = document.createElement('p')
         spanCrit.id = "spanCrit"
@@ -1674,7 +1869,7 @@ async function skill (nom, nomGen, div,ImEnn) {
     }
 
     if (skills[skillInUse].target === "solo"){
-        let RANDOM = genererChiffre(SKILLDMG, skills[skillInUse].variation)
+        let RANDOM = genererChiffre(skills[skillInUse].effect() * runeCrit, skills[skillInUse].variation)
         if (RANDOM < 0) {
             RANDOM = 0
         } 
@@ -1689,7 +1884,7 @@ async function skill (nom, nomGen, div,ImEnn) {
         for(let i = 0; i < skills[skillInUse].repetition; i++) {
         const ennemiID = Object.keys(actualEnnemiStatut)
         const randomKey = ennemiID[Math.floor(Math.random() * ennemiID.length)]     
-        let RANDOM = genererChiffre(SKILLDMG, skills[skillInUse].variation)
+        let RANDOM = genererChiffre(skills[skillInUse].effect() * runeCrit, skills[skillInUse].variation)
         if (RANDOM < 0) {
             RANDOM = 0
         } 
@@ -1704,7 +1899,7 @@ async function skill (nom, nomGen, div,ImEnn) {
     else if (skills[skillInUse].target === "all") {
         const ennemiID = Object.keys(actualEnnemiStatut)
         ennemiID.forEach((value) => {
-            let RANDOM = genererChiffre(SKILLDMG, skills[skillInUse].variation)
+            let RANDOM = genererChiffre(skills[skillInUse].effect() * runeCrit, skills[skillInUse].variation)
             if (RANDOM < 0) {
                 RANDOM = 0
             } 
@@ -1715,12 +1910,18 @@ async function skill (nom, nomGen, div,ImEnn) {
             buttonDoorDiv.divEnn1.appendChild(skill)
             buttonDoorDiv[[actualEnnemiStatut[value].div]+"degats"].appendChild(spanDegats)  
         })
+    } else if (skills[skillInUse].target === "noDmg") {
+        if (runeCrit > skills[skillInUse].nombreRune/2){
+            skills[skillInUse].effect()
+        } else {
+            boiteDialogue("txtRateSkill")
+        }
     }
     dataStat.DonneeStatPerso.statPerso[designationPerso].MPactual -= skills[skillInUse].manaCost
 }, (2500+(((skills[skillInUse].tempsRune)*(1+dataStat.DonneeStatPerso.statPerso[designationPerso].Concentration/30))*skills[skillInUse].nombreRune)))    
     setTimeout(() => {
         const delSpell = document.getElementById("skill")
-        delSpell.remove() 
+        try {delSpell.remove()} catch {} 
         const spanDegats = document.querySelectorAll("p")
         spanDegats.forEach(span => {
             span.remove()});
@@ -1775,6 +1976,30 @@ function attaque(nom, nomGen, div, ImEnn) {
             while (randomAttaque < 0) {
                 randomAttaque++
             }
+            ennemi[nomGen].faible.forEach(value => {
+                
+                if(dataStat.DonneeStatPerso.statPerso[designationPerso].arme === value) {
+                    console.log(randomAttaque)
+                    randomAttaque =  Math.round(randomAttaque*1.5)
+                    actualEnnemiStatut[nom].HP -=(randomAttaque)
+                    console.log("était faible à votre arme")
+                    console.log(randomAttaque)
+                    return randomAttaque
+            }}) 
+            ennemi[nomGen].fort.forEach(value => {              
+                if(dataStat.DonneeStatPerso.statPerso[designationPerso].arme === value) {
+                    console.log(randomAttaque)
+                    randomAttaque = Math.round(randomAttaque*0.5)
+                    actualEnnemiStatut[nom].HP -= randomAttaque
+                    console.log("était fort à votre arme")
+                    console.log(randomAttaque)
+                    return randomAttaque
+            }}) 
+            ennemi[nomGen].norme.forEach(value => {
+                if(dataStat.DonneeStatPerso.statPerso[designationPerso].arme === value) {
+                    actualEnnemiStatut[nom].HP -= randomAttaque
+                    console.log("était normal à votre arme")
+            }}) 
         let spanDegats = document.createElement("span")
         spanDegats.id = "spanDegats"
         spanDegats.textContent = "-"+randomAttaque
@@ -1790,7 +2015,6 @@ function attaque(nom, nomGen, div, ImEnn) {
         const blood = document.getElementById("blood")
         blood.remove()
         delAttaque.remove()
-    actualEnnemiStatut[nom].HP -= randomAttaque
     if (actualEnnemiStatut[nom].HP > 0) {
         boiteDialogue("txtAttaque", ennemi[nomGen].txt);
         spanDegats.remove()
@@ -1861,34 +2085,80 @@ async function vicOrRetaliation() {
         }
         runeCrit = 0
     }
+    let compteurVolRate = 0
+    let done = false
+    function lootObject(nomGen){
+        Object.entries(actualEnnemiStatut[nomGen].LOOT).forEach(([key,value]) => {
+            //Si done est faux (qu'on a rien eu encore)
+            if (!done) {
+            const chance = randomNumber(100)
+            if (value >= chance) {
+                const whatType = item[key].type
+                if(whatType === "Object") {
+                    dataStat.DonneeStatPerso.inventaire[whatType].push(key)
+                    actualEnnemiStatut[nomGen].LOOT[key] = -1
+                    if (skillInUse === "skillVol") {
+                        boiteDialogue("txtVol", item[key].nom)
+                    } else {
+                        boiteDialogue("txtLoot", item[key].nom)
+                    }
+                    done = true
+                } else if (whatType !== "Object" && dataStat.DonneeStatPerso.inventaire[whatType].includes(key)) { 
+                    dataStat.DonneeStatPerso.money += 20
+                    actualEnnemiStatut[nomGen].LOOT[key] = -1
+                    if (skillInUse === "skillVol") {
+                        boiteDialogue("txtVolOr")
+                    } else {
+                        boiteDialogue("txtLootOr")
+                    }
+                    done = true
+                } else if (whatType !== "Object" && dataStat.DonneeStatPerso.equipement[whatType] === key) {
+                    dataStat.DonneeStatPerso.money += 20
+                    actualEnnemiStatut[nomGen].LOOT[key] = -1
+                    if (skillInUse === "skillVol") {
+                        boiteDialogue("txtVolOr")
+                    } else {
+                        boiteDialogue("txtLootOr")
+                    }
+                    done = true
+                } else if (whatType !== "Object" && dataStat.DonneeStatPerso.equipement.RightHand === key) {
+                    dataStat.DonneeStatPerso.money += 20
+                    actualEnnemiStatut[nomGen].LOOT[key] = -1
+                    if (skillInUse === "skillVol") {
+                        boiteDialogue("txtVolOr")
+                    } else {
+                        boiteDialogue("txtLootOr")
+                    }
+                    done = true
+                }
+                else {
+                    dataStat.DonneeStatPerso.inventaire[whatType].push(key)
+                    actualEnnemiStatut[nomGen].LOOT[key] = -1
+                    if (skillInUse === "skillVol") {
+                        boiteDialogue("txtVol", item[key].nom)
+                    } else {
+                        boiteDialogue("txtLoot", item[key].nom)
+                    }             
+                    done = true   
+                }
+            } else {
+                compteurVolRate++
+                if (skillInUse === "skillVol" && compteurVolRate === actualEnnemiStatut[nomGen].nbreObjet) {
+                    boiteDialogue("txtVolRate")
+                }
+            }} 
+        })
+    compteurVolRate = 0
+    }
+    console.log(skills)
 function loot(nom, nomGen, div, ImEnn) {
     boiteDialogue("txtKill", ennemi[nomGen].txt);
         Object.entries(dataStat.DonneeStatPerso.statPerso).forEach(([key, value]) => {
             value.XP += Math.round(actualEnnemiStatut[nom].XP / nombreDePerso);
         }) 
         dataStat.DonneeStatPerso.money += actualEnnemiStatut[nom].or
-        Object.entries(ennemi[nomGen].LOOT).forEach(([key,value]) => {
-            const chance = randomNumber(100)
-            if (value >= chance) {
-                const whatType = item[key].type
-                if(whatType === "Object") {
-
-                    dataStat.DonneeStatPerso.inventaire[whatType].push(key)
-                    boiteDialogue("txtLoot", item[key].nom)
-                } else if (whatType !== "Object" && dataStat.DonneeStatPerso.inventaire[whatType].includes(key)) { 
-
-                    dataStat.DonneeStatPerso.money += 20
-                } else if (whatType !== "Object" && dataStat.DonneeStatPerso.equipement[whatType] === key) {
-                    dataStat.DonneeStatPerso.money += 20
-                } else if (whatType !== "Object" && dataStat.DonneeStatPerso.equipement.RightHand === key) {
-                    dataStat.DonneeStatPerso.money += 20
-                }
-                else {
-                    dataStat.DonneeStatPerso.inventaire[whatType].push(key)
-                    boiteDialogue("txtLoot", item[key].nom)
-                }
-            }
-        })
+        lootObject(nom)
+        update()
         delete actualEnnemiStatut[nom]
         imDoor[ImEnn].remove();
         const imEnnemi = document.createElement("img");
@@ -1899,8 +2169,9 @@ function loot(nom, nomGen, div, ImEnn) {
         imEnnemi.id = ImEnn;
         buttonDoorDiv[div].appendChild(imEnnemi);
         ImToDel.push(ImEnn);
-        buttonDoorDiv[div].removeEventListener("click", attaque);
+        buttonDoorDiv[div].removeEventListener("click", attaque); 
 }
+
 //LUMIERE ET OBSCURITE 
 let torche = false
 const flashlight = document.getElementById("flashlight")
@@ -2029,6 +2300,8 @@ imDoor.ALL.sortBlast.addEventListener("click",() =>{
     spellInUse = "sortBlast"
     document.body.style.cursor = "url('image/cursorMGC.png'), auto"} else return
 })
+
+
 imDoor.ALL.skillDouble.addEventListener("click",() =>{ 
     if(!isAttacking){
     skillInUse = "skillDouble"
@@ -2039,6 +2312,13 @@ imDoor.ALL.skillAll.addEventListener("click",() =>{
     skillInUse = "skillAll"
     document.body.style.cursor = "url('image/cursorSKL.webp'), auto"} else return
 })
+imDoor.ALL.skillVol.addEventListener("click",() =>{ 
+    if(!isAttacking){
+        skillInUse = "skillVol"
+    document.body.style.cursor = "url('image/cursorSKL.webp'), auto"} else return
+})
+
+
 function replaceStat() {
     Object.entries(dataStat.DonneeStatPerso.room.numberDoor).forEach(
         ([key, value]) => {
@@ -2087,48 +2367,41 @@ async function fnReset() {
 }
 const reset = {
         itemList : [
-            "anneauForce",
-            "espadon",
-            "anneauDexterite",
-            "armureEnFer",
-            "armureEnCuir",
-            "casqueEnCuir",
-            "dague",
-            "torche",
-            //x9 potion mana
-            "potionMana",
-            "potionMana",
-            "potionMana",
-            "potionMana",
-            "potionMana",
-            "potionMana",
-            "potionMana",
-            "potionMana",
-            "potionMana",
-            //x9 potion de vie
-            "potionVie",
-            "potionVie",
-            "potionVie",
-            "potionVie",
-            "potionVie",
-            "potionVie",
-            "potionVie",
-            "potionVie",
-            "potionVie",
-            //x9 pain
-            "pain",
-            "pain",
-            "pain",
-            "pain",
-            "pain",
-            "pain",
-            "pain",
-            "pain",
-            "pain",
-            "sortFeu",
-            "sortArcane",
-            "sortFoudre",
-            "sortBlast",
+    "anneauForce",
+    "anneauDef",
+    "anneauInt",
+    "anneauVie",
+    "anneauLuc",
+    "hallebarde",
+    "espadon",
+    "masse",
+    "katana",
+    "batonMage",
+    "batonClerc",
+    "anneauDexterite",
+    "armureEnFer",
+    "lance",
+    "lance2",
+    "gourdin",
+    "armureEnCuir",
+    "casqueEnCuir",
+    "dague",
+    "torche",
+    //x9 potion mana
+    "potionMana",
+
+    //x9 potion de vie
+    "potionVie",
+
+    //x9 pain
+    "pain",
+    "pain",
+ 
+    "sortFeu",
+    "sortLumiere",
+    "sortFoudre",
+    "sortBlast",
+    "sortArcane",
         ],
     }
 const opInventaire = document.getElementById("Inventaire");
@@ -2170,13 +2443,19 @@ getData();
 // .then((data) => (dataStat = data))
 // .catch((_) => (dataStat = serverResponse));
 function buyItem(rawValue, type, myRoom, idItem) {
-    delItem()   
-    dataStat.DonneeStatPerso.inventaire[type].push(rawValue)
-    const index = marketMemory[myRoom].findIndex((objet) => idItem === objet);
-        if (index !== -1) {
-            marketMemory[myRoom].splice(index, 1);
-        }
-    updateRenderItemMarket(myRoom)
+    if (item[rawValue].cost < dataStat.DonneeStatPerso.money){
+        dataStat.DonneeStatPerso.money -= item[rawValue].cost 
+        delItem()   
+        dataStat.DonneeStatPerso.inventaire[type].push(rawValue)
+        const index = marketMemory[myRoom].findIndex((objet) => idItem === objet);
+            if (index !== -1) {
+                marketMemory[myRoom].splice(index, 1);
+            }
+        updateRenderItemMarket(myRoom)
+        update()
+    } else {    
+        boiteDialogue("noMoney",item[rawValue].nom)
+    }
 }
 function delItem() {
     Object.entries(marketMemory).forEach(([key, values]) => {
@@ -2405,12 +2684,6 @@ infoDiv.appendChild(mpSpan);
 infoDiv.appendChild(document.createElement("br"));
 
 infoDiv.appendChild(document.createElement("br"));
-
-const damageTitle = document.createElement("span");
-damageTitle.textContent = "Dégâts";
-damageTitle.style.color = "#6a511f"
-infoDiv.appendChild(damageTitle);
-infoDiv.appendChild(document.createElement("br"));
 infoDiv.appendChild(document.createElement("br"));
 const degatsArmeG = document.createElement("span");
 degatsArmeG.id = "degatsArmeG";
@@ -2447,6 +2720,12 @@ pointsSpan.id = "point";
 pointsSpan.textContent = "Point(s) disponible(s) : 10";
 infoDiv.appendChild(pointsSpan);
 
+infoDiv.appendChild(document.createElement("br"));
+const or = document.createElement("span");
+or.id = "or";
+or.textContent = `Or : ${dataStat.DonneeStatPerso.money}`;
+infoDiv.appendChild(or);
+
 document.body.appendChild(infoDiv);
 
 function update() {
@@ -2464,7 +2743,8 @@ function update() {
         `Expérience : ${dataStat.DonneeStatPerso.statPerso[designationPerso].XP}`
     document.getElementById("level").textContent =
         `Niveau : ${dataStat.DonneeStatPerso.statPerso[designationPerso].LVL}`
-        
+    document.getElementById("or").textContent =
+        `Or : ${dataStat.DonneeStatPerso.money}`    
         if (dataStat.DonneeStatPerso.statPerso[designationPerso].XP >= ratioLvlXp[dataStat.DonneeStatPerso.statPerso[designationPerso].LVL]) {
             dataStat.DonneeStatPerso.statPerso[designationPerso].XP -= ratioLvlXp[dataStat.DonneeStatPerso.statPerso[designationPerso].LVL]
             dataStat.DonneeStatPerso.statPerso[designationPerso].Point++

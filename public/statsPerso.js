@@ -25,7 +25,8 @@ const statPerso = {
             MPactual: 50,
             XP: 0,
             LVL: 1,
-            spells: []
+            spells: [],
+            arme:"",
         },
         perso2 : 
         {   
@@ -45,7 +46,8 @@ const statPerso = {
             MPactual: 50,
             XP: 0,
             LVL: 1,
-            spells: []
+            spells: [],
+            arme:"",
         },
         perso3 : 
         {   
@@ -65,7 +67,8 @@ const statPerso = {
             MPactual: 50,
             XP: 0,
             LVL: 1,
-            spells: []
+            spells: [],
+            arme:"",
         },
 };
 
@@ -101,6 +104,7 @@ let skills = {
 
 const arme = {
     mainGauche: {
+        genre:"contondant",
         degatsBase : 1,
         degatsForce: 0,
         degatsDexterite : 0,
@@ -108,6 +112,7 @@ const arme = {
         IMG: "image/mainGauche.webp",
     },
     mainDroite: {
+        genre:"contondant",
         degatsBase : 1,
         degatsForce: 0,
         degatsDexterite : 0,
@@ -115,6 +120,7 @@ const arme = {
         IMG: "image/mainDroite.webp",
     },
     epeeDepart: {
+        genre:"tranchant",
         degatsBase : 5,
         degatsForce: 2,
         degatsDexterite : 2,
@@ -122,6 +128,7 @@ const arme = {
         IMG: "image/epeeDepart.webp",
     },
     hacheDepart: {
+        genre:"tranchant",
         degatsBase : 5,
         degatsForce: 4,
         degatsDexterite : 0,
@@ -129,28 +136,68 @@ const arme = {
         IMG: "image/hacheDepart.webp",
     },
     arcDepart: {
+        genre:"estoc",
         degatsBase : 5,
         degatsForce: 1,
         degatsDexterite : 2,
         degatsIntelligence: 0,
         IMG: "image/arcDepart.webp",
+        twoHand: true,
     },
     batonDepart: {
+        genre:"contondant",
         degatsBase : 5,
         degatsForce: 1,
         degatsDexterite : 0,
         degatsIntelligence: 3,
         IMG: "image/batonDepart.webp",
     },
+    masse: {
+        genre:"contondant",
+        degatsBase : 15,
+        degatsForce: 6,
+        degatsDexterite : 1,
+        degatsIntelligence: 0,
+        IMG: "image/masse.webp",
+        class: "image",
+        test: "testMasse",
+        title: "Une masse"
+    },
     espadon: {
-        degatsBase : 12,
+        genre:"tranchant",
+        degatsBase : 20,
         degatsForce: 3,
         degatsDexterite : 2,
         degatsIntelligence: 0,
         IMG: "image/espadon.webp",
         twoHand: true,
     },
+    batonMage : {
+        genre:"contondant",
+        degatsBase : 13,
+        degatsForce: 0,
+        degatsDexterite : 2,
+        degatsIntelligence: 6,
+        IMG: "image/batonMage.webp",
+        class: "image",
+        test: "testBatonMage",
+        title: "Un baton excellent pour la pratique de la magie",
+        twoHand: true,
+    },
+    batonClerc : {
+        genre:"contondant",
+        degatsBase : 12,
+        degatsForce: 3,
+        degatsDexterite : 0,
+        degatsIntelligence: 4,
+        IMG: "image/batonClerc.webp",
+        class: "image",
+        test: "testBatonClerc",
+        title: "Un baton utilisé par les clercs",
+        twoHand: true,
+    },
     dague: {
+        genre:"estoc",
         degatsBase : 5,
         degatsForce: 0,
         degatsDexterite : 3,
@@ -158,6 +205,7 @@ const arme = {
         IMG: "image/dague.webp",
     },
     torche: {
+        genre:"contondant",
         degatsBase : 8,
         degatsForce: 0,
         degatsDexterite : 0,
@@ -165,6 +213,7 @@ const arme = {
         IMG: "image/torche.webp",
     },
     orcHache: {
+        genre:"tranchant",
         degatsBase : 15,
         degatsForce: 5,
         degatsDexterite : 0,
@@ -175,6 +224,7 @@ const arme = {
         title: "Une Hache fraichement trouvé sur un cadavre d'orc"
     },
     gobArc: {
+        genre:"estoc",
         degatsBase : 12,
         degatsForce: 1,
         degatsDexterite : 3,
@@ -182,9 +232,11 @@ const arme = {
         IMG: "image/gobArc.webp",
         class: "image",
         test: "testGobArc",
-        title: "Un arc qui nécessite une bonne dextérité !"
+        title: "Un arc qui nécessite une bonne dextérité !",
+        twoHand: true,
     },
     orcEpee: {
+        genre:"tranchant",
         degatsBase : 15,
         degatsForce: 3,
         degatsDexterite : 3,
@@ -195,6 +247,7 @@ const arme = {
         title: "Une épée recouverte de sang et de rouille"
     },
     hallebarde: {
+        genre:"tranchant",
         degatsBase : 20,
         degatsForce: 4,
         degatsDexterite : 1,
@@ -204,6 +257,52 @@ const arme = {
         test: "testHallebarde",
         title: "Une hallebarde",
         twoHand: true,
+    },
+    katana: {
+        genre:"tranchant",
+        degatsBase : 13,
+        degatsForce: 1,
+        degatsDexterite : 4,
+        degatsIntelligence: 0,
+        IMG: "image/katana.webp",
+        class: "image",
+        test: "testKatana",
+        title: "Un katana",
+    },
+    lance: {
+        genre:"estoc",
+        degatsBase : 15,
+        degatsForce: 2,
+        degatsDexterite : 2,
+        degatsIntelligence: 2,
+        IMG: "image/lance.webp",
+        class: "image",
+        test: "testLance",
+        title: "Un lance",
+        twoHand: true,
+    },
+    lance2: {
+        genre:"estoc",
+        degatsBase : 25,
+        degatsForce: 6,
+        degatsDexterite : 1,
+        degatsIntelligence: 0,
+        IMG: "image/lance2.webp",
+        class: "image",
+        test: "testLance2",
+        title: "Un lance impressionnante",
+        twoHand: true,
+    },
+    gourdin: {
+        genre:"contondant",
+        degatsBase : 11,
+        degatsForce: 5,
+        degatsDexterite : 0,
+        degatsIntelligence: 0,
+        IMG: "image/gourdin.webp",
+        class: "image",
+        test: "testGourdin",
+        title: "Un gourdin",
     },
 };
 const gear = {
@@ -230,12 +329,58 @@ const gear = {
             title: "Une épée à deux mains",
             twoHand: true,
         },
+        batonMage : {
+            IMG: "image/batonMage.webp",
+            class: "image",
+            test: "testBatonMage",
+            title: "Un baton excellent pour la pratique de la magie",
+            twoHand: true,
+        },
+        batonClerc : {
+            IMG: "image/batonClerc.webp",
+            class: "image",
+            test: "testBatonClerc",
+            title: "Un baton utilisé par les clercs",
+            twoHand: true,
+        },
+        lance: {
+            IMG: "image/lance.webp",
+            class: "image",
+            test: "testLance",
+            title: "Un lance",
+            twoHand: true,
+        },
+        gourdin: {
+            IMG: "image/gourdin.webp",
+            class: "image",
+            test: "testGourdin",
+            title: "Un gourdin",
+        },
+        masse: {
+            IMG: "image/masse.webp",
+            class: "image",
+            test: "testMasse",
+            title: "Une masse"
+        },
         hallebarde: {
             IMG: "image/hallebarde.webp",
             class: "image",
             test: "testHallebarde",
             title: "Une hallebarde",
             twoHand: true,
+        },
+        lance2: {
+            IMG: "image/lance2.webp",
+            class: "image",
+            test: "testLance2",
+            title: "Un lance impressionnante",
+            twoHand: true,
+        },
+        katana: {
+            IMG: "image/katana.webp",
+            class: "image",
+            test: "testKatana",
+            title: "Un katana",
         },
         dague: {
             degats: () => 3 + 3 * statPerso[designationPerso].Dexterite,
@@ -263,7 +408,8 @@ const gear = {
             IMG: "image/arcDepart.webp",
             class: "depart",
             test: "testArcDepart",
-            title: "un arc rudimentaire"
+            title: "un arc rudimentaire",
+            twoHand: true,
         },
         batonDepart: {
             degats: () => 7 + 1 * statPerso[designationPerso].Force + 2 * statPerso[designationPerso].Intelligence,
@@ -291,7 +437,8 @@ const gear = {
             IMG: "image/gobArc.webp",
             class: "image",
             test: "testGobArc",
-            title: "Un arc qui nécessite une bonne dextérité !"
+            title: "Un arc qui nécessite une bonne dextérité !",
+            twoHand: true,
         },
         orcEpee: {
             degats: () => 15 + 2 * statPerso[designationPerso].Force + 1 * statPerso[designationPerso].Dexterite,
@@ -324,11 +471,51 @@ const gear = {
             title: "Une épée à deux mains",
             twoHand: true,
         },
+        batonMage : {
+            IMG: "image/batonMage.webp",
+            class: "image",
+            test: "testBatonMage",
+            title: "Un baton excellent pour la pratique de la magie",
+            twoHand: true,
+        },
+        batonClerc : {
+            IMG: "image/batonClerc.webp",
+            class: "image",
+            test: "testBatonClerc",
+            title: "Un baton utilisé par les clercs",
+            twoHand: true,
+        },
         hallebarde: {
             IMG: "image/hallebarde.webp",
             class: "image",
             test: "testHallebarde",
             title: "Une hallebarde",
+            twoHand: true,
+        },
+        gourdin: {
+            IMG: "image/gourdin.webp",
+            class: "image",
+            test: "testGourdin",
+            title: "Un gourdin",
+        },
+        lance2: {
+            IMG: "image/lance2.webp",
+            class: "image",
+            test: "testLance2",
+            title: "Un lance impressionnante",
+            twoHand: true,
+        },
+        katana: {
+            IMG: "image/katana.webp",
+            class: "image",
+            test: "testKatana",
+            title: "Un katana",
+        },
+        lance: {
+            IMG: "image/lance.webp",
+            class: "image",
+            test: "testLance",
+            title: "Un lance",
             twoHand: true,
         },
         dague: {
@@ -357,7 +544,8 @@ const gear = {
             IMG: "image/arcDepart.webp",
             class: "depart",
             test: "testArcDepart",
-            title: "un arc rudimentaire"
+            title: "un arc rudimentaire",
+            twoHand: true,
         },
         batonDepart: {
             degats: () => 7 + 1 * statPerso[designationPerso].Force + 2 * statPerso[designationPerso].Intelligence,
@@ -386,7 +574,8 @@ const gear = {
             IMG: "image/gobArc.webp",
             class: "image",
             test: "testGobArc",
-            title: "Un arc qui nécessite une bonne dextérité !"
+            title: "Un arc qui nécessite une bonne dextérité !",
+            twoHand: true,
         },
         orcEpee: {
             degats: () => 15 + 2 * statPerso[designationPerso].Force + 1 * statPerso[designationPerso].Dexterite,
@@ -434,22 +623,53 @@ const gear = {
     },
     Ring: {
         Ring: {
+            def : 0,
             effet: null,
             IMG: "image/EmplacementAmulette.png",
             test: "testRing",
             title : "emplacement pour ajouter un anneau"
         },
         anneauForce: {
+            def : 0,
             effet: false,
             IMG: "image/anneauForce.webp",
             test: "testAnneauForce",
             title:"anneau qui augmente votre force !"
         },
         anneauDexterite: {
+            def : 0,
             effet: false,
-            IMG: "image/anneauForce.webp",
+            IMG: "image/anneauDex.webp",
             test: "testAnneauDexterite",
             title: "anneau qui augmentaire votre dexterite"
+        },
+        anneauDef: {
+            def : 8,
+            effet: false,
+            IMG: "image/anneauDef.webp",
+            test: "testAnneauDef",
+            title:"anneau qui augmente votre défense !"
+        },
+        anneauInt: {
+            def : 0,
+            effet: false,
+            IMG: "image/anneauInt.webp",
+            test: "testAnneauInt",
+            title:"anneau qui augmente votre intelligence !"
+        },
+        anneauVie: {
+            def : 0,
+            effet: false,
+            IMG: "image/anneauVie.webp",
+            test: "testAnneauVie",
+            title:"anneau qui augmente vos points de vie !"
+        },
+        anneauLuc: {
+            def : 0,
+            effet: false,
+            IMG: "image/anneauLuc.webp",
+            test: "testAnneauLuc",
+            title:"anneau qui augmente votre lucidité !"
         },
     },
     Neck: {
@@ -540,10 +760,18 @@ const gear = {
 const Buff = {
     anneauForce: () => (statPerso[designationPerso].Force += 5),
     anneauDexterite: () => (statPerso[designationPerso].Dexterite += 5),
+    anneauInt: () => (statPerso[designationPerso].Intelligence += 5),
+    anneauVie: () => (statPerso[designationPerso].Vitalite += 5),
+    anneauDef: () => (statPerso),
+    anneauLuc: () => (statPerso[designationPerso].Concentration += 4)
 };
 const Debuff = {
     anneauForce: () => (statPerso[designationPerso].Force -= 5),
     anneauDexterite: () => (statPerso[designationPerso].Dexterite -= 5),
+    anneauInt: () => (statPerso[designationPerso].Intelligence -= 5),
+    anneauVie: () => (statPerso[designationPerso].Vitalite -= 5),
+    anneauDef: () => (statPerso),
+    anneauLuc: () => (statPerso[designationPerso].Concentration -= 4)
 };
 const equipement = {
     perso1 : 
@@ -591,7 +819,7 @@ const stats = {
         },
         get Def() {
             return (
-                gear.Chest[equipement.perso1.Chest].def + gear.Head[equipement.perso1.Head].def
+                gear.Chest[equipement.perso1.Chest].def + gear.Head[equipement.perso1.Head].def + gear.Ring[equipement.perso1.Ring].def
             );
         }
     },
@@ -610,7 +838,7 @@ const stats = {
         },
         get Def() {
             return (
-                gear.Chest[equipement.perso2.Chest].def + gear.Head[equipement.perso2.Head].def
+                gear.Chest[equipement.perso2.Chest].def + gear.Head[equipement.perso2.Head].def + gear.Ring[equipement.perso2.Ring].def
             );
         }
     },
@@ -629,13 +857,13 @@ const stats = {
         },
         get Def() {
             return (
-                gear.Chest[equipement.perso3.Chest].def + gear.Head[equipement.perso3.Head].def
+                gear.Chest[equipement.perso3.Chest].def + gear.Head[equipement.perso3.Head].def + gear.Ring[equipement.perso3.Ring].def
             );
         }
     },
 
 };
-let money = 50
+let money = 5000
 const inventaire = {
     LeftHand: [],
     RightHand: [],
@@ -1024,8 +1252,12 @@ if (!statPerso.perso1.class) {
     const classTitle = document.createElement("p");
     classTitle.textContent = "Choisissez votre classe de départ"
     classTitle.style.position = "absolute";
-    classTitle.style.left = "900px";
+    classTitle.style.left = "300px";
     classDepartDiv.appendChild(classTitle)
+    classDepartDiv.appendChild(document.createElement("br"));
+    classDepartDiv.appendChild(document.createElement("br"));
+    classDepartDiv.appendChild(document.createElement("br"));
+    classDepartDiv.appendChild(document.createElement("br"));
     const classSpan = document.createElement('span')
     const classDepart = [
         {
@@ -1097,7 +1329,7 @@ vol.addEventListener("click", () => {
     statPerso[designationPerso].HPactual = statPerso[designationPerso].HP
     statPerso[designationPerso].MPactual = statPerso[designationPerso].MP
     inventaire.LeftHand = ["dague"]
-    inventaire.spells = ["voler"]
+    inventaire.spells = ["skillVol"]
     VisualRender()
     update()
     statPerso.perso1.class = "voleur"
@@ -1342,6 +1574,10 @@ function takeWeapon(name, type, genre) {
             }
         }
     }
+    debugger
+    statPerso[designationPerso].arme = arme[name].genre
+    console.log(statPerso.perso1.arme)
+
     //Check les doublons
     let seen = new Set();  
     let result = inventaire.LeftHand.filter(item => seen.has(item) ? false : seen.add(item));
@@ -1450,9 +1686,21 @@ let recData = {
 };
 let itemList = [
     "anneauForce",
+    "anneauDef",
+    "anneauInt",
+    "anneauVie",
+    "anneauLuc",
+    "hallebarde",
     "espadon",
+    "masse",
+    "katana",
+    "batonMage",
+    "batonClerc",
     "anneauDexterite",
     "armureEnFer",
+    "lance",
+    "lance2",
+    "gourdin",
     "armureEnCuir",
     "casqueEnCuir",
     "dague",
