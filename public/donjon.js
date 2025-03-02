@@ -377,129 +377,149 @@ const item = {
         nom: "un anneau de force",
         IMG: "image/anneauForce.webp",
         cost: 100,
-        type: "Ring"
+        type: "Ring",
+        nomMarche : "Anneau de loup",
     },
     espadon: {
         nom: "un espadon à deux mains",
         IMG: "image/espadon.webp",
         cost: 200,
-        type: "LeftHand"
+        type: "LeftHand",
+        nomMarche : "Espadon",
     },
     anneauDexterite: {
         nom: "un anneau de dextérité",
         IMG: "image/anneauDex.webp",
         cost: 100,
-        type: "Ring"
+        type: "Ring",
+        nomMarche : "Anneau de chat",
     },
     anneauDef: {
         nom: "un anneau de défense",
         IMG: "image/anneauDef.webp",
         cost: 100,
-        type: "Ring"
+        type: "Ring",
+        nomMarche : "Anneau de fer"
     },
     anneauInt: {
         nom: "un anneau d'intelligence",
         IMG: "image/anneauInt.webp",
         cost: 100,
-        type: "Ring"
+        type: "Ring",
+        nomMarche : "Anneau de corbeau",
     },
     anneauVie: {
         nom: "un anneau de vie",
         IMG: "image/anneauVie.webp",
         cost: 100,
-        type: "Ring"
+        type: "Ring",
+        nomMarche : "Anneau d'ours",
     },
     anneauLuc: {
         nom: "un anneau de lucidité",
         IMG: "image/anneauLuc.webp",
         cost: 100,
-        type: "Ring"
+        type: "Ring",
+        nomMarche : "Anneau de tortue"
     },
     armureEnFer: {
         nom: "une armure en fer",
         IMG: "image/armureEnFer.webp",
         cost: 200,
-        type: "Chest"
+        type: "Chest",
+        nomMarche : "Armure en fer"
     },
     armureEnCuir: {
         nom: "une armure en cuir",
         IMG: " image/armureEnCuir.webp",
         cost: 100,
-        type: "Chest"
+        type: "Chest",
+        nomMarche : "Armure en cuir",
     },
     casqueEnCuir: {
         nom: "un casque en cuir",
         IMG: "image/casqueEnCuir.webp",
         cost: 100,
-        type: "Head"
+        type: "Head",
+        nomMarche : "Casque en cuir",
     },
     dague: {
         nom: "une dague",
         IMG: "image/dague.webp",
         cost: 100,
-        type: "LeftHand"
+        type: "LeftHand",
+        nomMarche : "Dague",
     },
     potionVie: {
         nom: "une potion de vie",
         IMG: "image/potionVie.webp",
         cost: 50,
         type: "Object",
-        nombre : 1
+        nombre : 1,
+        nomMarche : "Potion de vie",
     },
     potionMana: {
         nom: "une potion de mana",
         IMG: "image/potionMana.webp",
         cost: 50,
         type: "Object",
-        nombre : 1
+        nombre : 1,
+        nomMarche : "Potion de mana",
     },
     pain: {
         nom: "un pain",
         IMG: "image/pain.webp",
         cost: 30,
-        type: "Object"
+        type: "Object",
+        nomMarche : "Pain",
     },
     torche: {
         nom: "une torche",
         IMG: "image/torche.webp",
         cost: 50,
         type: "LeftHand",
-        nombre : 1
+        nombre : 1,
+        nomMarche : "Torche",
     },
     sortFeu: {
         nom: "un parchemin mystérieux",
         IMG: "image/parchemin.webp",
         cost: 350,
         id: "sortFeu",
-        type: "Scroll"
+        type: "Scroll",
+        nomMarche : "Parchemin de sortilège",
     },
     sortLumiere: {
         nom: "un parchemin mystérieux",
         IMG: "image/parchemin.webp",
         cost: 500,
         id: "sortLumiere",
-        type: "Scroll"
+        type: "Scroll",
+        nomMarche : "Parchemin de sortilège",
     },
     sortFoudre: {
         nom: "un parchemin mystérieux",
         IMG: "image/parchemin.webp",
         cost: 900,
         id: "sortFoudre",
-        type: "Scroll"
+        type: "Scroll",
+        nomMarche : "Parchemin de sortilège",
     },
     sortBlast: {
         nom: "un parchemin mystérieux",
         IMG: "image/parchemin.webp",
         cost: 1200,
         id: "sortBlast",
-        type: "Scroll"
+        type: "Scroll",
+        nomMarche : "Parchemin de sortilège",
     },
     sortArcane: {
         nom: "un parchemin mystérieux",
         IMG: "image/parchemin.webp",
         cost: 5000,
         id: "sortArcane",
-        type: "Scroll"
+        type: "Scroll",
+        nomMarche : "Parchemin de sortilège",
     },
     orcEpee: {
         nom: "une épée d'orc",
@@ -507,6 +527,7 @@ const item = {
         cost: 150,
         id: "orcEpee",
         type: "LeftHand",
+        nomMarche : "Epée d'orc",
     },
     orcHache : {
         nom: "une hache d'orc",
@@ -514,13 +535,15 @@ const item = {
         cost: 150,
         id: "orcHache",
         type: "LeftHand",
+        nomMarche : "Hache d'orc",
     },
     orcCasque: {
         nom: "un casque d'orc",
         IMG: "image/orcCasque.webp",
         cost: 100,
         id: "orcCasque",
-        type: "Head"
+        type: "Head",
+        nomMarche : "Casque d'orc",
     },
     gobArc: {
         nom: "un arc de gobelin",
@@ -528,6 +551,7 @@ const item = {
         cost : 700,
         id: "gobArc",
         type: "LeftHand",
+        nomMarche : "Arc de gobelin",
     },
     batonMage : {
         nom: "un baton de mage",
@@ -536,6 +560,7 @@ const item = {
         test: "testBatonMage",
         title: "Un baton excellent pour la pratique de la magie",
         type: "LeftHand",
+        nomMarche : "Bâton de Al-jawarah"
     },
     batonClerc : {
         nom: "un baton de clerc",
@@ -544,6 +569,7 @@ const item = {
         test: "testBatonClerc",
         title: "Un baton utilisé par les clercs",
         type: "LeftHand",
+        nomMarche : "Bâton d'Ulric"
     },
     lance: {
         nom: "une lance",
@@ -552,6 +578,7 @@ const item = {
         test: "testLance",
         title: "Un lance",
         type: "LeftHand",
+        nomMarche : "Lance"
     },
     gourdin: {
         nom: "un gourdin",
@@ -560,6 +587,7 @@ const item = {
         test: "testGourdin",
         title: "Un gourdin",
         type: "LeftHand",
+        nomMarche : "Gourdin"
     },
     masse: {
         nom: "une masse",
@@ -568,6 +596,7 @@ const item = {
         test: "testMasse",
         title: "Une masse",
         type: "LeftHand",
+        nomMarche : "Masse"
     },
     hallebarde: {
         nom: "une hallebarde",
@@ -576,14 +605,16 @@ const item = {
         test: "testHallebarde",
         title: "Une hallebarde",
         type: "LeftHand",
+        nomMarche : "Hallebarde"
     },
     lance2: {
-        nom: "une lance de qualité",
+        nom: "une lance sombre",
         IMG: "image/lance2.webp",
         cost: 1800,
         test: "testLance2",
         title: "Un lance impressionnante",
         type: "LeftHand",
+        nomMarche : "Lance sombre"
     },
     katana: {
         nom: "un katana",
@@ -592,6 +623,7 @@ const item = {
         test: "testKatana",
         title: "Un katana",
         type: "LeftHand",
+        nomMarche : "Katana"
     },
 };
 let actualFight = [];
@@ -965,13 +997,13 @@ btnNewChar.addEventListener('click', () => {
         Dexterite: 12,
         Vitalite: 3,
         Volonte: 1,
-        Concentration: 4,
+        Concentration: 30,
         Intelligence: 2,
         Point: 0,
         HP:175,
-        HPactual: 82,
+        HPactual: 1,
         MP: 95,
-        MPactual: 16,
+        MPactual: 95,
         XP: 0,
         LVL: 11,
         spells: ["sortFoudre", "skillVol"],
@@ -1176,7 +1208,6 @@ function launchFight() {
             ordreTourAttaque = ordreTourAttaque2
             ordreTourAttaque2 = []
         }
-
         if (ordreTourAttaque.length === 0) {
             console.log("Fin du combat !");
             return;
@@ -1189,6 +1220,7 @@ function launchFight() {
         }
         if (currentFighter.nom === "perso1" || currentFighter.nom === "perso2" || currentFighter.nom === "perso3") {
             console.log("C'est au tour de :", currentFighter.nom);
+            chooseChar(currentFighter.nom)
             ordreTourAttaque2.push(ordreTourAttaque.shift())
             if (ordreTourAttaque.lenght === 0) {
                 ordreTourAttaque = ordreTourAttaque2
@@ -1248,8 +1280,47 @@ function launchFight() {
                 if (!end) {
                     gameOver();
                 }
+                if (dataStat.DonneeStatPerso.statPerso[persoRand].HPactual <= 0) {
+                    
+                    const perso1 = document.createElement('img')
+                    const persoDiv = document.getElementById([persoRand])
+                    perso1.src = "image/"+dataStat.DonneeStatPerso.statPerso[persoRand].class+"Mort.webp"
+                    perso1.width = 370
+                    perso1.height = 400
+                    perso1.id = "img"+[persoRand]+"mort"
 
-                // Appeler récursivement la fonction pour le prochain tour
+                    dataStat.DonneeStatPerso.statPerso[persoRand] = { 
+                        type : [persoRand],
+                        nom:"",
+                        class: "",
+                        Force: 0,
+                        Dexterite: 0,
+                        Vitalite: 0,
+                        Volonte: 0,
+                        Concentration: 0,
+                        Intelligence: 0,
+                        Point: 0,
+                        HP:0,
+                        HPactual: 50,
+                        MP: 0,
+                        MPactual: 50,
+                        XP: 0,
+                        LVL: 0,
+                        spells: [],
+                        arme:"",
+                }
+                imgPerso()
+                    persoDiv.appendChild(perso1)
+                    document.body.appendChild(persoDiv)
+                    const toDel = ordreTourAttaque.findIndex(value => value.nom === persoRand)
+                    debugger
+                    if (toDel !== -1) {
+                        ordreTourAttaque.splice(toDel, 1)
+                    } else {
+                        const toDel2 = ordreTourAttaque2.findIndex(value => value.nom === persoRand) 
+                        ordreTourAttaque2.splice(toDel2, 1)
+                    }
+                }
                 nextTurn();
             }, 800);
         }, 1300);
@@ -1553,7 +1624,7 @@ function imgPerso () {
 
 }
 
-function chooseChar (type) {
+function chooseChar(type) {
             if (fighting) { 
                 if(currentFighter.nom === type) {
                     Object.entries(imDoor.ALL).forEach(([key, value]) => {
@@ -1836,6 +1907,7 @@ async function skill (nom, nomGen, div,ImEnn) {
         if (dataStat.DonneeStatPerso.statPerso[designationPerso].MPactual < skills[skillInUse].manaCost) {
             alert("mana insuffisant pour lancer ", skills[skillInUse].nom)
         } else {
+            debugger
             isAttacking = true; 
             buttonDoorDiv.allSpell.style.display ="none"
             buttonDoorDiv.allSkill.style.display ="none"
@@ -1953,7 +2025,8 @@ async function skill (nom, nomGen, div,ImEnn) {
         })
         vicOrRetaliation()
     },(((skills[skillInUse].tempsRune)*(1+dataStat.DonneeStatPerso.statPerso[designationPerso].Concentration/30))*skills[skillInUse].nombreRune)+5000)}}} 
-    else  return 
+    else  {return} 
+    buttonDoorDiv.panneauAttaque.style.display="none"
 }
 function attaque(nom, nomGen, div, ImEnn) {
     if (attack) {
@@ -2058,6 +2131,12 @@ async function vicOrRetaliation() {
                 }
                 catch{}
             }
+            try {
+                document.getElementById("imgperso2mort").remove()
+                document.getElementById("imgperso3mort").remove()
+            } catch {
+
+            }
             imDoor.btnBack.style.display = "block";
             opInventaire.style.display = "block";
             imDoor.allDoor.style.display = "block";
@@ -2088,11 +2167,13 @@ async function vicOrRetaliation() {
     let compteurVolRate = 0
     let done = false
     function lootObject(nomGen){
+        done = false
         Object.entries(actualEnnemiStatut[nomGen].LOOT).forEach(([key,value]) => {
             //Si done est faux (qu'on a rien eu encore)
             if (!done) {
             const chance = randomNumber(100)
             if (value >= chance) {
+                debugger
                 const whatType = item[key].type
                 if(whatType === "Object") {
                     dataStat.DonneeStatPerso.inventaire[whatType].push(key)
@@ -2478,10 +2559,22 @@ function updateRenderItemMarket(myRoom) {
         ImItem.height = 108;
             ImItem.id = value
             buttonDoorDiv.itemMarket.appendChild(ImItem);
-            imDoor[value] = document.getElementById(value);
-            imDoor[value].addEventListener("click", () =>
+            imDoor[rawValue] = document.getElementById(value);
+            imDoor[rawValue].addEventListener("click", () =>
                 buyItem(rawValue, item[rawValue].type, myRoom, value),
             );
+            imDoor[rawValue].addEventListener("mouseover", (event) => {
+                tooltip.innerText = item[rawValue].nomMarche  + "\n" + "coût : " + item[rawValue].cost
+                tooltip.style.left = event.pageX + 40 + "px"
+                tooltip.style.top = event.pageY + 40 + "px"
+                tooltip.style.visibility = "visible"
+            })
+            imDoor[rawValue].addEventListener("mousemove", function(event) {
+                tooltip.style.left = event.pageX + 40 + "px";
+                tooltip.style.top = event.pageY + 40 + "px";
+            })
+            imDoor[rawValue].addEventListener("mouseout", function() {
+                tooltip.style.visibility = "hidden";})
         }  
     });
     
@@ -2758,13 +2851,13 @@ function update() {
 }
 function showSpells() {
 
-Object.values(dataStat.DonneeStatPerso.statPerso[designationPerso].spells).forEach((value) => {
+Object.values(dataStat.DonneeStatPerso.statPerso[currentFighter.nom].spells).forEach((value) => {
             imDoor.ALL[value].style.display="block"
 
 })
 }
 function showSkills() {
-    Object.values(dataStat.DonneeStatPerso.statPerso[designationPerso].spells).forEach((value) => {
+    Object.values(dataStat.DonneeStatPerso.statPerso[currentFighter.nom].spells).forEach((value) => {
        
                 imDoor.ALL[value].style.display="block"
     
