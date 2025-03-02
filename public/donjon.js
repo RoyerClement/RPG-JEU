@@ -83,6 +83,8 @@ const dialogue = {
     txtVolOr : `Vous reussissez à voler de l'or`,
     txtVolRate : `Vous n'avez rien reussi à voler !`,
     txtMarchand: `Il y a un marchand dans cette salle`,
+    txtMaitreArme : "Il y a un maître d'arme dans cette salle",
+    txtMaitreSort : "Il y a un maître de magie dans cette salle",
     txtLoot: `Qqchose tombe du monstre... Vous ramassez `,
     txtLootOr: `Vous ramassez de l'or`,
     txtRateSkill : `Vous ratez lamentablement votre tentative`,
@@ -119,6 +121,8 @@ let designationPerso = "perso1"
 let nombreDePerso = ""
 const marketMemory = { start: [], };
 let itemList = [];
+let itemMaitreArme = []
+let itemMaitreSort = []
 let dataStat = {
     DonneeStatPerso: {
         stats : {
@@ -374,84 +378,84 @@ let spells = {
 }
 const item = {
     anneauForce: {
-        nom: "un anneau de force",
+        nom: "cet anneau de force",
         IMG: "image/anneauForce.webp",
         cost: 100,
         type: "Ring",
         nomMarche : "Anneau de loup",
     },
     espadon: {
-        nom: "un espadon à deux mains",
+        nom: "cet espadon à deux mains",
         IMG: "image/espadon.webp",
         cost: 200,
         type: "LeftHand",
         nomMarche : "Espadon",
     },
     anneauDexterite: {
-        nom: "un anneau de dextérité",
+        nom: "cet anneau de dextérité",
         IMG: "image/anneauDex.webp",
         cost: 100,
         type: "Ring",
         nomMarche : "Anneau de chat",
     },
     anneauDef: {
-        nom: "un anneau de défense",
+        nom: "cet anneau de défense",
         IMG: "image/anneauDef.webp",
         cost: 100,
         type: "Ring",
         nomMarche : "Anneau de fer"
     },
     anneauInt: {
-        nom: "un anneau d'intelligence",
+        nom: "cet anneau d'intelligence",
         IMG: "image/anneauInt.webp",
         cost: 100,
         type: "Ring",
         nomMarche : "Anneau de corbeau",
     },
     anneauVie: {
-        nom: "un anneau de vie",
+        nom: "cet anneau de vie",
         IMG: "image/anneauVie.webp",
         cost: 100,
         type: "Ring",
         nomMarche : "Anneau d'ours",
     },
     anneauLuc: {
-        nom: "un anneau de lucidité",
+        nom: "cet anneau de lucidité",
         IMG: "image/anneauLuc.webp",
         cost: 100,
         type: "Ring",
         nomMarche : "Anneau de tortue"
     },
     armureEnFer: {
-        nom: "une armure en fer",
+        nom: "cette armure en fer",
         IMG: "image/armureEnFer.webp",
         cost: 200,
         type: "Chest",
         nomMarche : "Armure en fer"
     },
     armureEnCuir: {
-        nom: "une armure en cuir",
+        nom: "cette armure en cuir",
         IMG: " image/armureEnCuir.webp",
         cost: 100,
         type: "Chest",
         nomMarche : "Armure en cuir",
     },
     casqueEnCuir: {
-        nom: "un casque en cuir",
+        nom: "ce casque en cuir",
         IMG: "image/casqueEnCuir.webp",
         cost: 100,
         type: "Head",
         nomMarche : "Casque en cuir",
     },
     dague: {
-        nom: "une dague",
+        nom: "cette dague",
         IMG: "image/dague.webp",
         cost: 100,
         type: "LeftHand",
         nomMarche : "Dague",
     },
     potionVie: {
-        nom: "une potion de vie",
+        nom: "cette potion de vie",
         IMG: "image/potionVie.webp",
         cost: 50,
         type: "Object",
@@ -459,7 +463,7 @@ const item = {
         nomMarche : "Potion de vie",
     },
     potionMana: {
-        nom: "une potion de mana",
+        nom: "cette potion de mana",
         IMG: "image/potionMana.webp",
         cost: 50,
         type: "Object",
@@ -467,62 +471,22 @@ const item = {
         nomMarche : "Potion de mana",
     },
     pain: {
-        nom: "un pain",
+        nom: "ce pain",
         IMG: "image/pain.webp",
         cost: 30,
         type: "Object",
         nomMarche : "Pain",
     },
     torche: {
-        nom: "une torche",
+        nom: "cette torche",
         IMG: "image/torche.webp",
         cost: 50,
         type: "LeftHand",
         nombre : 1,
         nomMarche : "Torche",
     },
-    sortFeu: {
-        nom: "un parchemin mystérieux",
-        IMG: "image/parchemin.webp",
-        cost: 350,
-        id: "sortFeu",
-        type: "Scroll",
-        nomMarche : "Parchemin de sortilège",
-    },
-    sortLumiere: {
-        nom: "un parchemin mystérieux",
-        IMG: "image/parchemin.webp",
-        cost: 500,
-        id: "sortLumiere",
-        type: "Scroll",
-        nomMarche : "Parchemin de sortilège",
-    },
-    sortFoudre: {
-        nom: "un parchemin mystérieux",
-        IMG: "image/parchemin.webp",
-        cost: 900,
-        id: "sortFoudre",
-        type: "Scroll",
-        nomMarche : "Parchemin de sortilège",
-    },
-    sortBlast: {
-        nom: "un parchemin mystérieux",
-        IMG: "image/parchemin.webp",
-        cost: 1200,
-        id: "sortBlast",
-        type: "Scroll",
-        nomMarche : "Parchemin de sortilège",
-    },
-    sortArcane: {
-        nom: "un parchemin mystérieux",
-        IMG: "image/parchemin.webp",
-        cost: 5000,
-        id: "sortArcane",
-        type: "Scroll",
-        nomMarche : "Parchemin de sortilège",
-    },
     orcEpee: {
-        nom: "une épée d'orc",
+        nom: "cette épée d'orc",
         IMG: "image/orcEpee.webp",
         cost: 150,
         id: "orcEpee",
@@ -530,7 +494,7 @@ const item = {
         nomMarche : "Epée d'orc",
     },
     orcHache : {
-        nom: "une hache d'orc",
+        nom: "cette hache d'orc",
         IMG: "image/orcHache.webp",
         cost: 150,
         id: "orcHache",
@@ -538,7 +502,7 @@ const item = {
         nomMarche : "Hache d'orc",
     },
     orcCasque: {
-        nom: "un casque d'orc",
+        nom: "ce casque d'orc",
         IMG: "image/orcCasque.webp",
         cost: 100,
         id: "orcCasque",
@@ -546,7 +510,7 @@ const item = {
         nomMarche : "Casque d'orc",
     },
     gobArc: {
-        nom: "un arc de gobelin",
+        nom: "ce arc de gobelin",
         IMG: "image/gobArc.webp",
         cost : 700,
         id: "gobArc",
@@ -554,7 +518,7 @@ const item = {
         nomMarche : "Arc de gobelin",
     },
     batonMage : {
-        nom: "un baton de mage",
+        nom: "ce baton de mage",
         IMG: "image/batonMage.webp",
         cost: 2000,
         test: "testBatonMage",
@@ -563,7 +527,7 @@ const item = {
         nomMarche : "Bâton de Al-jawarah"
     },
     batonClerc : {
-        nom: "un baton de clerc",
+        nom: "ce baton de clerc",
         IMG: "image/batonClerc.webp",
         cost: 1500,
         test: "testBatonClerc",
@@ -572,7 +536,7 @@ const item = {
         nomMarche : "Bâton d'Ulric"
     },
     lance: {
-        nom: "une lance",
+        nom: "cette lance",
         IMG: "image/lance.webp",
         cost: 1000,
         test: "testLance",
@@ -581,7 +545,7 @@ const item = {
         nomMarche : "Lance"
     },
     gourdin: {
-        nom: "un gourdin",
+        nom: "ce gourdin",
         IMG: "image/gourdin.webp",
         cost: 300,
         test: "testGourdin",
@@ -590,7 +554,7 @@ const item = {
         nomMarche : "Gourdin"
     },
     masse: {
-        nom: "une masse",
+        nom: "cette masse",
         IMG: "image/masse.webp",
         cost: 500,
         test: "testMasse",
@@ -599,7 +563,7 @@ const item = {
         nomMarche : "Masse"
     },
     hallebarde: {
-        nom: "une hallebarde",
+        nom: "cette hallebarde",
         IMG: "image/hallebarde.webp",
         cost: 1700,
         test: "testHallebarde",
@@ -608,7 +572,7 @@ const item = {
         nomMarche : "Hallebarde"
     },
     lance2: {
-        nom: "une lance sombre",
+        nom: "cette lance sombre",
         IMG: "image/lance2.webp",
         cost: 1800,
         test: "testLance2",
@@ -617,7 +581,7 @@ const item = {
         nomMarche : "Lance sombre"
     },
     katana: {
-        nom: "un katana",
+        nom: "ce katana",
         IMG: "image/katana.webp",
         cost: 800,
         test: "testKatana",
@@ -625,6 +589,71 @@ const item = {
         type: "LeftHand",
         nomMarche : "Katana"
     },
+        sortFeu: {
+            nom: "ce parchemin mystérieux",
+            IMG: "image/parchemin.webp",
+            cost: 350,
+            id: "sortFeu",
+            type: "Scroll",
+            nomMarche : "Parchemin de sortilège",
+        },
+        sortLumiere: {
+            nom: "ce parchemin mystérieux",
+            IMG: "image/parchemin.webp",
+            cost: 500,
+            id: "sortLumiere",
+            type: "Scroll",
+            nomMarche : "Parchemin de sortilège",
+        },
+        sortFoudre: {
+            nom: "ce parchemin mystérieux",
+            IMG: "image/parchemin.webp",
+            cost: 900,
+            id: "sortFoudre",
+            type: "Scroll",
+            nomMarche : "Parchemin de sortilège",
+        },
+        sortBlast: {
+            nom: "ce parchemin mystérieux",
+            IMG: "image/parchemin.webp",
+            cost: 1200,
+            id: "sortBlast",
+            type: "Scroll",
+            nomMarche : "Parchemin de sortilège",
+        },
+        sortArcane: {
+            nom: "ce parchemin mystérieux",
+            IMG: "image/parchemin.webp",
+            cost: 5000,
+            id: "sortArcane",
+            type: "Scroll",
+            nomMarche : "Parchemin de sortilège",
+        },
+        skillVol : {
+            nom: "ce parchemin mystérieux",
+            IMG: "image/parcheminSkill.webp",
+            cost: 900,
+            id: "skillVol",
+            type: "Scroll",
+            nomMarche: "Parchemin de compétence"
+        },
+        skillAll : {
+            nom: "ce parchemin mystérieux",
+            IMG: "image/parcheminSkill.webp",
+            cost: 1500,
+            id: "skillAll",
+            type: "Scroll",
+            nomMarche: "Parchemin de compétence"
+        },
+        skillDouble : {
+            nom: "ce parchemin mystérieux",
+            IMG: "image/parcheminSkill.webp",
+            cost: 1100,
+            id: "skillDouble",
+            type: "Scroll",
+            nomMarche: "Parchemin de compétence"
+        },
+
 };
 let actualFight = [];
 let actualEnnemiStatut = {};
@@ -943,6 +972,30 @@ btnCheckFight.addEventListener('click', () => {
 const btnCheckNoFight = document.getElementById('checkNoFight')
 btnCheckNoFight.addEventListener('click', () => {
     paramCheckFight = "neverFight"
+})
+const btnMarchand = document.getElementById("checkMarchand")
+const btnNoMarchand = document.getElementById("checkNoMarchand")
+btnMarchand.addEventListener("click", () => {
+    testMarchand = "alwaysMarchand"
+})
+btnNoMarchand.addEventListener("click", () => {
+    testMarchand = "neverMarchand"
+})
+const btnMaitreArme = document.getElementById("checkMaitreArme")
+const btnNoMaitreArme = document.getElementById("checkNoMaitreArme")
+btnMaitreArme.addEventListener("click", () => {
+    testMaitreArme = "alwaysMaitreArme"
+})
+btnNoMaitreArme.addEventListener("click", () => {
+    testMaitreArme = "neverMaitreArme"
+})
+const btnMaitreSort = document.getElementById("checkMaitreSort")
+const btnNoMaitreSort = document.getElementById("checkNoMaitreSort")
+btnMaitreSort.addEventListener("click", () => {
+    testMaitreSort = "alwaysMaitreSort"
+})
+btnNoMaitreSort.addEventListener("click", () => {
+    testMaitreSort = "neverMaitreSort"
 })
 const btnAllATQ = document.getElementById('getAllATQ')
 btnAllATQ.addEventListener('click', () => {
@@ -1313,7 +1366,6 @@ function launchFight() {
                     persoDiv.appendChild(perso1)
                     document.body.appendChild(persoDiv)
                     const toDel = ordreTourAttaque.findIndex(value => value.nom === persoRand)
-                    debugger
                     if (toDel !== -1) {
                         ordreTourAttaque.splice(toDel, 1)
                     } else {
@@ -1334,15 +1386,12 @@ function launchFight() {
 
 let dark = false;
 let marchand = 0
+let maitreArme = 0
+let maitreSort = 0
 let  testMarchand = ""
-const btnMarchand = document.getElementById("checkMarchand")
-const btnNoMarchand = document.getElementById("checkNoMarchand")
-btnMarchand.addEventListener("click", () => {
-    testMarchand = "alwaysMarchand"
-})
-btnNoMarchand.addEventListener("click", () => {
-    testMarchand = "neverMarchand"
-})
+let testMaitreArme = ""
+let testMaitreSort = ""
+
 //Si on clique sur la porte ouverte
 function enterDoor(door, myRoom) {
 
@@ -1385,7 +1434,14 @@ function enterDoor(door, myRoom) {
             if (room.numberDoor[[myRoom] + [door]] === "marchand") {
                 updateRenderBack(roomIAm, "marchand");
                 boiteDialogue("txtMarchand");
-            } else if (room.numberDoor[[myRoom] + [door]]) {
+            } else if (room.numberDoor[[myRoom] + [door]] === "maitreArme") {
+                updateRenderBack(roomIAm, "maitreArme");
+                boiteDialogue("txtMaitreArme");
+            } else if (room.numberDoor[[myRoom] + [door]] === "maitreSort") {
+                updateRenderBack(roomIAm, "maitreSort");
+                boiteDialogue("txtMaitreSort");
+            }
+            else if (room.numberDoor[[myRoom] + [door]]) {
                 updateRenderBack(roomIAm);
                 boiteDialogue("txtEnterExplored");
             }
@@ -1397,9 +1453,21 @@ function enterDoor(door, myRoom) {
                 } else if (testMarchand === "neverMarchand") {
                     marchand = 0
                 } else {
-                marchand = randomNumber("100");
-                }
-                if (marchand > 80) {
+                    marchand = randomNumber("100");
+                }  if (testMaitreArme === "alwaysMaitreArme") {
+                    maitreArme = 100
+                } else if (testMaitreArme === "neverMaitreArme") {
+                    maitreArme = 0
+                } else {
+                    maitreArme = randomNumber("100");
+                }  if (testMaitreSort === "alwaysMaitreSort") {
+                    maitreSort = 100
+                } else if (testMaitreSort === "neverMaitreSort") {
+                    maitreSort = 0
+                } else {
+                    maitreSort = randomNumber("100");
+                } 
+                if (marchand > 90) {
                     let howDeep = "";
                     const splitRoom = roomIAm.split("");
                     howDeep = splitRoom.length;
@@ -1418,7 +1486,18 @@ function enterDoor(door, myRoom) {
                     }
                     updateRender(roomIAm, "marchand");
                     boiteDialogue("txtMarchand");
-                } else {
+                } else if (maitreArme > 95) {
+                    room.numberDoor[[myRoom] + [door]] = "maitreArme"
+                    room.doorState[[myRoom] + [door]] = "maitreArme"
+                    updateRender(roomIAm, "maitreArme");
+                    boiteDialogue("txtMaitreArme");
+                } else if (maitreSort > 95) {
+                    room.numberDoor[[myRoom] + [door]] = "maitreSort"
+                    room.doorState[[myRoom] + [door]] = "maitreSort"
+                    updateRender(roomIAm, "maitreSort");
+                    boiteDialogue("txtMaitreSort");
+                }
+                else {
                     room.numberDoor[[myRoom] + [door]] = randomNumber("3");
                     if (room.numberDoor[[myRoom] + [door]] === 3) {
                         room.doorState[[myRoom] + [door]] = {
@@ -1483,12 +1562,21 @@ function delDoor(myRoom) {
         });
     } catch {}
     try {
+        document.getElementById('maitreArme').remove()
+    } catch {}
+    try {
+        document.getElementById('maitreSort').remove()
     } catch {}
 }
-function updateRender(myRoom, marchand) {
+function updateRender(myRoom, type) {
     delDoor();
-    if (marchand === "marchand") {
+    
+    if (type === "marchand") {
         updateRenderMarket(myRoom);
+    } else if (type === "maitreArme") {
+        updateRenderMaitreArme(myRoom)
+    } else if (type === "maitreSort") {
+        updateRenderMaitreSort(myRoom)
     }
     if (room.numberDoor[myRoom] === 1) {
         const imNewDoorA = document.createElement("img");
@@ -1907,7 +1995,6 @@ async function skill (nom, nomGen, div,ImEnn) {
         if (dataStat.DonneeStatPerso.statPerso[designationPerso].MPactual < skills[skillInUse].manaCost) {
             alert("mana insuffisant pour lancer ", skills[skillInUse].nom)
         } else {
-            debugger
             isAttacking = true; 
             buttonDoorDiv.allSpell.style.display ="none"
             buttonDoorDiv.allSkill.style.display ="none"
@@ -2173,7 +2260,6 @@ async function vicOrRetaliation() {
             if (!done) {
             const chance = randomNumber(100)
             if (value >= chance) {
-                debugger
                 const whatType = item[key].type
                 if(whatType === "Object") {
                     dataStat.DonneeStatPerso.inventaire[whatType].push(key)
@@ -2418,6 +2504,8 @@ function replaceStat() {
     backCheck = dataStat.DonneeStatPerso.backCheck;
     message = dataStat.DonneeStatPerso.message;
     itemList = dataStat.DonneeStatPerso.itemList
+    itemMaitreArme = dataStat.DonneeStatPerso.itemMaitreArme
+    itemMaitreSort = dataStat.DonneeStatPerso.itemMaitreSort
     money = dataStat.DonneeStatPerso.money
     nombreDePerso = dataStat.DonneeStatPerso.nombreDePerso
     Object.entries(dataStat.DonneeStatPerso.marketMemory).forEach(
@@ -2476,14 +2564,19 @@ const reset = {
 
     //x9 pain
     "pain",
-    "pain",
- 
-    "sortFeu",
-    "sortLumiere",
-    "sortFoudre",
-    "sortBlast",
-    "sortArcane",
-        ],
+    "pain",],
+    itemMaitreSort : [
+        "sortFeu",
+        "sortLumiere",
+        "sortFoudre",
+        "sortBlast",
+        "sortArcane",
+    ],
+    itemMaitreArme : [
+        "skillVol",
+        "skillDouble",
+        "skillAll"
+    ]
     }
 const opInventaire = document.getElementById("Inventaire");
 opInventaire.addEventListener("click", () => savePath());
@@ -2497,6 +2590,8 @@ async function savePath() {
         message,
         marketMemory,
         itemList,
+        itemMaitreArme,
+        itemMaitreSort,
         money,
         nombreDePerso,
     };
@@ -2532,6 +2627,7 @@ function buyItem(rawValue, type, myRoom, idItem) {
             if (index !== -1) {
                 marketMemory[myRoom].splice(index, 1);
             }
+        tooltip.style.visibility = "hidden"
         updateRenderItemMarket(myRoom)
         update()
     } else {    
@@ -2579,6 +2675,73 @@ function updateRenderItemMarket(myRoom) {
     });
     
 }
+function itemMaitreSortfn (myRoom) {
+    delItem()
+    if (buttonDoorDiv.itemMarket.style.display === "none") {
+        buttonDoorDiv.itemMarket.style.display = "block"
+        if (itemMaitreSort !== "") {
+            if (marketMemory[myRoom] === undefined) {
+                marketMemory[myRoom] = [];
+                for (let i = 0; i < 3; i++) {
+                    
+                    let findIndexItem = itemMaitreSort[randomNumber(itemMaitreSort.length) - 1];
+                    if (findIndexItem === undefined) {
+                        break
+                    }
+                        while (marketMemory[myRoom].includes(findIndexItem)) {
+                            findIndexItem = itemMaitreSort[randomNumber(itemMaitreSort.length) - 1];
+                        }
+                        marketMemory[myRoom].push(findIndexItem);
+                        const index = itemMaitreSort.findIndex((objet) => objet === findIndexItem);
+                        if (index !== -1) {
+                            itemMaitreSort.splice(index, 1);
+                        }
+                } 
+                updateRenderItemMarket(myRoom);
+            } else {
+                    updateRenderItemMarket(myRoom);
+            }
+            }
+            else {
+            }
+    } 
+    else {
+        buttonDoorDiv.itemMarket.style.display = "none"
+    }
+}
+function itemMaitreArmefn (myRoom) {
+    delItem()
+    if (buttonDoorDiv.itemMarket.style.display === "none") {
+        buttonDoorDiv.itemMarket.style.display = "block"
+        if (itemMaitreArme !== "") {
+            if (marketMemory[myRoom] === undefined) {
+                marketMemory[myRoom] = [];
+                for (let i = 0; i < 3; i++) {
+                    let findIndexItem = itemMaitreArme[randomNumber(itemMaitreArme.length) - 1];
+                    if (findIndexItem === undefined) {
+                        break
+                    }
+                        while (marketMemory[myRoom].includes(findIndexItem)) {
+                            findIndexItem = itemMaitreArme[randomNumber(itemMaitreArme.length) - 1];
+                        }
+                        marketMemory[myRoom].push(findIndexItem);
+                        const index = itemMaitreArme.findIndex((objet) => objet === findIndexItem);
+                        if (index !== -1) {
+                            itemMaitreArme.splice(index, 1);
+                        }
+                } 
+                updateRenderItemMarket(myRoom);
+            } else {
+                    updateRenderItemMarket(myRoom);
+            }
+            }
+            else {
+            }
+    } 
+    else {
+        buttonDoorDiv.itemMarket.style.display = "none"
+    }
+}
 function itemMarket(myRoom) {
     delItem()
     if (buttonDoorDiv.itemMarket.style.display === "none") {
@@ -2621,7 +2784,32 @@ function itemMarket(myRoom) {
         buttonDoorDiv.itemMarket.style.display = "none"
     }
 } 
-
+function updateRenderMaitreArme(myRoom) {
+    
+    const maitreArme = document.createElement("img");
+    maitreArme.src = "image/maitreArme.webp";
+    maitreArme.width = "400";
+    maitreArme.height = "500";
+    maitreArme.alt = "Un guerrier expérimenté";
+    maitreArme.id = "maitreArme";
+    maitreArme.setAttribute("data-testid", "maitreArme")
+        buttonDoorDiv.market.appendChild(maitreArme);
+        imDoor.maitreArme = document.getElementById("maitreArme");
+        imDoor.maitreArme.addEventListener("click", () => itemMaitreArmefn(myRoom))
+}
+function updateRenderMaitreSort(myRoom) {
+    
+    const maitreSort = document.createElement("img");
+    maitreSort.src = "image/maitreSort.webp";
+    maitreSort.width = "400";
+    maitreSort.height = "500";
+    maitreSort.alt = "Un mage expérimenté";
+    maitreSort.id = "maitreSort";
+    maitreSort.setAttribute("data-testid", "maitreSort")
+        buttonDoorDiv.market.appendChild(maitreSort);
+        imDoor.maitreSort = document.getElementById("maitreSort");
+        imDoor.maitreSort.addEventListener("click", () => itemMaitreSortfn(myRoom))
+}
 function updateRenderMarket(myRoom) {
     if (room.doorState[myRoom] === "smallMarket") {
         const smallMarket = document.createElement("img");
@@ -2662,6 +2850,10 @@ function updateRenderBack(myRoom) {
     delDoor(myRoom);
     if (room.numberDoor[myRoom] === "marchand") {
         updateRenderMarket(myRoom);
+    } else if (room.numberDoor[myRoom] === "maitreArme") {
+        updateRenderMaitreArme(myRoom)
+    } else if (room.numberDoor[myRoom] === "maitreSort") {
+        updateRenderMaitreSort(myRoom)
     } else {
         if (room.doorState[myRoom].A === "ouvert") {
             const imNewDoorA = document.createElement("img");

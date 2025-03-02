@@ -136,7 +136,7 @@ const arme = {
         IMG: "image/hacheDepart.webp",
     },
     arcDepart: {
-        genre:"estoc",
+        genre:"estoc",  
         degatsBase : 2,
         degatsForce: 1,
         degatsDexterite : 2,
@@ -857,35 +857,56 @@ const gear = {
             IMG: "image/parchemin.webp",
             title: "Lisez ce parchemin pour apprendre un sort",
             nom : "Parchemin de foudre",
-            description : "Vous permets d'apprendre le sort : Foudre"
+            description : "Vous permet d'apprendre le sort : Foudre"
         },
         sortLumiere : {
             effect: "",
             IMG: "image/parchemin.webp",
             title: "Lisez ce parchemin pour apprendre un sort",
             nom : "Parchemin de lumière",
-            description : "Vous permets d'apprendre le sort : Lumière"
+            description : "Vous permet d'apprendre le sort : Lumière"
         },
         sortFeu : {
             effect: () => {statPerso[designationPerso].spells.push("sortFeu")},
             IMG: "image/parchemin.webp",
             title: "Lisez ce parchemin pour apprendre un sort",
             nom : "Parchemin de feu",
-            description : "Vous permets d'apprendre le sort : Feu"
+            description : "Vous permet d'apprendre le sort : Feu"
         },
         sortArcane : {
             effect: () => {statPerso[designationPerso].spells.push("sortArcane")},
             IMG: "image/parchemin.webp",
             title: "Lisez ce parchemin pour apprendre un sort",
             nom : "Parchemin d'arcane",
-            description : "Vous permets d'apprendre le sort : Arcane"
+            description : "Vous permet d'apprendre le sort : Arcane"
         },
         sortBlast : {
             effect: () => {statPerso[designationPerso].spells.push("sortBlast")},
             IMG: "image/parchemin.webp",
             title: "Lisez ce parchemin pour apprendre un sort",
             nom : "Parchemin de souffle",
-            description : "Vous permets d'apprendre le sort : Blast"
+            description : "Vous permet d'apprendre le sort : Blast"
+        },
+        skillVol : {
+            effect: () => {statPerso[designationPerso].spells.push("skillVol")},
+            IMG: "image/parcheminSkill.webp",
+            title: "Lisez ce parchemin pour apprendre un sort",
+            nom : "Technique de combat",
+            description : "Vous permet d'apprendre la compétence : Voler"
+        },
+        skillAll : {
+            effect: () => {statPerso[designationPerso].spells.push("skillAll")},
+            IMG: "image/parcheminSkill.webp",
+            title: "Lisez ce parchemin pour apprendre un sort",
+            nom : "Technique de combat",
+            description : "Vous permet d'apprendre la compétence : Attaque Horizontale"
+        },
+        skillDouble : {
+            effect: () => {statPerso[designationPerso].spells.push("skillDouble")},
+            IMG: "image/parcheminSkill.webp",
+            title: "Lisez ce parchemin pour apprendre un sort",
+            nom : "Technique de combat",
+            description : "Vous permet d'apprendre la compétence : Double Attaque"
         },
     }
 } 
@@ -1461,7 +1482,7 @@ vol.addEventListener("click", () => {
     statPerso[designationPerso].HPactual = statPerso[designationPerso].HP
     statPerso[designationPerso].MPactual = statPerso[designationPerso].MP
     inventaire.LeftHand = ["dague"]
-    inventaire.spells = ["skillVol"]
+    statPerso[designationPerso].spells = ["skillVol"]
     VisualRender()
     update()
     statPerso.perso1.class = "voleur"
@@ -1816,6 +1837,18 @@ let recData = {
         message: [],
     },
 };
+let itemMaitreSort = [
+    "sortFeu",
+    "sortLumiere",
+    "sortFoudre",
+    "sortBlast",
+    "sortArcane",
+]
+let itemMaitreArme = [
+    "skillVol",
+    "skillDouble",
+    "skillAll"
+]
 let itemList = [
     "anneauForce",
     "anneauDef",
@@ -1846,12 +1879,6 @@ let itemList = [
     //x9 pain
     "pain",
     "pain",
- 
-    "sortFeu",
-    "sortLumiere",
-    "sortFoudre",
-    "sortBlast",
-    "sortArcane",
 ]
 let marketMemory = { start: [], }
 let backCheck = "";
@@ -1871,6 +1898,8 @@ async function FermerInv() {
         message,
         marketMemory,
         itemList,
+        itemMaitreArme,
+        itemMaitreSort,
         money,
         nombreDePerso
     };
@@ -1958,6 +1987,8 @@ async function replaceStat() {
     );
     skills = recData.donjonpath.dataStat.DonneeStatPerso.skills
     itemList = recData.donjonpath.dataStat.DonneeStatPerso.itemList
+    itemMaitreArme = recData.donjonpath.dataStat.DonneeStatPerso.itemMaitreArme
+    itemMaitreSort = recData.donjonpath.dataStat.DonneeStatPerso.itemMaitreSort
     marketMemory = recData.donjonpath.marketMemory
     roomIAm = recData.donjonpath.roomIAm;
     btnCheck = recData.donjonpath.dataStat.DonneeStatPerso.btnCheck;
