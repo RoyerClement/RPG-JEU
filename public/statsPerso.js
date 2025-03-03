@@ -27,6 +27,7 @@ const statPerso = {
             LVL: 1,
             spells: [],
             arme:"",
+            buff: [],
         },
         perso2 : 
         {   
@@ -48,6 +49,7 @@ const statPerso = {
             LVL: 1,
             spells: [],
             arme:"",
+            buff: [],
         },
         perso3 : 
         {   
@@ -69,6 +71,7 @@ const statPerso = {
             LVL: 1,
             spells: [],
             arme:"",
+            buff: [],
         },
 };
 
@@ -795,6 +798,87 @@ const gear = {
             test: "testNeck",
             title: "emplacement pour ajouter une amulette"
         },
+        amuDoubleTour: {
+            def : 0,
+            effet: false,
+            IMG: "image/amu10.webp",
+            test: "testAmuDoubleTour",
+            title:"Amulette qui vous permet d'aller si vite que les ennemis ont l'impression que vous avez un double !",
+            nom : "Amulette d'Ubiquite",
+            description : "Vous permet de jouer deux fois lors des combats"
+        },
+        amuCelerite: {
+            def : 0,
+            effet: false,
+            IMG: "image/amu7.webp",
+            test: "testAmuCelerite",
+            title:"Amulette qui vous rend plus rapide !",
+            nom : "Amulette de Célérité",
+            description : "Vous permet de jouer en premier lors des combats"
+        },
+        amuBrut: {
+            def : 0,
+            effet: false,
+            IMG: "image/amu11.webp",
+            test: "testAmuBrut",
+            title:"Amulette qui augmente vos dégats !",
+            nom : "Amulette Brut",
+            description : "Augmente les dégats de vos attaques et compétences de 20%"
+        },
+        amuSort: {
+            def : 0,
+            effet: false,
+            IMG: "image/amu9.webp",
+            test: "testAmuSort",
+            title:"Amulette qui augmente les dégats de vos sorts !",
+            nom : "Amulette de sorcellerie",
+            description : "Augmente les dégats vos sorts de 25%"
+        },
+        amuVamp: {
+            def : 0,
+            effet: false,
+            IMG: "image/amu8.webp",
+            test: "testAmuVamp",
+            title:"Amulette qui absorbe la vie de vos adversaires !",
+            nom : "Amulette de vampirisme",
+            description : "Gagnez 20% des dégats que vos attaques inflige sous forme de point de vie "
+        },
+        amuCauchemar: {
+            def : 0,
+            effet: false,
+            IMG: "image/amu12.webp",
+            test: "testAmuCauchemar",
+            title:"Amulette qui absorbe la vie de vos adversaires !",
+            nom : "Amulette de cauchemar",
+            description : "Gagnez 20% des dégats que vos attaques inflige sous forme de point de mana "
+        },
+        amuConcentration: {
+            def : 0,
+            effet: false,
+            IMG: "image/amu5.webp",
+            test: "testAmuConcentration",
+            title:"Fini d'avoir à vous concentrer !",
+            nom : "Amulette de concentration",
+            description : "Vous n'avez plus besoin de vous concentrer pour lancer vos sorts & compétences"
+        },
+        amuAvidite: {
+            def : 0,
+            effet: false,
+            IMG: "image/amu6.webp",
+            test: "testAmuAvidite",
+            title:"Gagnez plus d'or lors des combats",
+            nom : "Amulette d'avidité",
+            description : "Gagnez plus d'or lors des combats"
+        },
+        amuLumiere: {
+            def : 0,
+            effet: false,
+            IMG: "image/amu2.webp",
+            test: "testAmuLumiere",
+            title:"Vous éclaire",
+            nom : "Amulette de lumière",
+            description : "Vous éclaire dans la pénombre de ce donjon"
+        },
     },
     Object: {
         potionVie: {
@@ -916,7 +1000,16 @@ const Buff = {
     anneauInt: () => (statPerso[designationPerso].Intelligence += 5),
     anneauVie: () => (statPerso[designationPerso].Vitalite += 5),
     anneauDef: () => (statPerso),
-    anneauLuc: () => (statPerso[designationPerso].Concentration += 4)
+    anneauLuc: () => (statPerso[designationPerso].Concentration += 4),
+    amuDoubleTour: () => statPerso[designationPerso].buff.push("amuDoubleTour"),
+    amuCelerite: () => statPerso[designationPerso].buff.push("amuCelerite"),
+    amuBrut: () => statPerso[designationPerso].buff.push("amuBrut"),
+    amuSort : () => statPerso[designationPerso].buff.push("amuSort"),
+    amuVamp : () => statPerso[designationPerso].buff.push("amuVamp"),
+    amuCauchemar : () => statPerso[designationPerso].buff.push("amuCauchemar"),
+    amuConcentration : () => statPerso[designationPerso].buff.push("amuConcentration"),
+    amuAvidite : () => statPerso[designationPerso].buff.push("amuAvidite"),
+    amuLumiere : () => statPerso[designationPerso].buff.push("amuLumiere"),
 };
 const Debuff = {
     anneauForce: () => (statPerso[designationPerso].Force -= 5),
@@ -924,7 +1017,61 @@ const Debuff = {
     anneauInt: () => (statPerso[designationPerso].Intelligence -= 5),
     anneauVie: () => (statPerso[designationPerso].Vitalite -= 5),
     anneauDef: () => (statPerso),
-    anneauLuc: () => (statPerso[designationPerso].Concentration -= 4)
+    anneauLuc: () => (statPerso[designationPerso].Concentration -= 4),
+    amuDoubleTour: () => {
+        const index = statPerso[designationPerso].buff.findIndex(value => value === "amuDoubleTour")
+        if (index !== -1){
+            statPerso[designationPerso].buff.splice(index, 1)
+        }
+    },
+    amuCelerite: () => {
+        const index = statPerso[designationPerso].buff.findIndex(value => value === "amuCelerite")
+        if (index !== -1){
+            statPerso[designationPerso].buff.splice(index, 1)
+        }
+    },
+    amuBrut: () => {
+        const index = statPerso[designationPerso].buff.findIndex(value => value === "amuBrut")
+        if (index !== -1){
+            statPerso[designationPerso].buff.splice(index, 1)
+        }
+    },
+    amuSort : () => {
+        const index = statPerso[designationPerso].buff.findIndex(value => value === "amuSort")
+        if (index !== -1){
+            statPerso[designationPerso].buff.splice(index, 1)
+        }
+    },
+    amuVamp : () => {
+        const index = statPerso[designationPerso].buff.findIndex(value => value === "amuVamp")
+        if (index !== -1){
+            statPerso[designationPerso].buff.splice(index, 1)
+        }
+    },
+    amuCauchemar : () => {
+        const index = statPerso[designationPerso].buff.findIndex(value => value === "amuCauchemar")
+        if (index !== -1){
+            statPerso[designationPerso].buff.splice(index, 1)
+        }
+    },
+    amuConcentration :() => {
+        const index = statPerso[designationPerso].buff.findIndex(value => value === "amuConcentration")
+        if (index !== -1){
+            statPerso[designationPerso].buff.splice(index, 1)
+        }
+    },
+    amuAvidite :() => {
+        const index = statPerso[designationPerso].buff.findIndex(value => value === "amuAvidite")
+        if (index !== -1){
+            statPerso[designationPerso].buff.splice(index, 1)
+        }
+    },
+    amuLumiere : () => {
+        const index = statPerso[designationPerso].buff.findIndex(value => value === "amuLumiere")
+        if (index !== -1){
+            statPerso[designationPerso].buff.splice(index, 1)
+        }
+    },
 };
 const equipement = {
     perso1 : 
@@ -1855,6 +2002,17 @@ let itemList = [
     "anneauInt",
     "anneauVie",
     "anneauLuc",
+
+        "amuDoubleTour",
+        "amuCelerite",
+        "amuBrut",
+        "amuAvidite",
+        "amuCauchemar",
+        "amuConcentration",
+        "amuLumiere",
+        "amuSort",
+        "amuVamp",
+
     "hallebarde",
     "espadon",
     "masse",

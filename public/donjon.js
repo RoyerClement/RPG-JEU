@@ -26,6 +26,9 @@ const buttonDoorDiv = {
     tableauRuneDone: document.getElementById("tableauRuneDone"),
     all: document.getElementById("all"),
     mur : document.getElementById("mur"),
+    perso1 : document.getElementById("perso1"),
+    perso2 : document.getElementById("perso2"),
+    perso3 : document.getElementById("perso3"),
 };
 const imDoor = {
     ImA: document.getElementById("ImA"),
@@ -281,7 +284,7 @@ let skills = {
         target:"all",
         repetition:1,
         state:true,
-        nom: "sortFeu",
+        nom: "skillAll",
         IMG: "image/SLASH2.gif",
         nombreRune: 3,
         runeMultiple: 0.5,
@@ -296,7 +299,7 @@ let skills = {
         target:"solo",
         repetition:1,
         state:true,
-        nom: "sortFeu",
+        nom: "skillDouble",
         IMG: "image/slash.webp",
         nombreRune: 3,
         runeMultiple: 0.5,
@@ -384,13 +387,6 @@ const item = {
         type: "Ring",
         nomMarche : "Anneau de loup",
     },
-    espadon: {
-        nom: "cet espadon à deux mains",
-        IMG: "image/espadon.webp",
-        cost: 200,
-        type: "LeftHand",
-        nomMarche : "Espadon",
-    },
     anneauDexterite: {
         nom: "cet anneau de dextérité",
         IMG: "image/anneauDex.webp",
@@ -426,6 +422,74 @@ const item = {
         type: "Ring",
         nomMarche : "Anneau de tortue"
     },
+
+
+    amuDoubleTour: {
+        nom: "cet amulette d'Ubiquité",
+        IMG: "image/amu10.webp",
+        cost: 2000,
+        type: "Neck",
+        nomMarche : "Amulette d'Ubiquité"
+    },
+    amuCelerite : {
+        nom: "cet amulette de Célérité",
+        IMG: "image/amu7.webp",
+        cost: 200,
+        type: "Neck",
+        nomMarche : "Amulette de Célérité"
+    },
+    amuBrut : {
+        nom: "cet amulette Brut",
+        IMG: "image/amu11.webp",
+        cost: 750,
+        type: "Neck",
+        nomMarche : "Amulette Brut"
+    },
+    amuSort: {
+        nom: "cet amulette de Sorcellerie",
+        IMG: "image/amu9.webp",
+        cost: 650,
+        type: "Neck",
+        nomMarche : "Amulette de Sorcellerie"
+    },
+    amuVamp: {
+        nom: "cet amulette de Vampirisme",
+        IMG: "image/amu8.webp",
+        cost: 900,
+        type: "Neck",
+        nomMarche : "Amulette de Vampirisme"
+    },
+    amuCauchemar: {
+        nom: "cet amulette de Cauchemar",
+        IMG: "image/amu12.webp",
+        cost: 850,
+        type: "Neck",
+        nomMarche : "Amulette de Cauchemar"
+    },
+    amuConcentration: {
+        nom: "cet amulette de Concentration",
+        IMG: "image/amu5.webp",
+        cost: 2000,
+        type: "Neck",
+        nomMarche : "Amulette de Concentration"
+    },
+    amuAvidite: {
+        nom: "cet amulette d'Avidité",
+        IMG: "image/amu6.webp",
+        cost: 800,
+        type: "Neck",
+        nomMarche : "Amulette d'Avidité"
+    },
+    amuLumiere: {
+        nom: "cet amulette de Lumière",
+        IMG: "image/amu2.webp",
+        cost: 400,
+        type: "Neck",
+        nomMarche : "Amulette de Lumière"
+    },
+
+
+
     armureEnFer: {
         nom: "cette armure en fer",
         IMG: "image/armureEnFer.webp",
@@ -447,6 +511,8 @@ const item = {
         type: "Head",
         nomMarche : "Casque en cuir",
     },
+
+
     dague: {
         nom: "cette dague",
         IMG: "image/dague.webp",
@@ -454,28 +520,12 @@ const item = {
         type: "LeftHand",
         nomMarche : "Dague",
     },
-    potionVie: {
-        nom: "cette potion de vie",
-        IMG: "image/potionVie.webp",
-        cost: 50,
-        type: "Object",
-        nombre : 1,
-        nomMarche : "Potion de vie",
-    },
-    potionMana: {
-        nom: "cette potion de mana",
-        IMG: "image/potionMana.webp",
-        cost: 50,
-        type: "Object",
-        nombre : 1,
-        nomMarche : "Potion de mana",
-    },
-    pain: {
-        nom: "ce pain",
-        IMG: "image/pain.webp",
-        cost: 30,
-        type: "Object",
-        nomMarche : "Pain",
+    espadon: {
+        nom: "cet espadon à deux mains",
+        IMG: "image/espadon.webp",
+        cost: 200,
+        type: "LeftHand",
+        nomMarche : "Espadon",
     },
     torche: {
         nom: "cette torche",
@@ -589,9 +639,36 @@ const item = {
         type: "LeftHand",
         nomMarche : "Katana"
     },
+
+
+    potionVie: {
+        nom: "une potion de vie",
+        IMG: "image/potionVie.webp",
+        cost: 50,
+        type: "Object",
+        nombre : 1,
+        nomMarche : "Potion de vie",
+    },
+    potionMana: {
+        nom: "une potion de mana",
+        IMG: "image/potionMana.webp",
+        cost: 50,
+        type: "Object",
+        nombre : 1,
+        nomMarche : "Potion de mana",
+    },
+    pain: {
+        nom: "un pain",
+        IMG: "image/pain.webp",
+        cost: 30,
+        type: "Object",
+        nomMarche : "Pain",
+    },
+
+
         sortFeu: {
             nom: "ce parchemin mystérieux",
-            IMG: "image/parchemin.webp",
+            IMG: "image/parchemin2.webp",
             cost: 350,
             id: "sortFeu",
             type: "Scroll",
@@ -599,7 +676,7 @@ const item = {
         },
         sortLumiere: {
             nom: "ce parchemin mystérieux",
-            IMG: "image/parchemin.webp",
+            IMG: "image/parchemin3.webp",
             cost: 500,
             id: "sortLumiere",
             type: "Scroll",
@@ -607,7 +684,7 @@ const item = {
         },
         sortFoudre: {
             nom: "ce parchemin mystérieux",
-            IMG: "image/parchemin.webp",
+            IMG: "image/parchemin9.webp",
             cost: 900,
             id: "sortFoudre",
             type: "Scroll",
@@ -615,7 +692,7 @@ const item = {
         },
         sortBlast: {
             nom: "ce parchemin mystérieux",
-            IMG: "image/parchemin.webp",
+            IMG: "image/parchemin4.webp",
             cost: 1200,
             id: "sortBlast",
             type: "Scroll",
@@ -623,7 +700,7 @@ const item = {
         },
         sortArcane: {
             nom: "ce parchemin mystérieux",
-            IMG: "image/parchemin.webp",
+            IMG: "image/parchemin8.webp",
             cost: 5000,
             id: "sortArcane",
             type: "Scroll",
@@ -631,30 +708,70 @@ const item = {
         },
         skillVol : {
             nom: "ce parchemin mystérieux",
-            IMG: "image/parcheminSkill.webp",
+            IMG: "image/parchemin7.webp",
             cost: 900,
             id: "skillVol",
             type: "Scroll",
-            nomMarche: "Parchemin de compétence"
+            nomMarche: "Parchemin de compétence : Vol"
         },
         skillAll : {
             nom: "ce parchemin mystérieux",
-            IMG: "image/parcheminSkill.webp",
+            IMG: "image/parchemin6.webp",
             cost: 1500,
             id: "skillAll",
             type: "Scroll",
-            nomMarche: "Parchemin de compétence"
+            nomMarche: "Parchemin de compétence : Horiz"
         },
         skillDouble : {
             nom: "ce parchemin mystérieux",
-            IMG: "image/parcheminSkill.webp",
+            IMG: "image/parchemin6.webp",
             cost: 1100,
             id: "skillDouble",
             type: "Scroll",
-            nomMarche: "Parchemin de compétence"
+            nomMarche: "Parchemin de compétence : Doub"
         },
 
 };
+const buff = {
+    preFight : {
+        amuDoubleTour : (char) => {
+            ajouterEnnemiOrdreTour(dataStat.DonneeStatPerso.statPerso[char].type, dataStat.DonneeStatPerso.statPerso[char].Dexterite, false)
+        },
+        amuCelerite : (char) => {
+            const index = ordreTourAttaque.findIndex(value => value.nom === dataStat.DonneeStatPerso.statPerso[char].type)
+            ordreTourAttaque.splice(index, 1)
+            ordreTourAttaque.unshift({nom : dataStat.DonneeStatPerso.statPerso[char].type,
+                                      dex : dataStat.DonneeStatPerso.statPerso[char].Dexterite,
+                                      bolean : false
+            })
+            ordreTourAttaque[0].dex += 5000
+        },
+    },
+    inFight : {
+        amuBrut : (char) => {
+
+        },
+        amuSort : (char) => {
+
+        },
+        amuVamp : (char) => {
+
+        },
+        amuCauchemar : (char) => {
+
+        },
+    },
+    inLoot : {
+        amuAvidite : (char) => {
+
+        },
+    },
+    outFight : {
+        amuLumiere : (char) => {
+
+        }
+    }
+}
 let actualFight = [];
 let actualEnnemiStatut = {};
 const ennemiList = ["orc", "gobelin","serpent","champi","troll","ogre","skeleton","mageSkeleton",];
@@ -1030,14 +1147,30 @@ btnGetStuff.addEventListener('click', () => {
         "gobArc"
     ]
 
-    dataStat.DonneeStatPerso.inventaire.Chest = ["armureEnFer", "armureEnCuir"]
-    dataStat.DonneeStatPerso.inventaire.Head = ["casqueEnCuir"]
+    dataStat.DonneeStatPerso.inventaire.Chest = [
+        "armureEnFer", 
+        "armureEnCuir",
+    ]
+    dataStat.DonneeStatPerso.inventaire.Head = [
+        "casqueEnCuir",
+    ]
     dataStat.DonneeStatPerso.inventaire.Ring = [
         "anneauDexterite",
         "anneauDef",
         "anneauInt",
         "anneauVie",
         "anneauLuc",
+    ]
+    dataStat.DonneeStatPerso.inventaire.Neck = [
+        "amuDoubleTour",
+        "amuCelerite",
+        "amuBrut",
+        "amuAvidite",
+        "amuCauchemar",
+        "amuConcentration",
+        "amuLumiere",
+        "amuSort",
+        "amuVamp",
     ]
 })
 const btnNewChar = document.getElementById('getNewPerso')
@@ -1188,7 +1321,34 @@ function triggerFight() {
         }
     } catch {}
     console.log("Tour des attaques : ", ordreTourAttaque)
-    
+    debugger
+    let nbreBuff1 = dataStat.DonneeStatPerso.statPerso.perso1.buff.length
+    try  {
+        if (nbreBuff1 > 0) {
+            dataStat.DonneeStatPerso.statPerso.perso1.buff.forEach(value => {
+                buff.preFight[value](["perso1"])
+                
+            })
+        }
+    } catch{}
+    let nbreBuff2 = dataStat.DonneeStatPerso.statPerso.perso2.buff.length
+    try {   
+        if (nbreBuff2 > 0) {
+            dataStat.DonneeStatPerso.statPerso.perso2.buff.forEach(value => {
+                buff.preFight[value](["perso2"])
+                
+            })
+        }
+    } catch{}
+    let nbreBuff3 = dataStat.DonneeStatPerso.statPerso.perso3.buff.length
+    try{    
+        if (nbreBuff3 > 0) {
+            dataStat.DonneeStatPerso.statPerso.perso3.buff.forEach(value => {
+                buff.preFight[value](["perso3"])
+                
+            })
+        }
+    }catch{}
     launchFight()
     ennemiLVLinRoom = 0
     ennemiNumberinRoom = 0
@@ -1275,8 +1435,9 @@ function launchFight() {
             console.log("C'est au tour de :", currentFighter.nom);
             chooseChar(currentFighter.nom)
             ordreTourAttaque2.push(ordreTourAttaque.shift())
-            if (ordreTourAttaque.lenght === 0) {
+            if (ordreTourAttaque.length === 0) {
                 ordreTourAttaque = ordreTourAttaque2
+                ordreTourAttaque2 = []
                 console.log("ordre du tour : ", ordreTourAttaque)
             }
             console.log("reste du tour : ", ordreTourAttaque )
@@ -1372,6 +1533,15 @@ function launchFight() {
                         const toDel2 = ordreTourAttaque2.findIndex(value => value.nom === persoRand) 
                         ordreTourAttaque2.splice(toDel2, 1)
                     }
+                    try {
+                        const toDel = ordreTourAttaque.findIndex(value => value.nom === persoRand)
+                        if (toDel !== -1) {
+                            ordreTourAttaque.splice(toDel, 1)
+                        } else {
+                            const toDel2 = ordreTourAttaque2.findIndex(value => value.nom === persoRand) 
+                            ordreTourAttaque2.splice(toDel2, 1)
+                        }
+                    } catch{}
                 }
                 nextTurn();
             }, 800);
@@ -1877,8 +2047,19 @@ async function spell (nom, nomGen, div,ImEnn) {
             buttonDoorDiv.allSkill.style.display ="none"
             buttonDoorDiv.panneauAttaque.style.display="none"
             isAttacking = true; 
+    //BUFF check (Concentration)
+    let doIt = true
+    dataStat.DonneeStatPerso.statPerso[designationPerso].buff.forEach(value => {
+        if (value === "amuConcentration"){
+            doIt = false
+        }
+    })
     //CC SYSYTEM ESSAI facon QTE
+    if (doIt){
     await QTErune(spells[spellInUse].tempsRune, spells[spellInUse].nombreRune)
+    } else {
+        runeCrit = spells[spellInUse].nombreRune
+    }
     //QTE END
     setTimeout(()=> {
     const keys = Object.keys(actualEnnemiStatut);
@@ -1892,6 +2073,12 @@ async function spell (nom, nomGen, div,ImEnn) {
     spell.height = "308";
     spell.zIndex="99"
     let SPELLDMG = spells[spellInUse].effect() * (runeCrit * spells[spellInUse].runeMultiple)
+    //BUFF check (Sorcellerie)
+    dataStat.DonneeStatPerso.statPerso[designationPerso].buff.forEach(value => {
+        if (value === "amuSort"){
+            SPELLDMG += Math.round(SPELLDMG*0.25)
+        }
+    })
     if (runeCrit === spells[spellInUse].nombreRune) {  
         let spanCrit = document.createElement('p')
         spanCrit.id = "spanCrit"
@@ -1999,9 +2186,21 @@ async function skill (nom, nomGen, div,ImEnn) {
             buttonDoorDiv.allSpell.style.display ="none"
             buttonDoorDiv.allSkill.style.display ="none"
             buttonDoorDiv.panneauAttaque.style.display="none"
-    //CC SYSYTEM ESSAI facon QTE
+
     currentTarget = nom
+    //BUFF check (Concentration)
+    let doIt = true
+    dataStat.DonneeStatPerso.statPerso[designationPerso].buff.forEach(value => {
+        if (value === "amuConcentration"){
+            doIt = false
+        }
+    })
+    //CC SYSYTEM ESSAI facon QTE
+    if (doIt){
     await QTErune(skills[skillInUse].tempsRune, skills[skillInUse].nombreRune)
+    } else {
+        runeCrit = skills[skillInUse].nombreRune
+    }
     //QTE END
     setTimeout(()=> {
     const keys = Object.keys(actualEnnemiStatut);
@@ -2014,6 +2213,13 @@ async function skill (nom, nomGen, div,ImEnn) {
     skill.width = skills[skillInUse].width;
     skill.height = "308";
     skill.zIndex="99"
+    let DAMAGE = skills[skillInUse].effect() * runeCrit
+    //BUFF check (brut)
+    dataStat.DonneeStatPerso.statPerso[designationPerso].buff.forEach(value => {
+        if (value === "amuBrut"){
+            DAMAGE += Math.round(DAMAGE*0.18)
+        }
+    })
     if (runeCrit === skills[skillInUse].nombreRune) {  
         let spanCrit = document.createElement('p')
         spanCrit.id = "spanCrit"
@@ -2028,7 +2234,7 @@ async function skill (nom, nomGen, div,ImEnn) {
     }
 
     if (skills[skillInUse].target === "solo"){
-        let RANDOM = genererChiffre(skills[skillInUse].effect() * runeCrit, skills[skillInUse].variation)
+        let RANDOM = genererChiffre(DAMAGE , skills[skillInUse].variation)
         if (RANDOM < 0) {
             RANDOM = 0
         } 
@@ -2043,7 +2249,7 @@ async function skill (nom, nomGen, div,ImEnn) {
         for(let i = 0; i < skills[skillInUse].repetition; i++) {
         const ennemiID = Object.keys(actualEnnemiStatut)
         const randomKey = ennemiID[Math.floor(Math.random() * ennemiID.length)]     
-        let RANDOM = genererChiffre(skills[skillInUse].effect() * runeCrit, skills[skillInUse].variation)
+        let RANDOM = genererChiffre(DAMAGE, skills[skillInUse].variation)
         if (RANDOM < 0) {
             RANDOM = 0
         } 
@@ -2058,7 +2264,7 @@ async function skill (nom, nomGen, div,ImEnn) {
     else if (skills[skillInUse].target === "all") {
         const ennemiID = Object.keys(actualEnnemiStatut)
         ennemiID.forEach((value) => {
-            let RANDOM = genererChiffre(skills[skillInUse].effect() * runeCrit, skills[skillInUse].variation)
+            let RANDOM = genererChiffre(DAMAGE, skills[skillInUse].variation)
             if (RANDOM < 0) {
                 RANDOM = 0
             } 
@@ -2133,6 +2339,12 @@ function attaque(nom, nomGen, div, ImEnn) {
         buttonDoorDiv[div].appendChild(attaque)
         let randomAttaque = genererChiffre(dataStat.DonneeStatPerso.stats[designationPerso].RightHand +
             dataStat.DonneeStatPerso.stats[designationPerso].LeftHand, 10)
+    //BUFF check (Brut)
+        dataStat.DonneeStatPerso.statPerso[designationPerso].buff.forEach(value => {
+            if (value === "amuBrut"){
+                randomAttaque += Math.round(randomAttaque*0.2)
+            }
+        })
             while (randomAttaque < 0) {
                 randomAttaque++
             }
@@ -2140,7 +2352,7 @@ function attaque(nom, nomGen, div, ImEnn) {
                 
                 if(dataStat.DonneeStatPerso.statPerso[designationPerso].arme === value) {
                     console.log(randomAttaque)
-                    randomAttaque =  Math.round(randomAttaque*1.5)
+                    randomAttaque =  Math.round(randomAttaque*1.25)
                     actualEnnemiStatut[nom].HP -=(randomAttaque)
                     console.log("était faible à votre arme")
                     console.log(randomAttaque)
@@ -2160,6 +2372,23 @@ function attaque(nom, nomGen, div, ImEnn) {
                     actualEnnemiStatut[nom].HP -= randomAttaque
                     console.log("était normal à votre arme")
             }}) 
+            //BUFF check (vamp/Cauchemar)
+            dataStat.DonneeStatPerso.statPerso[designationPerso].buff.forEach(value => {
+                if (value === "amuVamp"){
+                    dataStat.DonneeStatPerso.statPerso[designationPerso].HPactual += Math.round(randomAttaque*0.2)
+                    let spanVie = document.createElement("span")
+                    spanVie.id = "spanVie"
+                    spanVie.textContent = "-"+(randomAttaque*0.2)
+                    buttonDoorDiv[designationPerso].appendChild(spanVie)
+                }
+                if (value === "amuCauchemar"){
+                    dataStat.DonneeStatPerso.statPerso[designationPerso].MPactual += Math.round(randomAttaque*0.2)
+                    let spanMana = document.createElement("span")
+                    spanMana.id = "spanMana"
+                    spanMana.textContent = "-"+(randomAttaque*0.2)
+                    buttonDoorDiv[designationPerso].appendChild(spanMana)
+                }
+            })
         let spanDegats = document.createElement("span")
         spanDegats.id = "spanDegats"
         spanDegats.textContent = "-"+randomAttaque
@@ -2178,6 +2407,8 @@ function attaque(nom, nomGen, div, ImEnn) {
     if (actualEnnemiStatut[nom].HP > 0) {
         boiteDialogue("txtAttaque", ennemi[nomGen].txt);
         spanDegats.remove()
+        try{spanMana.remove()}catch{}
+        try{spanVie.remove()}catch{}
         vicOrRetaliation()
         setTimeout(() => {
             document.body.style.cursor ="default"
@@ -2186,6 +2417,8 @@ function attaque(nom, nomGen, div, ImEnn) {
         }, lastAttackDelay + 100);
     } else {
         spanDegats.remove()
+        try{spanMana.remove()}catch{}
+        try{spanVie.remove()}catch{}
         loot(nom, nomGen, div, ImEnn)
             const index = ordreTourAttaque.findIndex(e => e.nom === nom)
             if (index !== -1){
@@ -2323,6 +2556,22 @@ function loot(nom, nomGen, div, ImEnn) {
         Object.entries(dataStat.DonneeStatPerso.statPerso).forEach(([key, value]) => {
             value.XP += Math.round(actualEnnemiStatut[nom].XP / nombreDePerso);
         }) 
+        //BUFF check (amuAvidite)
+        dataStat.DonneeStatPerso.statPerso.perso1.buff.forEach(value => {
+            if (value === "amuAvidite"){
+                actualEnnemiStatut[nom].or += actualEnnemiStatut[nom].or*0.3
+            }
+        })
+        dataStat.DonneeStatPerso.statPerso.perso2.buff.forEach(value => {
+            if (value === "amuAvidite"){
+                actualEnnemiStatut[nom].or += actualEnnemiStatut[nom].or*0.3
+            }
+        })
+        dataStat.DonneeStatPerso.statPerso.perso3.buff.forEach(value => {
+            if (value === "amuAvidite"){
+                actualEnnemiStatut[nom].or += actualEnnemiStatut[nom].or*0.3
+            }
+        })
         dataStat.DonneeStatPerso.money += actualEnnemiStatut[nom].or
         lootObject(nom)
         update()
@@ -2344,6 +2593,7 @@ let torche = false
 const flashlight = document.getElementById("flashlight")
 const overlay = document.getElementById("overlay")
 function darknessOpacity() {
+    
     if (roomIAm === "start") {
         roomIAm = ""
     } 
@@ -2370,6 +2620,13 @@ function darknessOpacity() {
     if (roomIAm ==="") {
         roomIAm = "start"
     }  
+    //BUFF check (amuLumiere)
+    dataStat.DonneeStatPerso.statPerso[designationPerso].buff.forEach(value => {
+        if (value === "amuLumiere"){
+            overlay.style.display="none"
+            flashlight.style.display="none"
+        }
+    })
 }
 
 function updateFlashlight() {
@@ -2467,7 +2724,6 @@ imDoor.ALL.sortBlast.addEventListener("click",() =>{
     spellInUse = "sortBlast"
     document.body.style.cursor = "url('image/cursorMGC.png'), auto"} else return
 })
-
 
 imDoor.ALL.skillDouble.addEventListener("click",() =>{ 
     if(!isAttacking){
@@ -2711,11 +2967,13 @@ function itemMaitreSortfn (myRoom) {
 }
 function itemMaitreArmefn (myRoom) {
     delItem()
+    
     if (buttonDoorDiv.itemMarket.style.display === "none") {
         buttonDoorDiv.itemMarket.style.display = "block"
         if (itemMaitreArme !== "") {
             if (marketMemory[myRoom] === undefined) {
                 marketMemory[myRoom] = [];
+                
                 for (let i = 0; i < 3; i++) {
                     let findIndexItem = itemMaitreArme[randomNumber(itemMaitreArme.length) - 1];
                     if (findIndexItem === undefined) {
@@ -2744,6 +3002,7 @@ function itemMaitreArmefn (myRoom) {
 }
 function itemMarket(myRoom) {
     delItem()
+    
     if (buttonDoorDiv.itemMarket.style.display === "none") {
         buttonDoorDiv.itemMarket.style.display = "block"
         if (itemList !== "") {
@@ -3020,6 +3279,12 @@ function update() {
         `Arme gauche : ${dataStat.DonneeStatPerso.stats[designationPerso].LeftHand}`;
     document.getElementById("degatsArmeD").textContent =
         `Arme droite : ${dataStat.DonneeStatPerso.stats[designationPerso].RightHand}`; 
+        if(dataStat.DonneeStatPerso.statPerso[designationPerso].HPactual > dataStat.DonneeStatPerso.statPerso[designationPerso].HP) {
+            dataStat.DonneeStatPerso.statPerso[designationPerso].HPactual = dataStat.DonneeStatPerso.statPerso[designationPerso].HP
+        }
+        if(dataStat.DonneeStatPerso.statPerso[designationPerso].MPactual > dataStat.DonneeStatPerso.statPerso[designationPerso].MP) {
+            dataStat.DonneeStatPerso.statPerso[designationPerso].MPactual = dataStat.DonneeStatPerso.statPerso[designationPerso].MP
+        }
     document.getElementById("hp").textContent =
         `Points de vie : ${dataStat.DonneeStatPerso.statPerso[designationPerso].HPactual}/${dataStat.DonneeStatPerso.statPerso[designationPerso].HP}`;
     document.getElementById("mp").textContent =
