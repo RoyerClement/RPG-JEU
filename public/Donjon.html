@@ -242,6 +242,64 @@
                 font-size: 24px;
                 color: #706c2e;
             }
+            .divRuneClass {
+                border: 2px solid #b68264;
+                background-color: #2e1d11;
+            }
+            #epreuveMaitreSort {
+                display: grid;
+                grid-template-columns: repeat(6, 135px);
+                gap: 5px;
+                position: absolute;
+                left: 150px;
+                top: 100px;
+                z-index: 51;
+                width: 835px;
+                height: 630px;
+                border: 5px solid #4d372a;
+                background-color: #563620;
+            }
+            #anticlicEpreuveMS {
+                position: absolute;
+                left : 0px;
+                top : 0px;
+                z-index: 60;
+                opacity: 0;
+                pointer-events: auto;
+                width: 100%;
+                height: 100%;
+                background-color: #4444af;
+            }
+            #anticlicEpreuveMS2 {
+                position: absolute;
+                left : 0px;
+                top : 0px;
+                z-index: 60;
+                opacity: 0;
+                pointer-events: auto;
+                width: 100%;
+                height: 100%;
+                background-color: #af9844;
+            }
+            #bulleMS {
+                position:absolute;
+                left: 750px;
+                top : 150px;
+                z-index: 10;
+            }
+            #txtBulleMS {
+                position:absolute;
+                left: 800px;
+                top : 250px;
+                font-family: "MedievalSharp", serif;
+                font-size: 19px;
+                z-index: 11;
+                font-weight: 800;
+                color: rgb(60, 16, 125);
+            }
+            #runeMaitreSort {
+                position:absolute;
+            }
             #tableauRuneDone {
                 position: absolute;
                 right: 899px;
@@ -344,6 +402,7 @@
             }
             #market {
                 position: absolute;
+                z-index: 2;
                 right: 700px;
                 top: 0px;
             }
@@ -465,6 +524,7 @@
         <button id ="getStuff" data-testid="testGetStuff">getStuff</button>
         <button id ="getNewPerso" data-testid="testGetNewPerso">newChar</button>
         </div>
+        <div id="epreuveMaitreSort" style="display: none;"></div>
         <div id="tableauRune" style="display: none;"></div>
         <div id="tableauRuneDone" style="display: none;"></div> 
         <div id="all" class="position-relative background-darkness">

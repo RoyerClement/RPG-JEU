@@ -24,6 +24,7 @@ const buttonDoorDiv = {
     allSpell: document.getElementById("allSpell"),
     tableauRune: document.getElementById('tableauRune'),
     tableauRuneDone: document.getElementById("tableauRuneDone"),
+    epreuveMaitreSort: document.getElementById("epreuveMaitreSort"),
     all: document.getElementById("all"),
     mur : document.getElementById("mur"),
     perso1 : document.getElementById("perso1"),
@@ -67,7 +68,21 @@ const runes = {
     7 : "image/rune7.webp",
     8 : "image/rune8.webp",
     9 : "image/rune9.webp",
-    10 : "image/rune10.webp",
+    10 : "image/rune1.webp",
+    11 : "image/rune11.webp",
+    12 : "image/rune12.webp",
+    13 : "image/rune13.webp",
+    14 : "image/rune14.webp",
+    15 : "image/rune15.webp",
+    16 : "image/rune16.webp",
+    17 : "image/rune17.webp",
+    18 : "image/rune18.webp",
+    19 : "image/rune19.webp",
+    20 : "image/rune20.webp",
+    21 : "image/rune21.webp",
+    22 : "image/rune22.webp",
+    23 : "image/rune23.webp",
+    24 : "image/rune24.webp",
 }
 const dialogue = {
     txtId: document.getElementById("boiteDialogue"),
@@ -87,10 +102,12 @@ const dialogue = {
     txtVolRate : `Vous n'avez rien reussi à voler !`,
     txtMarchand: `Il y a un marchand dans cette salle`,
     txtMaitreArme : "Il y a un maître d'arme dans cette salle",
-    txtMaitreSort : "Il y a un maître de magie dans cette salle",
+    txtMaitreSort : "Il y a un maître Sorcier dans cette salle",
     txtLoot: `Qqchose tombe du monstre... Vous ramassez `,
     txtLootOr: `Vous ramassez de l'or`,
-    txtRateSkill : `Vous ratez lamentablement votre tentative`,
+    txtEpreuveRateMS : "Vous avez échoué à l'épreuve du maître Sorcier, il ne veut plus vous enseigner",
+    txtEpreuveReussiMS : "Le maitre Sorcier est disposé à vous enseigner",
+    txtRateSkill : `Vous êtes déconcentré et vous ratez votre tentative`,
     txtDarkness: "Il fait trop noir pour continuer sans lumière, vous ne pouvez pas combattre ainsi"
 };
 let textDialogue = "";
@@ -206,6 +223,7 @@ let dataStat = {
             LVL: 1,
             spells: [],
             arme:"",
+            buff: [],
         },
         perso2 : 
         {   
@@ -227,6 +245,7 @@ let dataStat = {
             LVL: 1,
             spells: [],
             arme:"",
+            buff: [],
         },
         perso3 : 
         {   
@@ -248,9 +267,10 @@ let dataStat = {
             LVL: 1,
             spells: [],
             arme:"",
+            buff: [],
         },
     },
-    marketMemory: {start : [], },
+    marketMemory: {start : [],},
     btnCheck: "",
 };
 const ratioLvlXp = {
@@ -560,7 +580,7 @@ const item = {
         nomMarche : "Casque d'orc",
     },
     gobArc: {
-        nom: "ce arc de gobelin",
+        nom: "cet arc de gobelin",
         IMG: "image/gobArc.webp",
         cost : 700,
         id: "gobArc",
@@ -795,10 +815,10 @@ const ennemi = {
         norme: [],
         fort:["contondant"],
         LOOT: {
-            orcEpee : 5,
-            orcCasque: 5,
             potionVie: 7,
             pain:10,
+            orcEpee : 4,
+            amuVamp : 1
         },
         nbreObjet : 4,
         or: 50,
@@ -824,11 +844,10 @@ const ennemi = {
         norme: ["contondant"],
         fort:[],
         LOOT: {
-            gobArc : 7,
-            anneauDexterite : 1,
-            potionMana : 5,
             potionVie: 5,
             pain:10,
+            gobArc : 3,
+            anneauDexterite : 1,
         },
         nbreObjet : 5,
         or: 20, 
@@ -843,20 +862,20 @@ const ennemi = {
         div:"",
         width: 250,
         height:300,
-        ATQ: 10,
+        ATQ: 7,
         CRIT: 10,
         DEF: 3,
-        HP: 10,
+        HP: 70,
         DEX: 1,
         XP: 30,
         faible:["contondant"],
         norme: ["estoc"],
         fort:["tranchant"],
         LOOT: {
-            gobArc : 7,
-            anneauDexterite : 5,
             potionMana : 15,
             potionVie: 20,
+            orcCasque: 3,
+            amuDef : 1,
         },
         nbreObjet : 4,
         or: 20, 
@@ -872,7 +891,7 @@ const ennemi = {
         width: 300,
         height:400,
         ATQ: 20,
-        CRIT: 30,
+        CRIT: 40,
         DEF: 3,
         HP: 210,
         DEX: 0,
@@ -881,10 +900,11 @@ const ennemi = {
         norme: [],
         fort:["tranchant","contondant"],
         LOOT: {
-            gobArc : 7,
-            anneauDexterite : 5,
             potionMana : 15,
             potionVie: 20,
+            gourdin:7,
+            hallebarde : 5,
+            amuBrut : 3,
         },
         nbreObjet : 4,
         or: 20, 
@@ -899,8 +919,8 @@ const ennemi = {
         div:"",
         width: 250,
         height:350,
-        ATQ: 10,
-        CRIT: 15,
+        ATQ: 14,
+        CRIT: 18,
         DEF: 3,
         HP: 120,
         DEX: 2,
@@ -909,10 +929,10 @@ const ennemi = {
         norme: ["tranchant"],
         fort:["contondant"],
         LOOT: {
-            gobArc : 7,
-            anneauDexterite : 5,
-            potionMana : 15,
+            pain: 30,
             potionVie: 20,
+            orcHache : 5,
+            anneauVie : 2
         },
         nbreObjet : 4,
         or: 20, 
@@ -937,10 +957,10 @@ const ennemi = {
         norme: ["tranchant","estoc"],
         fort:[],
         LOOT: {
-            gobArc : 7,
-            anneauDexterite : 5,
-            potionMana : 15,
-            potionVie: 20,
+            potionMana : 25,
+            potionVie: 10,
+            pain: 15,
+            amuCauchemar:2,
         },
         nbreObjet : 4,
         or: 20, 
@@ -965,10 +985,8 @@ const ennemi = {
         norme: ["contondant","estoc"],
         fort:[],
         LOOT: {
-            gobArc : 7,
-            anneauDexterite : 5,
-            potionMana : 15,
-            potionVie: 20,
+            pain: 40,
+            amuCelerite: 4,
         },
         nbreObjet : 4,
         or: 20, 
@@ -1321,7 +1339,6 @@ function triggerFight() {
         }
     } catch {}
     console.log("Tour des attaques : ", ordreTourAttaque)
-    debugger
     let nbreBuff1 = dataStat.DonneeStatPerso.statPerso.perso1.buff.length
     try  {
         if (nbreBuff1 > 0) {
@@ -1608,6 +1625,7 @@ function enterDoor(door, myRoom) {
                 updateRenderBack(roomIAm, "maitreArme");
                 boiteDialogue("txtMaitreArme");
             } else if (room.numberDoor[[myRoom] + [door]] === "maitreSort") {
+                compteurMS = 0
                 updateRenderBack(roomIAm, "maitreSort");
                 boiteDialogue("txtMaitreSort");
             }
@@ -1662,6 +1680,8 @@ function enterDoor(door, myRoom) {
                     updateRender(roomIAm, "maitreArme");
                     boiteDialogue("txtMaitreArme");
                 } else if (maitreSort > 95) {
+                    epreuveMaitreSort = 1
+                    compteurMS = 0
                     room.numberDoor[[myRoom] + [door]] = "maitreSort"
                     room.doorState[[myRoom] + [door]] = "maitreSort"
                     updateRender(roomIAm, "maitreSort");
@@ -2213,7 +2233,11 @@ async function skill (nom, nomGen, div,ImEnn) {
     skill.width = skills[skillInUse].width;
     skill.height = "308";
     skill.zIndex="99"
-    let DAMAGE = skills[skillInUse].effect() * runeCrit
+    let DAMAGE = 0
+    if (skills[skillInUse].target !== "noDmg"){
+    DAMAGE = skills[skillInUse].effect() * runeCrit
+    }
+
     //BUFF check (brut)
     dataStat.DonneeStatPerso.statPerso[designationPerso].buff.forEach(value => {
         if (value === "amuBrut"){
@@ -2278,7 +2302,9 @@ async function skill (nom, nomGen, div,ImEnn) {
     } else if (skills[skillInUse].target === "noDmg") {
         if (runeCrit > skills[skillInUse].nombreRune/2){
             skills[skillInUse].effect()
+            buttonDoorDiv[div].appendChild(skill)
         } else {
+            buttonDoorDiv[div].appendChild(skill)
             boiteDialogue("txtRateSkill")
         }
     }
@@ -2542,6 +2568,7 @@ async function vicOrRetaliation() {
                     done = true   
                 }
             } else {
+                
                 compteurVolRate++
                 if (skillInUse === "skillVol" && compteurVolRate === actualEnnemiStatut[nomGen].nbreObjet) {
                     boiteDialogue("txtVolRate")
@@ -2562,16 +2589,20 @@ function loot(nom, nomGen, div, ImEnn) {
                 actualEnnemiStatut[nom].or += actualEnnemiStatut[nom].or*0.3
             }
         })
-        dataStat.DonneeStatPerso.statPerso.perso2.buff.forEach(value => {
-            if (value === "amuAvidite"){
-                actualEnnemiStatut[nom].or += actualEnnemiStatut[nom].or*0.3
-            }
-        })
-        dataStat.DonneeStatPerso.statPerso.perso3.buff.forEach(value => {
-            if (value === "amuAvidite"){
-                actualEnnemiStatut[nom].or += actualEnnemiStatut[nom].or*0.3
-            }
-        })
+        if (dataStat.DonneeStatPerso.statPerso.perso2.buff){
+            dataStat.DonneeStatPerso.statPerso.perso2.buff.forEach(value => {
+                if (value === "amuAvidite"){
+                    actualEnnemiStatut[nom].or += actualEnnemiStatut[nom].or*0.3
+                }
+            })
+        }
+        if (dataStat.DonneeStatPerso.statPerso.perso2.buff){
+            dataStat.DonneeStatPerso.statPerso.perso3.buff.forEach(value => {
+                if (value === "amuAvidite"){
+                    actualEnnemiStatut[nom].or += actualEnnemiStatut[nom].or*0.3
+                }
+            })
+        }
         dataStat.DonneeStatPerso.money += actualEnnemiStatut[nom].or
         lootObject(nom)
         update()
@@ -2931,73 +2962,195 @@ function updateRenderItemMarket(myRoom) {
     });
     
 }
+let epreuveMaitreArme = 1
+let epreuveMaitreSort = 1
+let runeMaitreSortMain = ""
+let nbreRuneTrouve = 0
+let compteurMS = 0
+function epreuveMaitreArmefn() {
+
+}
+function epreuveMaitreSortfn(myRoom) {
+    const divEpreuve = document.getElementById("epreuveMaitreSort")
+    divEpreuve.style.display="grid"
+    const allRune = Object.entries(runes)
+    const selectRune = randomNumber(24)
+    const antiClic2 = document.createElement("div")
+    antiClic2.id = "anticlicEpreuveMS2"
+    document.body.appendChild(antiClic2)
+    runeMaitreSortMain = "divRune"+selectRune
+
+    allRune.forEach(([key, value]) => {
+        const divImgRune = document.createElement("div")
+        divImgRune.id = "divRune"+key
+        divImgRune.className= "divRuneClass"
+        const imgRune = document.createElement("img")
+        imgRune.src = value
+        imgRune.id = key
+        imgRune.width = 130
+        imgRune.height = 145
+        divImgRune.addEventListener("click", ()=>{
+            const elem = document.getElementById(key);
+            if (elem) elem.style.visibility = "visible"; 
+                const antiClic = document.createElement("div")
+                antiClic.id = "anticlicEpreuveMS"
+                document.body.appendChild(antiClic)
+                setTimeout(()=> {
+                if (runeMaitreSortMain) {
+                    if (runeMaitreSortMain === "divRune"+key) {
+                        room.doorState[myRoom] = "win"
+                        buttonDoorDiv.epreuveMaitreSort.style.display = "none"
+                        const del = document.getElementById("runeMaitreSort")
+                        del.remove()
+                        boiteDialogue("txtEpreuveReussiMS")
+                    } else {
+                        room.doorState[roomIAm] = "fail"
+                        room.numberDoor[roomIAm] = "fail"
+                        buttonDoorDiv.itemMarket.style.display = "none"
+                        buttonDoorDiv.epreuveMaitreSort.style.display = "none"
+                        const del = document.getElementById("runeMaitreSort")
+                        del.remove()
+                        boiteDialogue("txtEpreuveRateMS")
+                    }
+                }
+                antiClic.remove()
+                allRune.forEach(([key,value]) => {
+                    try{
+                        const cle = document.getElementById(key)
+                        cle.remove()
+                        const divCle = document.getElementById("divRune"+key)
+                        divCle.remove()
+                    } catch {}
+                })
+            },2000)
+        });
+        divImgRune.appendChild(imgRune)
+        divEpreuve.appendChild(divImgRune)
+    })
+    setTimeout(()=> {
+            allRune.forEach(([key, value]) => {
+                const elem = document.getElementById(key);
+            if (elem) elem.style.visibility = "hidden"; 
+            })
+            const runeMaitreSort = document.createElement("img")
+            runeMaitreSort.src = "image/rune"+selectRune+".webp"
+            runeMaitreSort.id = "runeMaitreSort"
+            runeMaitreSort.width = 70
+            runeMaitreSort.height = 80
+            runeMaitreSort.style.position = "absolute"
+            runeMaitreSort.style.zIndex = 1
+            runeMaitreSort.style.right = "84px"
+            runeMaitreSort.style.top = "5px"
+            buttonDoorDiv.market.appendChild(runeMaitreSort)
+            antiClic2.remove()
+    },7000)
+}
 function itemMaitreSortfn (myRoom) {
     delItem()
-    if (buttonDoorDiv.itemMarket.style.display === "none") {
-        buttonDoorDiv.itemMarket.style.display = "block"
-        if (itemMaitreSort !== "") {
-            if (marketMemory[myRoom] === undefined) {
-                marketMemory[myRoom] = [];
-                for (let i = 0; i < 3; i++) {
-                    
-                    let findIndexItem = itemMaitreSort[randomNumber(itemMaitreSort.length) - 1];
-                    if (findIndexItem === undefined) {
-                        break
-                    }
-                        while (marketMemory[myRoom].includes(findIndexItem)) {
-                            findIndexItem = itemMaitreSort[randomNumber(itemMaitreSort.length) - 1];
+    if (room.doorState[myRoom] === "win"){
+        if (buttonDoorDiv.itemMarket.style.display === "none") {
+            buttonDoorDiv.itemMarket.style.display = "block"
+            if (itemMaitreSort !== "") {
+                if (marketMemory[myRoom] === undefined) {
+                    marketMemory[myRoom] = [];
+                    for (let i = 0; i < 3; i++) {
+                        let findIndexItem = itemMaitreSort[randomNumber(itemMaitreSort.length) - 1];
+                        if (findIndexItem === undefined) {
+                            break
                         }
-                        marketMemory[myRoom].push(findIndexItem);
-                        const index = itemMaitreSort.findIndex((objet) => objet === findIndexItem);
-                        if (index !== -1) {
-                            itemMaitreSort.splice(index, 1);
-                        }
-                } 
-                updateRenderItemMarket(myRoom);
-            } else {
+                            while (marketMemory[myRoom].includes(findIndexItem)) {
+                                findIndexItem = itemMaitreSort[randomNumber(itemMaitreSort.length) - 1];
+                            }
+                            marketMemory[myRoom].push(findIndexItem);
+                            const index = itemMaitreSort.findIndex((objet) => objet === findIndexItem);
+                            if (index !== -1) {
+                                itemMaitreSort.splice(index, 1);
+                            }
+                    } 
                     updateRenderItemMarket(myRoom);
-            }
-            }
-            else {
-            }
-    } 
-    else {
+                } else {
+                        updateRenderItemMarket(myRoom);
+                }
+                }
+                else {
+                }
+        } 
+        else {
+            buttonDoorDiv.itemMarket.style.display = "none"
+        }
+    } else if (epreuveMaitreSort === 1){
+        epreuveMaitreSort = 2
+        epreuveMaitreSortfn(myRoom)
+    } else if (room.doorState[myRoom] === "fail") {
+        dialogueMS("txtMs", compteurMS)
+        compteurMS++
+        if (compteurMS > 3) {
+            console.log("lancez combat")
+        }
+    } else {
+        const del = document.getElementById("runeMaitreSort")
+        del.remove()
+        room.doorState[myRoom] = "fail"
+        room.numberDoor[myRoom] = "fail"
         buttonDoorDiv.itemMarket.style.display = "none"
+        buttonDoorDiv.epreuveMaitreSort.style.display = "none"
+        boiteDialogue("txtEpreuveRateMS")
+    }
+}
+function dialogueMS(txt , nombre) {
+    try{
+    const delOtherBulle2 = document.getElementById("txtBulleMS")
+    delOtherBulle2.remove()
+    const delOtherBulle = document.getElementById("bulleMS")
+    delOtherBulle.remove()
+    } catch{}
+    if (compteurMS !== 0){
+        const bulle = document.createElement("img")
+        bulle.src = "image/bulleDialogue"+nombre+".webp"
+        bulle.id = "bulleMS"
+        document.body.appendChild(bulle)
+        setTimeout(()=>{
+            const delOtherBulle = document.getElementById("bulleMS")
+            delOtherBulle.remove()
+        },1700)
     }
 }
 function itemMaitreArmefn (myRoom) {
     delItem()
-    
-    if (buttonDoorDiv.itemMarket.style.display === "none") {
-        buttonDoorDiv.itemMarket.style.display = "block"
-        if (itemMaitreArme !== "") {
-            if (marketMemory[myRoom] === undefined) {
-                marketMemory[myRoom] = [];
-                
-                for (let i = 0; i < 3; i++) {
-                    let findIndexItem = itemMaitreArme[randomNumber(itemMaitreArme.length) - 1];
-                    if (findIndexItem === undefined) {
-                        break
-                    }
-                        while (marketMemory[myRoom].includes(findIndexItem)) {
-                            findIndexItem = itemMaitreArme[randomNumber(itemMaitreArme.length) - 1];
+    if (epreuveMaitreArme){
+        if (buttonDoorDiv.itemMarket.style.display === "none") {
+            buttonDoorDiv.itemMarket.style.display = "block"
+            if (itemMaitreArme !== "") {
+                if (marketMemory[myRoom] === undefined) {
+                    marketMemory[myRoom] = [];
+                    
+                    for (let i = 0; i < 3; i++) {
+                        let findIndexItem = itemMaitreArme[randomNumber(itemMaitreArme.length) - 1];
+                        if (findIndexItem === undefined) {
+                            break
                         }
-                        marketMemory[myRoom].push(findIndexItem);
-                        const index = itemMaitreArme.findIndex((objet) => objet === findIndexItem);
-                        if (index !== -1) {
-                            itemMaitreArme.splice(index, 1);
-                        }
-                } 
-                updateRenderItemMarket(myRoom);
-            } else {
+                            while (marketMemory[myRoom].includes(findIndexItem)) {
+                                findIndexItem = itemMaitreArme[randomNumber(itemMaitreArme.length) - 1];
+                            }
+                            marketMemory[myRoom].push(findIndexItem);
+                            const index = itemMaitreArme.findIndex((objet) => objet === findIndexItem);
+                            if (index !== -1) {
+                                itemMaitreArme.splice(index, 1);
+                            }
+                    } 
                     updateRenderItemMarket(myRoom);
-            }
-            }
-            else {
-            }
-    } 
-    else {
-        buttonDoorDiv.itemMarket.style.display = "none"
+                } else {
+                        updateRenderItemMarket(myRoom);
+                }
+                }
+                else {
+                }
+        } 
+        else {
+            buttonDoorDiv.itemMarket.style.display = "none"
+        }
+    } else {
+        epreuveMaitreArmefn()
     }
 }
 function itemMarket(myRoom) {
@@ -3057,17 +3210,17 @@ function updateRenderMaitreArme(myRoom) {
         imDoor.maitreArme.addEventListener("click", () => itemMaitreArmefn(myRoom))
 }
 function updateRenderMaitreSort(myRoom) {
-    
     const maitreSort = document.createElement("img");
     maitreSort.src = "image/maitreSort.webp";
     maitreSort.width = "400";
     maitreSort.height = "500";
+    maitreSort.style.zIndex = 3
+    maitreSort.style.position = "relative";
     maitreSort.alt = "Un mage expérimenté";
     maitreSort.id = "maitreSort";
     maitreSort.setAttribute("data-testid", "maitreSort")
-        buttonDoorDiv.market.appendChild(maitreSort);
-        imDoor.maitreSort = document.getElementById("maitreSort");
-        imDoor.maitreSort.addEventListener("click", () => itemMaitreSortfn(myRoom))
+    maitreSort.addEventListener("click", () => itemMaitreSortfn(myRoom))
+    buttonDoorDiv.market.appendChild(maitreSort);
 }
 function updateRenderMarket(myRoom) {
     if (room.doorState[myRoom] === "smallMarket") {
@@ -3112,6 +3265,7 @@ function updateRenderBack(myRoom) {
     } else if (room.numberDoor[myRoom] === "maitreArme") {
         updateRenderMaitreArme(myRoom)
     } else if (room.numberDoor[myRoom] === "maitreSort") {
+        epreuveMaitreSort = 1
         updateRenderMaitreSort(myRoom)
     } else {
         if (room.doorState[myRoom].A === "ouvert") {

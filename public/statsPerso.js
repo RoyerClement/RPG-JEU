@@ -75,36 +75,6 @@ const statPerso = {
         },
 };
 
-let skills = {
-    allATQ : {
-        effect : () => {
-            Object.entries(actualEnnemiStatut).forEach((key, value) => 
-            value.forEach((cle, valeur) => {
-                if(cle === "HP") {
-                    const randomAttaque = genererChiffre(dataStat.DonneeStatPerso.mainGauche +
-                    dataStat.DonneeStatPerso.mainDroite, 10)
-                    valeur -= randomAttaque
-                }
-            }))
-            dataStat.DonneeStatPerso.statPerso[designationPerso].MPactual -= 20
-        },
-        state: false,
-        IMG: "image/allATQ.webp"
-    },
-    doubleATQ: {
-        effect : () => { 
-            genererChiffre((dataStat.DonneeStatPerso.mainGauche +
-            dataStat.DonneeStatPerso.mainDroite)*2, 10)
-            dataStat.DonneeStatPerso.statPerso[designationPerso].MPactual -= 10
-        },
-        state: false,
-        IMG : "image/doubleATQ.webp"
-    },
-    steal : {
-        effect : "on va voir"
-    }
-}
-
 const arme = {
     mainGauche: {
         genre:"contondant",
@@ -1601,11 +1571,11 @@ const mag = document.getElementById("magicien")
 mag.addEventListener("click", () => {
     let designationPerso = "perso"+compteurPerso
     statPerso[designationPerso].Force = 0;
-    statPerso[designationPerso].Dexterite = 2;
-    statPerso[designationPerso].Intelligence = 4;
-    statPerso[designationPerso].Concentration = 2;
-    statPerso[designationPerso].Volonte = 3
-    statPerso[designationPerso].Vitalite = 1
+    statPerso[designationPerso].Dexterite = 1;
+    statPerso[designationPerso].Intelligence = 3;
+    statPerso[designationPerso].Concentration = 3;
+    statPerso[designationPerso].Volonte = 1
+    statPerso[designationPerso].Vitalite = 0
     update()
     statPerso[designationPerso].HPactual = statPerso[designationPerso].HP
     statPerso[designationPerso].MPactual = statPerso[designationPerso].MP
@@ -1619,12 +1589,12 @@ mag.addEventListener("click", () => {
 const vol = document.getElementById("voleur")
 vol.addEventListener("click", () => {
     let designationPerso = "perso"+compteurPerso
-    statPerso[designationPerso].Force = 2;
+    statPerso[designationPerso].Force = 1;
     statPerso[designationPerso].Dexterite = 4;
     statPerso[designationPerso].Intelligence = 0;
     statPerso[designationPerso].Concentration = 2;
-    statPerso[designationPerso].Volonte = 2
-    statPerso[designationPerso].Vitalite = 2
+    statPerso[designationPerso].Volonte = 0
+    statPerso[designationPerso].Vitalite = 1
     update()
     statPerso[designationPerso].HPactual = statPerso[designationPerso].HP
     statPerso[designationPerso].MPactual = statPerso[designationPerso].MP
@@ -1638,12 +1608,12 @@ vol.addEventListener("click", () => {
 const guer = document.getElementById("guerrier")
 guer.addEventListener("click", () => {
     let designationPerso = "perso"+compteurPerso
-    statPerso[designationPerso].Force = 5;
-    statPerso[designationPerso].Dexterite = 2;
+    statPerso[designationPerso].Force = 4;
+    statPerso[designationPerso].Dexterite = 1;
     statPerso[designationPerso].Intelligence = 0;
-    statPerso[designationPerso].Concentration = 1;
+    statPerso[designationPerso].Concentration = 0;
     statPerso[designationPerso].Volonte = 0
-    statPerso[designationPerso].Vitalite = 4
+    statPerso[designationPerso].Vitalite = 3
     update()
     statPerso[designationPerso].HPactual = statPerso[designationPerso].HP
     statPerso[designationPerso].MPactual = statPerso[designationPerso].MP
@@ -2143,7 +2113,6 @@ async function replaceStat() {
             room.doorState[key] = value;
         },
     );
-    skills = recData.donjonpath.dataStat.DonneeStatPerso.skills
     itemList = recData.donjonpath.dataStat.DonneeStatPerso.itemList
     itemMaitreArme = recData.donjonpath.dataStat.DonneeStatPerso.itemMaitreArme
     itemMaitreSort = recData.donjonpath.dataStat.DonneeStatPerso.itemMaitreSort
