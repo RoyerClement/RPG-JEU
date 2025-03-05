@@ -908,56 +908,56 @@ const gear = {
     Scroll: {
         sortFoudre : {
             effect: () => {statPerso[designationPerso].spells.push("sortFoudre")},
-            IMG: "image/parchemin.webp",
+            IMG: "image/parchemin9.webp",
             title: "Lisez ce parchemin pour apprendre un sort",
             nom : "Parchemin de foudre",
             description : "Vous permet d'apprendre le sort : Foudre"
         },
         sortLumiere : {
             effect: "",
-            IMG: "image/parchemin.webp",
+            IMG: "image/parchemin3.webp",
             title: "Lisez ce parchemin pour apprendre un sort",
             nom : "Parchemin de lumière",
             description : "Vous permet d'apprendre le sort : Lumière"
         },
         sortFeu : {
             effect: () => {statPerso[designationPerso].spells.push("sortFeu")},
-            IMG: "image/parchemin.webp",
+            IMG: "image/parchemin2.webp",
             title: "Lisez ce parchemin pour apprendre un sort",
             nom : "Parchemin de feu",
             description : "Vous permet d'apprendre le sort : Feu"
         },
         sortArcane : {
             effect: () => {statPerso[designationPerso].spells.push("sortArcane")},
-            IMG: "image/parchemin.webp",
+            IMG: "image/parchemin8.webp",
             title: "Lisez ce parchemin pour apprendre un sort",
             nom : "Parchemin d'arcane",
             description : "Vous permet d'apprendre le sort : Arcane"
         },
         sortBlast : {
             effect: () => {statPerso[designationPerso].spells.push("sortBlast")},
-            IMG: "image/parchemin.webp",
+            IMG: "image/parchemin4.webp",
             title: "Lisez ce parchemin pour apprendre un sort",
             nom : "Parchemin de souffle",
             description : "Vous permet d'apprendre le sort : Blast"
         },
         skillVol : {
             effect: () => {statPerso[designationPerso].spells.push("skillVol")},
-            IMG: "image/parcheminSkill.webp",
+            IMG: "image/parchemin7.webp",
             title: "Lisez ce parchemin pour apprendre un sort",
             nom : "Technique de combat",
             description : "Vous permet d'apprendre la compétence : Voler"
         },
         skillAll : {
             effect: () => {statPerso[designationPerso].spells.push("skillAll")},
-            IMG: "image/parcheminSkill.webp",
+            IMG: "image/parchemin6.webp",
             title: "Lisez ce parchemin pour apprendre un sort",
             nom : "Technique de combat",
             description : "Vous permet d'apprendre la compétence : Attaque Horizontale"
         },
         skillDouble : {
             effect: () => {statPerso[designationPerso].spells.push("skillDouble")},
-            IMG: "image/parcheminSkill.webp",
+            IMG: "image/parchemin6.webp",
             title: "Lisez ce parchemin pour apprendre un sort",
             nom : "Technique de combat",
             description : "Vous permet d'apprendre la compétence : Double Attaque"

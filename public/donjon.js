@@ -107,6 +107,8 @@ const dialogue = {
     txtLootOr: `Vous ramassez de l'or`,
     txtEpreuveRateMS : "Vous avez échoué à l'épreuve du maître Sorcier, il ne veut plus vous enseigner",
     txtEpreuveReussiMS : "Le maitre Sorcier est disposé à vous enseigner",
+    txtMAreussi: "Le maitre d'arme est disposé à vous enseigner",
+    txtMAfail: "Vous avez échoué à l'épreuve du maître d'arme, il ne veut plus vous enseigner",
     txtRateSkill : `Vous êtes déconcentré et vous ratez votre tentative`,
     txtDarkness: "Il fait trop noir pour continuer sans lumière, vous ne pouvez pas combattre ainsi"
 };
@@ -732,7 +734,7 @@ const item = {
             cost: 900,
             id: "skillVol",
             type: "Scroll",
-            nomMarche: "Parchemin de compétence : Vol"
+            nomMarche: "Parchemin de compétence"
         },
         skillAll : {
             nom: "ce parchemin mystérieux",
@@ -740,7 +742,7 @@ const item = {
             cost: 1500,
             id: "skillAll",
             type: "Scroll",
-            nomMarche: "Parchemin de compétence : Horiz"
+            nomMarche: "Parchemin de compétence"
         },
         skillDouble : {
             nom: "ce parchemin mystérieux",
@@ -748,7 +750,7 @@ const item = {
             cost: 1100,
             id: "skillDouble",
             type: "Scroll",
-            nomMarche: "Parchemin de compétence : Doub"
+            nomMarche: "Parchemin de compétence"
         },
 
 };
@@ -807,6 +809,7 @@ const ennemi = {
         height:300,
         ATQ: 20,
         CRIT: 25,
+        RNG: 5,
         DEF: 10,
         HP: 60,
         DEX: 0,
@@ -821,7 +824,7 @@ const ennemi = {
             amuVamp : 1
         },
         nbreObjet : 4,
-        or: 50,
+        or: 80,
         LVL: 5
     },
     gobelin: {
@@ -834,10 +837,11 @@ const ennemi = {
         testid: "testGob",
         width: 300,
         height:250,
-        ATQ: 10,
+        ATQ: 7,
         CRIT: 20,
+        RNG: 3,
         DEF: 3,
-        HP: 10,
+        HP: 35,
         DEX: 2,
         XP: 10,
         faible:["tranchant","estoc"],
@@ -862,8 +866,9 @@ const ennemi = {
         div:"",
         width: 250,
         height:300,
-        ATQ: 7,
+        ATQ: 10,
         CRIT: 10,
+        RNG: 2,
         DEF: 3,
         HP: 70,
         DEX: 1,
@@ -878,7 +883,7 @@ const ennemi = {
             amuDef : 1,
         },
         nbreObjet : 4,
-        or: 20, 
+        or: 30, 
         LVL: 3
     },
     troll: {
@@ -890,8 +895,9 @@ const ennemi = {
         div:"",
         width: 300,
         height:400,
-        ATQ: 20,
+        ATQ: 25,
         CRIT: 40,
+        RNG: 10,
         DEF: 3,
         HP: 210,
         DEX: 0,
@@ -907,7 +913,7 @@ const ennemi = {
             amuBrut : 3,
         },
         nbreObjet : 4,
-        or: 20, 
+        or: 300, 
         LVL: 10
     },
     ogre: {
@@ -921,6 +927,7 @@ const ennemi = {
         height:350,
         ATQ: 14,
         CRIT: 18,
+        RNG: 6,
         DEF: 3,
         HP: 120,
         DEX: 2,
@@ -949,8 +956,9 @@ const ennemi = {
         height:320,
         ATQ: 20,
         CRIT: 40,
+        RNG: 3,
         DEF: 3,
-        HP: 30,
+        HP: 45,
         DEX: 1,
         XP: 40,
         faible:["contondant"],
@@ -963,7 +971,7 @@ const ennemi = {
             amuCauchemar:2,
         },
         nbreObjet : 4,
-        or: 20, 
+        or: 50, 
         LVL: 4
     },
     champi: {
@@ -975,8 +983,9 @@ const ennemi = {
         div:"",
         width: 300,
         height:300,
-        ATQ: 5,
+        ATQ: 8,
         CRIT: 15,
+        RNG: 5,
         DEF: 3,
         HP: 40,
         DEX: 5,
@@ -1025,10 +1034,11 @@ const ennemi = {
         div:"",
         width: 300,
         height:300,
-        ATQ: 15,
-        CRIT: 30,
+        ATQ: 18,
+        CRIT: 34,
+        RNG: 4,
         DEF: 3,
-        HP: 85,
+        HP: 110,
         DEX: 10,
         XP: 60,
         faible:[],
@@ -1041,7 +1051,7 @@ const ennemi = {
             potionVie: 20,
         },
         nbreObjet : 4,
-        or: 20, 
+        or: 130, 
         LVL: 6
     },
 };
@@ -1211,7 +1221,8 @@ btnNewChar.addEventListener('click', () => {
         XP: 0,
         LVL: 11,
         spells: ["sortFoudre", "skillVol"],
-        arme: "estoc"
+        arme: "estoc",
+        buff: [],
     }
     dataStat.DonneeStatPerso.equipement.perso2 = {
             LeftHand: "dague",
@@ -1469,14 +1480,14 @@ function launchFight() {
             const persoRand = "perso" + numRand;
 
             if (CRT - dataStat.DonneeStatPerso.statPerso[persoRand].Dexterite > 90 + actualEnnemiStatut[currentFighter.nom].DEX) {
-                const rand = genererChiffre(actualEnnemiStatut[currentFighter.nom].CRIT, 10);
+                const rand = genererChiffre(actualEnnemiStatut[currentFighter.nom].CRIT, actualEnnemiStatut[currentFighter.nom].RNG);
                 const randDef = Math.round(rand - (rand * (dataStat.DonneeStatPerso.stats[persoRand].Def / 100)));
                 nombreDegatsTemporaire = "Coup critique ! ! ! -" + randDef + " dégâts";
                 dataStat.DonneeStatPerso.statPerso[persoRand].HPactual -= randDef;
             } else if (CRT - dataStat.DonneeStatPerso.statPerso[persoRand].Dexterite < 10 + actualEnnemiStatut[currentFighter.nom].DEX) {
                 nombreDegatsTemporaire = "Raté !";
             } else {
-                const rand = genererChiffre(actualEnnemiStatut[currentFighter.nom].ATQ, 5);
+                const rand = genererChiffre(actualEnnemiStatut[currentFighter.nom].ATQ, actualEnnemiStatut[currentFighter.nom].RNG);
                 const randDef = Math.round(rand - (rand * (dataStat.DonneeStatPerso.stats[persoRand].Def / 100)));
                 nombreDegatsTemporaire = "-" + randDef + " dégâts";
                 dataStat.DonneeStatPerso.statPerso[persoRand].HPactual -= randDef;
@@ -1539,6 +1550,7 @@ function launchFight() {
                         LVL: 0,
                         spells: [],
                         arme:"",
+                        buff:[]
                 }
                 imgPerso()
                     persoDiv.appendChild(perso1)
@@ -1675,6 +1687,7 @@ function enterDoor(door, myRoom) {
                     updateRender(roomIAm, "marchand");
                     boiteDialogue("txtMarchand");
                 } else if (maitreArme > 95) {
+                    epreuveMaitreArme = 1
                     room.numberDoor[[myRoom] + [door]] = "maitreArme"
                     room.doorState[[myRoom] + [door]] = "maitreArme"
                     updateRender(roomIAm, "maitreArme");
@@ -2364,7 +2377,7 @@ function attaque(nom, nomGen, div, ImEnn) {
         attaque.height = "208";
         buttonDoorDiv[div].appendChild(attaque)
         let randomAttaque = genererChiffre(dataStat.DonneeStatPerso.stats[designationPerso].RightHand +
-            dataStat.DonneeStatPerso.stats[designationPerso].LeftHand, 10)
+            dataStat.DonneeStatPerso.stats[designationPerso].LeftHand, 5)
     //BUFF check (Brut)
         dataStat.DonneeStatPerso.statPerso[designationPerso].buff.forEach(value => {
             if (value === "amuBrut"){
@@ -2577,7 +2590,6 @@ async function vicOrRetaliation() {
         })
     compteurVolRate = 0
     }
-    console.log(skills)
 function loot(nom, nomGen, div, ImEnn) {
     boiteDialogue("txtKill", ennemi[nomGen].txt);
         Object.entries(dataStat.DonneeStatPerso.statPerso).forEach(([key, value]) => {
@@ -2967,8 +2979,104 @@ let epreuveMaitreSort = 1
 let runeMaitreSortMain = ""
 let nbreRuneTrouve = 0
 let compteurMS = 0
-function epreuveMaitreArmefn() {
+let compteurPomme = 0
+let compteurPommeReussi = 0
 
+function checkPomme (myRoom) {
+    debugger
+    if (compteurPommeReussi > 20) {
+        room.doorState[myRoom] = "winMA"
+        boiteDialogue("txtMAreussi")
+    } else { 
+        room.doorState[myRoom] = "fail"
+        boiteDialogue("txtMAfail")
+    }
+}
+function epreuveMaitreArmefn(myRoom) {
+    if (epreuveMaitreArme === 1){
+    imDoor.btnBack.style.display = "none";
+    opInventaire.style.display = "none";
+    const affichagePomme = document.createElement("div")
+    affichagePomme.id = "affichagePomme"
+    const txtPomme = document.createElement("span")
+    txtPomme.id = "txtPomme"
+    txtPomme.textContent = "Pomme coupée : 0/30"
+    affichagePomme.appendChild(txtPomme)
+    document.body.appendChild(affichagePomme)
+    const bulleMA = document.createElement("img");
+    bulleMA.src = "image/bulleDialogueMA1.webp";
+    bulleMA.id = "bulleMS";
+    document.body.appendChild(bulleMA);
+    compteurPomme = 0
+    compteurPommeReussi = 0;
+    
+    const timeOut = setTimeout(() => {
+        bulleMA.remove();
+        setInterval(()=>{
+
+        if (compteurPomme < 30) {
+        let chiffre = randomNumber(95); 
+        let positionX = chiffre;
+        let positionY = -10; 
+        const pomme = document.createElement("img");
+        pomme.src = "image/pomme.webp";
+        pomme.id = "pomme";
+        pomme.style.position = "absolute";
+        pomme.style.left = positionX + "%";
+        pomme.style.top = positionY + "%";
+        pomme.style.width = "100px";
+        pomme.style.height = "100px";
+        pomme.style.zIndex = "65";
+        pomme.addEventListener("mouseover", () => {
+            pomme.remove();
+            compteurPommeReussi++;
+            txtPomme.innerHTML= `Pomme coupée : ${compteurPommeReussi}/30`
+            const pommeCoupe = document.createElement("img");
+            pommeCoupe.src = "image/pommeCoupe.webp";
+            pommeCoupe.id = "pommeCoupe";
+            pommeCoupe.style.position = "absolute";
+            pommeCoupe.style.width = "150px";
+            pommeCoupe.style.height = "150px";
+            pommeCoupe.style.zIndex = "65";
+            pommeCoupe.style.left = positionX + "%";
+            pommeCoupe.style.top = positionY + "%";
+
+            document.body.appendChild(pommeCoupe);
+
+            setTimeout(() => {
+                pommeCoupe.remove();
+            }, 1000);
+        });
+        compteurPomme++
+        document.body.appendChild(pomme);
+
+        function animate() {
+            positionY += 2.5;
+            pomme.style.top = positionY + "%";
+
+            if (positionY < 110) { 
+                requestAnimationFrame(animate);
+            } else {
+                pomme.remove(); 
+            }
+        }
+
+            animate();
+        } else {
+            clearInterval(timeOut)
+        }
+        },700)
+    }, 2000); 
+    setTimeout(()=>{
+        checkPomme(myRoom)
+        txtPomme.remove()
+        affichagePomme.remove()
+        imDoor.btnBack.style.display = "block";
+    opInventaire.style.display = "block";
+    },4000+700*30)
+} else {
+    console.log("dommage")
+}
 }
 function epreuveMaitreSortfn(myRoom) {
     const divEpreuve = document.getElementById("epreuveMaitreSort")
@@ -3117,7 +3225,8 @@ function dialogueMS(txt , nombre) {
 }
 function itemMaitreArmefn (myRoom) {
     delItem()
-    if (epreuveMaitreArme){
+    if (room.doorState[myRoom] === "winMA"){
+        
         if (buttonDoorDiv.itemMarket.style.display === "none") {
             buttonDoorDiv.itemMarket.style.display = "block"
             if (itemMaitreArme !== "") {
@@ -3149,8 +3258,11 @@ function itemMaitreArmefn (myRoom) {
         else {
             buttonDoorDiv.itemMarket.style.display = "none"
         }
+    } else if (epreuveMaitreArme === 1){
+        epreuveMaitreArmefn(myRoom)
+        epreuveMaitreArme = 2
     } else {
-        epreuveMaitreArmefn()
+        console.log("rate")
     }
 }
 function itemMarket(myRoom) {
